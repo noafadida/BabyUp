@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { FC } from 'react';
 
 const LoginPage: FC<{ navigation: any }> = ({ navigation }) => {
     const [username, setUsername] = useState('');

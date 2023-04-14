@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { FC } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 
 

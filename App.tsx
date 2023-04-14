@@ -1,11 +1,10 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import { StyleSheet } from "react-native";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage"
 import SignupPage2 from "./pages/SignupPage2"
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React from "react";
 
 const Stack = createNativeStackNavigator();
 

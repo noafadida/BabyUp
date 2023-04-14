@@ -1,14 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { FC } from 'react';
-declare module 'react-native-datepicker';
-
+import React, { useState, FC } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 
-
-
-
-
+declare module 'react-native-datepicker';
 
 const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
     const [babyName, setBabyName] = useState('');
