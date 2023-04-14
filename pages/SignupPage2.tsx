@@ -73,6 +73,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
                 />
             </View>
             <Text style={styles.birthText}>הכנס את תאריך הלידה של התינוק/ת</Text>
+            <Text style={styles.birthText}>הכנס את תאריך הלידה של התינוק/ת</Text>
 
             {showDatePicker && (
                 <View style={styles.inputContainer}>
