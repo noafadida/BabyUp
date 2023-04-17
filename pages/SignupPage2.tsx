@@ -1,6 +1,8 @@
 import React, { useState, FC } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import DatePicker from 'react-native-datepicker';
+import moment from 'moment';
+
 
 declare module 'react-native-datepicker';
 
@@ -13,7 +15,19 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
     const [nameValid, setNameValid] = useState(true);
 
     const handleBirthday = (birthdayValue: any) => {
-        setBirthdate(birthdayValue);
+        const ageMonths = moment().diff(moment(birthdayValue), 'months');
+        console.log("ageMonths of the baby: ", ageMonths)
+
+        if (ageMonths < 6 || ageMonths > 18) {
+            Alert.alert("שגיאה", "גיל התינוק/ת חייב להיות בין 6 ל18 חודשים")
+            setDateValid(false)
+            return
+        }
+        else {
+            setDateValid(true)
+            setBirthdate(birthdayValue);
+        }
+
     };
 
     const handleBabyNameChange = (babyNameValue: any) => {
@@ -45,6 +59,10 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <View style={styles.head}>
+                <Text style={styles.titleText}>יצירת משתמש חדש</Text>
+            </View>
+
             <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.input}
@@ -55,7 +73,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
                 />
             </View>
 
-           
+
             <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.input}
@@ -66,7 +84,6 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
                     }}
                 />
             </View>
-            <Text style={styles.birthText}>הכנס את תאריך הלידה של התינוק/ת</Text>
             <Text style={styles.birthText}>הכנס את תאריך הלידה של התינוק/ת</Text>
 
             {showDatePicker && (
@@ -82,6 +99,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
                         onDateChange={(newDate: string) => {
                             const date = new Date(newDate); // Convert string to Date object
                             setBirthdate(date);
+                            handleBirthday(date)
                         }}
                     />
                     <Button title="Done" onPress={() => setShowDatePicker(false)} />
@@ -94,9 +112,11 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
             )}
 
             {!dateValid && (
-                <Text style={styles.errorText}>גיל התינוק חייב להיות בין 6 ל18 חודשים </Text>
+                <Text style={styles.errorText}>גיל התינוק/ת חייב להיות בין 6 ל18 חודשים </Text>
             )}
-            <Button title="יצירת משתמש" onPress={validateFields} />
+            <TouchableOpacity style={styles.button} onPress={validateFields}>
+                <Text style={styles.buttonText}> הרשמה </Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -104,14 +124,16 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 20,
     },
-    heading: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
+    head: {
+        flex: 0.4,
+        justifyContent: 'flex-end',
+        margin: 20
+    },
+    titleText: {
+        fontSize: 22,
     },
     inputContainer: {
         flexDirection: 'row',
@@ -136,19 +158,19 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginRight: 0,
     },
-    button: {
-        backgroundColor: 'blue',
-        paddingVertical: 12,
-        paddingHorizontal: 24,
-        borderRadius: 4,
-        marginTop: 20,
-    },
     disabledButton: {
         opacity: 0.5,
     },
+    button: {
+        backgroundColor: '#4285F4',
+        paddingVertical: 10,
+        paddingHorizontal: 70,
+        borderRadius: 5,
+        marginTop: 20,
+        marginBottom: 20
+    },
     buttonText: {
         color: '#fff',
-        fontWeight: 'bold',
         fontSize: 18,
     },
     errorText: {
@@ -165,7 +187,7 @@ const styles = StyleSheet.create({
         marginRight: 8,
     },
     birthText: {
-        color:'pink'
+        color: 'pink'
     }
 });
 

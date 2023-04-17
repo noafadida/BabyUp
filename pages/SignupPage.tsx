@@ -10,20 +10,20 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [isValid, setIsValid] = useState(true);
+    const [isValid, setIsValid] = useState(false);
     const [validEmail, setValidEmail] = useState(true);
     const [validUsername, setValidUsername] = useState(true);
     const [validPassword, setValidPassword] = useState(true);
     const [isEqual, setIsEqual] = useState(true);
 
     const handleEmailChange = (emailValue: any) => {
-        // Simple email validation
         setEmail(emailValue);
         if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
             setValidEmail(true)
-            // setIsValid(validateFields());
+            setIsValid(true)
         } else {
             setValidEmail(false)
+            setIsValid(false)
         }
     };
 
@@ -31,10 +31,11 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
         setUsername(usernameValue);
         if (usernameValue.length >= 3) {
             setValidUsername(true)
-            // setIsValid(validateFields());
+            setIsValid(true)
         }
         else {
             setValidUsername(false)
+            setIsValid(false)
         }
     };
 
@@ -42,10 +43,11 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
         setPassword(passwordValue);
         if (passwordValue.length >= 6) {
             setValidPassword(true)
-            // setIsValid(validateFields());
+            setIsValid(true)
         }
         else {
             setValidPassword(false)
+            setIsValid(false)
         }
     };
 
@@ -53,10 +55,11 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
         setConfirmPassword(confirmPasswordValue);
         if (password === confirmPasswordValue) {
             setIsEqual(true)
-            // setIsValid(validateFields());
+            setIsValid(true)
         }
         else {
             setIsEqual(false)
+            setIsValid(false)
         }
     };
 
@@ -69,9 +72,9 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
             validEmail === true &&
             validUsername === true &&
             validPassword === true &&
-            isEqual === true
+            isEqual === true &&
+            isValid === true
         ) {
-            setIsValid(true)
             navigation.navigate("SignupPage2")
         }
         else {
@@ -82,6 +85,10 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <View style={styles.head}>
+            <Text style={styles.titleText}>יצירת משתמש חדש</Text>
+            </View>
+            
             <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.input}
@@ -112,7 +119,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
                     onChangeText={handlePasswordChange}
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                    <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} size={24} color="gray" />
+                    <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} size={24} color="#4285F4" />
                 </TouchableOpacity>
             </View>
 
@@ -135,7 +142,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
                     />}
 
                 <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
-                    <MaterialIcons name={showConfirmPassword ? "visibility" : "visibility-off"} size={24} color="gray" />
+                    <MaterialIcons name={showConfirmPassword ? "visibility" : "visibility-off"} size={24} color="#4285F4" />
                 </TouchableOpacity>
             </View>
 
@@ -163,14 +170,16 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 20,
     },
-    heading: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
+    head: {
+        flex: 0.4,
+        justifyContent: 'flex-end',
+        margin:20
+    },
+    titleText: {
+        fontSize: 22,
     },
     inputContainer: {
         flexDirection: 'row',
@@ -215,6 +224,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         marginRight: 8,
     },
+  
 });
 
 export default SignupPage;

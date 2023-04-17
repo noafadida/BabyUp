@@ -8,16 +8,22 @@ const LoginPage: FC<{ navigation: any }> = ({ navigation }) => {
     const [showPassword, setShowPassword] = useState(false);
 
     const handleLogin = () => {
-        // Handle login logic here
+        navigation.navigate("HomePage");
     };
 
     const handleSignUp = () => {
         navigation.navigate("SignupPage");
     };
 
+    const handlePasswordReset = () => {
+        navigation.navigate("PasswordResetPage");
+    };
+
     return (
         <View style={styles.container}>
-
+            <View style={styles.head}>
+                <Text style={styles.titleText}>התחברות</Text>
+            </View>
             <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.input}
@@ -36,14 +42,15 @@ const LoginPage: FC<{ navigation: any }> = ({ navigation }) => {
                     onChangeText={setPassword}
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                    <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} size={24} color="gray" />
+                    <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} size={24} color="#4285F4" />
                 </TouchableOpacity>
             </View>
 
             <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>כניסה</Text>
+                <Text style={styles.buttonText}> כניסה </Text>
             </TouchableOpacity>
-            <Button title="  עדיין לא נרשמת? הרשם עכשיו!" onPress={handleSignUp} />
+            <Button title="  ליצירת חשבון חדש" onPress={handleSignUp} />
+            <Button title="שכחתי סיסמא " onPress={handlePasswordReset} />
         </View>
     );
 }
@@ -51,14 +58,16 @@ const LoginPage: FC<{ navigation: any }> = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 20,
     },
-    heading: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
+    head: {
+        flex: 0.4,
+        justifyContent: 'flex-end',
+        margin: 20
+    },
+    titleText: {
+        fontSize: 22,
     },
     inputContainer: {
         flexDirection: 'row',
@@ -76,15 +85,15 @@ const styles = StyleSheet.create({
         marginRight: 8,
     },
     button: {
-        backgroundColor: 'black',
-        paddingVertical: 12,
-        paddingHorizontal: 24,
-        borderRadius: 4,
+        backgroundColor: '#4285F4',
+        paddingVertical: 10,
+        paddingHorizontal: 70,
+        borderRadius: 5,
         marginTop: 20,
+        marginBottom: 20
     },
     buttonText: {
         color: '#fff',
-        fontWeight: 'bold',
         fontSize: 18,
     },
 });
