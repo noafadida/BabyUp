@@ -40,9 +40,6 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
         }
     };
 
-    const handleRegister2 = () => {
-        // Handle registration logic here
-    };
 
     const validateFields = () => {
         if (

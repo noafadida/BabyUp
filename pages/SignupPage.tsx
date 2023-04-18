@@ -157,11 +157,6 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
             {!validPassword && (
                 <Text style={styles.errorText}>יש להזין סיסמא עם 6 תווים לפחות </Text>
             )}
-
-
-            {/* <TouchableOpacity style={[styles.button, isValid ? null : styles.disabledButton]} disabled={!isValid} onPress={handleRegister}>
-                <Text style={styles.buttonText}>Register</Text>
-            </TouchableOpacity> */}
             <Button title="המשך" onPress={validateFields} />
         </View>
     );

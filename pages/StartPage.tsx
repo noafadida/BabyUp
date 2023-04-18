@@ -1,5 +1,5 @@
-import React, { useState, FC } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, Image } from 'react-native';
+import React, { FC } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Button, Image } from 'react-native';
 
 const StartPage: FC<{ navigation: any }> = ({ navigation }) => {
 

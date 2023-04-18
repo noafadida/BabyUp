@@ -1,35 +1,46 @@
 import React, { FC } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-
-import { useRoute } from '@react-navigation/native';
-import { setStatusBarHidden } from 'expo-status-bar';
-
-
+import CategoryGrid from '../components/CategoryGrid';
+import { CATEGORIES } from '../data';
 
 
 const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) => {
-
+    
     // Define screen components
-    const HomeScreen = () => (
-        <View style={styles.screen}>
-            {/* add home screen contents */}
-        </View>
-    );
+    const HomeScreen = ({ navigation }: any) => {
+        const renderCategoryItem = (itemData: any) => {
+            const pressHandler = () => (
+                navigation.navigate("MealsOverViewScreen", { categoryId: itemData.item.id })
+            )
+            return (<CategoryGrid
+                title={itemData.item.title}
+                color={itemData.item.color}
+                onPress={pressHandler}
+            />)
+        }
+        return (
+            <View style={styles.screen} >
+                <FlatList
+                    data={CATEGORIES}
+                    keyExtractor={(item: any) => item.id}
+                    renderItem={renderCategoryItem}
+                />
+            </View >
+        )
+    };
+
     const ProfileScreen = () => (
         <View style={styles.screen}>
-            {/* add profile screen contents */}
+            <Text>Profile Screen</Text>
         </View>
     );
     const FavoritesScreen = () => (
         <View style={styles.screen}>
-            {/* add favorites screen contents */}
+            <Text>Favorite Screen</Text>
         </View>
     );
-    const handleHomePage = () => {
-        // Handle HomePage logic here
-    };
 
     const Tab = createBottomTabNavigator();
     return (
@@ -45,7 +56,7 @@ const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) =>
                         } else if (route.name === 'FavoritesScreen') {
                             iconName = focused ? 'ios-heart' : 'ios-heart-outline'
                         }
-                        
+
                         return <Ionicons name={iconName as "key" | "search" | "repeat" | "link" | "at" | "body" | "code" | "map" | "menu" | "time" | "ellipse" | "filter" | "image" | "stop" | "text" | "push" | "home" | "home-outline" | "person-circle" | undefined} size={size} color={color} />;
                     },
                     tabBarActiveTintColor: "#4285F4",
@@ -55,30 +66,32 @@ const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) =>
                 <Tab.Screen
                     name="ProfileScreen"
                     component={ProfileScreen}
-                    options={{ title: "הפרופיל שלי" }}
+                    options={{ title: "הפרופיל שלי", headerShown: false }}
                 />
 
                 <Tab.Screen
                     name="HomeScreen"
                     component={HomeScreen}
-                    options={{ title: "דף הבית" }}
+                    options={{ title: "עמוד הבית", headerShown: false }}
                 />
 
                 <Tab.Screen
                     name="FavoritesScreen"
                     component={FavoritesScreen}
-                    options={{ title: "מועדפים " }}
+                    options={{ title: "מועדפים ", headerShown: false }}
                 />
             </Tab.Navigator>
-        </View >
+        </View>
+
     );
 }
 
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        alignItems: 'center',
+        padding: 10,
         justifyContent: 'center',
+        backgroundColor: "white"
     },
     container: {
         flex: 1,
