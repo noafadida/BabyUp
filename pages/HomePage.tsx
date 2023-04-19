@@ -10,7 +10,7 @@ import { FavoritesScreen } from '../components/HomePage/Favorite';
 const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) => {
 	useLayoutEffect(() => { //Hide Back button
 		navigation.setOptions({
-			headerLeft: null
+            headerLeft: null,
 		});
 	}, [navigation]);
 
@@ -60,7 +60,7 @@ const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) =>
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
+        flex: 1,
 	},
 	button: {
 		backgroundColor: '#4285F4',

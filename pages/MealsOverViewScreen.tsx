@@ -5,7 +5,6 @@ import MealItem from '../components/MealItem';
 
 const MealsOverViewScreen: FC<{ route: any }> = ({ route }) => {
 	const catergoryId = route.params.categoryId
-	console.log('MealsOverViewScreen render')
 	const diaplayMeals = MEALS.filter((mealItem) => { return mealItem.categoryIds.indexOf(catergoryId) >= 0 })
 
 	const renderMealItem = (itemData: any) => (
@@ -30,7 +29,7 @@ const MealsOverViewScreen: FC<{ route: any }> = ({ route }) => {
 }
 
 const styles = StyleSheet.create({
-	container: {
+    container: {
 		flex: 1,
 		padding: 16
 	}
