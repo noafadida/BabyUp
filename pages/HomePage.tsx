@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { HomeScreen } from '../components/HomePage/Home';
 import { ProfileScreen } from '../components/HomePage/Profile';
 import { FavoritesScreen } from '../components/HomePage/Favorite';
-import { TAB_SCREEN_NAMES } from '../consts';
+import { TAB_SCREEN_NAMES } from '../consts/Routes';
 
 
 const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) => {

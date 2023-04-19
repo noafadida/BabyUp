@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Image } from 'react-native';
-import { SCREEN_NAMES } from "./consts";
+import { SCREEN_NAMES } from "./consts/Routes";
 import StartPage from "./pages/StartPage"
 import LoginPage from "./pages/LoginPage";
 import HomePage from './pages/HomePage';
@@ -10,8 +10,12 @@ import SignupPage from "./pages/SignupPage"
 import SignupPage2 from "./pages/SignupPage2"
 import PasswordResetPage from "./pages/PasswordResetPage"
 import MealsOverViewScreen from "./pages/MealsOverViewScreen"
+import 'react-native-gesture-handler';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import DrawerScreen from "./pages/Drawer";
 
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 const App: FC = () => {
 	const { babyUp, home, login, resetPassword, signup, MealsOverview } = SCREEN_NAMES;
@@ -61,9 +65,18 @@ const App: FC = () => {
 		</Stack.Navigator>
 	);
 
+	function MyDrawer() {
+		return (
+			<Drawer.Navigator>
+				<Drawer.Screen name="Home" component={MainStackNavigator} />
+				<Drawer.Screen name="Drawer" component={DrawerScreen} />
+			</Drawer.Navigator>
+		);
+	}
+
 	return (
 		<NavigationContainer>
-			<MainStackNavigator />
+			<MyDrawer />
 		</NavigationContainer>
 	);
 };
