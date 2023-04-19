@@ -1,16 +1,16 @@
 import React, { FC } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { SCREEN_NAMES } from "./consts/Routes";
+import { Image, StyleSheet } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import StartPage from "./pages/StartPage"
-import LoginPage from "./pages/LoginPage";
-import HomePage from './pages/HomePage';
-import SignupPage from "./pages/SignupPage"
-import SignupPage2 from "./pages/SignupPage2"
-import PasswordResetPage from "./pages/PasswordResetPage"
-import MealsOverViewScreen from "./pages/MealsOverViewScreen"
+import { SCREEN_NAMES } from "./src/consts/Routes";
+import HomePage from "./src/pages/HomePage";
+import StartPage from "./src/pages/StartPage";
+import LoginPage from "./src/pages/LoginPage";
+import SignupPage from "./src/pages/SignupPage";
+import SignupPage2 from "./src/pages/SignupPage2";
+import PasswordResetPage from "./src/pages/PasswordResetPage";
+import MealsOverViewScreen from "./src/pages/MealsOverViewScreen";
 import 'react-native-gesture-handler';
 
 const Stack = createNativeStackNavigator();
@@ -26,23 +26,12 @@ const App: FC = () => {
 		/>
 	)
 
-	const homeScreenTitle = () => (
-		<View style={styles.homeHeader}>
-			<Image
-				source={require('./assets/babyuplogo_.png')}
-				style={{ resizeMode: 'contain', height: 40, width: 45, }}
-			/>
-			<Text>Hi</Text>
-		</View>
-	)
-
 	function MyDrawer() {
 		return (
 			<Drawer.Navigator>
 				<Drawer.Screen
 					name={home}
 					component={HomePage}
-					options={{ headerTitle: homeScreenTitle }}
 				/>
 			</Drawer.Navigator>
 		);

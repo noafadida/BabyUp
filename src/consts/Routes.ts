@@ -12,3 +12,9 @@ export const TAB_SCREEN_NAMES = {
 	home: 'עמוד הבית',
 	favorite: 'מועדפים'
 }
+
+export const TAB_ROUTES_NAMES = {
+	HomeScreen: 'HomeScreen',
+	ProfileScreen: 'ProfileScreen',
+	FavoritesScreen: 'FavoritesScreen'
+}

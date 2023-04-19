@@ -1,5 +1,5 @@
 import { View, FlatList, StyleSheet } from 'react-native'
-import { CATEGORIES } from '../../data';
+import { CATEGORIES } from '../../../data';
 import CategoryGrid from "../CategoryGrid";
 
 export const HomeScreen = ({ navigation }: any) => {
