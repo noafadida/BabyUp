@@ -29,7 +29,7 @@ const MealsOverViewScreen: FC<{ route: any }> = ({ route }) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
+	container: {
 		flex: 1,
 		padding: 16
 	}

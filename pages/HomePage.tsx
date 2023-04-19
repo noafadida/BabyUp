@@ -1,20 +1,17 @@
-import React, { FC, useLayoutEffect } from 'react';
+import React, { FC } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { HomeScreen } from '../components/HomePage/Home';
 import { ProfileScreen } from '../components/HomePage/Profile';
 import { FavoritesScreen } from '../components/HomePage/Favorite';
+import { TAB_SCREEN_NAMES } from '../consts';
 
 
 const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) => {
-	useLayoutEffect(() => { //Hide Back button
-		navigation.setOptions({
-            headerLeft: null,
-		});
-	}, [navigation]);
-
 	const Tab = createBottomTabNavigator();
+	const { favorite, home, myProfile } = TAB_SCREEN_NAMES
+
 	return (
 		<View style={styles.container}>
 			<Tab.Navigator
@@ -38,19 +35,19 @@ const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) =>
 				<Tab.Screen
 					name="ProfileScreen"
 					component={ProfileScreen}
-					options={{ title: "הפרופיל שלי", headerShown: false }}
+					options={{ title: myProfile, headerShown: false }}
 				/>
 
 				<Tab.Screen
 					name="HomeScreen"
 					component={HomeScreen}
-					options={{ title: "עמוד הבית", headerShown: false }}
+					options={{ title: home, headerShown: false }}
 				/>
 
 				<Tab.Screen
 					name="FavoritesScreen"
 					component={FavoritesScreen}
-					options={{ title: "מועדפים ", headerShown: false }}
+					options={{ title: favorite, headerShown: false }}
 				/>
 			</Tab.Navigator>
 		</View>
@@ -60,7 +57,7 @@ const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) =>
 
 const styles = StyleSheet.create({
 	container: {
-        flex: 1,
+		flex: 1
 	},
 	button: {
 		backgroundColor: '#4285F4',
@@ -72,7 +69,7 @@ const styles = StyleSheet.create({
 	},
 	buttonText: {
 		color: '#fff',
-		fontSize: 18,
+		fontSize: 18
 	},
 });
 
