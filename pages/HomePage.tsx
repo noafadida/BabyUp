@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { FC, useLayoutEffect } from 'react';
+import { View, StyleSheet, Image, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { HomeScreen } from '../components/HomePage/Home';
@@ -11,6 +11,20 @@ import { TAB_SCREEN_NAMES } from '../consts/Routes';
 const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) => {
 	const Tab = createBottomTabNavigator();
 	const { favorite, home, myProfile } = TAB_SCREEN_NAMES
+
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			headerTitle: () => (
+				<View style={styles.homeHeader}>
+					<Image
+						source={require('../assets/babyuplogo_.png')}
+						style={{ resizeMode: 'contain', height: 40, width: 45, }}
+					/>
+					<Text>{route.name}</Text>
+				</View>
+			)
+		});
+	}, [navigation]);
 
 	return (
 		<View style={styles.container}>
@@ -71,6 +85,11 @@ const styles = StyleSheet.create({
 		color: '#fff',
 		fontSize: 18
 	},
+	homeHeader: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center'
+	}
 });
 
 
