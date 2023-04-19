@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Image, StyleSheet } from 'react-native';
+import { Image } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SCREEN_NAMES } from "./src/consts/Routes";
 import HomePage from "./src/pages/HomePage";
@@ -87,12 +87,3 @@ const App: FC = () => {
 };
 
 export default App;
-
-
-const styles = StyleSheet.create({
-	homeHeader: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center'
-	}
-});

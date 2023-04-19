@@ -2,16 +2,16 @@ import React, { FC, useLayoutEffect } from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { TAB_ROUTES_NAMES, TAB_SCREEN_NAMES } from '../consts/Routes';
+import { TAB_ROUTES_NAMES } from '../consts/Routes';
 import { TIcon } from '../../types';
-import { ProfileScreen } from '../components/HomePage/Profile';
-import { HomeScreen } from '../components/HomePage/Home';
-import { FavoritesScreen } from '../components/HomePage/Favorite';
+import { ProfileTab } from '../components/HomePage/ProfileTab';
+import { HomeTab } from '../components/HomePage/HomeTab';
+import { FavoritesTab } from '../components/HomePage/FavoriteTab';
 
 
 const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) => {
 	const Tab = createBottomTabNavigator();
-	const { favorite, home, myProfile } = TAB_SCREEN_NAMES
+	const { FavoritesScreen, HomeScreen, ProfileScreen } = TAB_ROUTES_NAMES
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -33,11 +33,11 @@ const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) =>
 				screenOptions={({ route }) => ({
 					tabBarIcon: ({ focused, color, size }) => {
 						let iconName: String | undefined;
-						if (route.name === TAB_ROUTES_NAMES.HomeScreen) {
+						if (route.name === HomeScreen) {
 							iconName = focused ? "home" : "home-outline";
-						} else if (route.name === TAB_ROUTES_NAMES.ProfileScreen) {
+						} else if (route.name === ProfileScreen) {
 							iconName = focused ? "person-circle" : "person-circle-outline";
-						} else if (route.name === TAB_ROUTES_NAMES.FavoritesScreen) {
+						} else if (route.name === FavoritesScreen) {
 							iconName = focused ? 'ios-heart' : 'ios-heart-outline'
 						}
 
@@ -49,21 +49,21 @@ const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) =>
 				})}
 			>
 				<Tab.Screen
-					name={TAB_ROUTES_NAMES.ProfileScreen}
-					component={ProfileScreen}
-					options={{ title: myProfile }}
+					name={ProfileScreen}
+					component={ProfileTab}
+					initialParams={{ name: ProfileScreen }}
 				/>
 
 				<Tab.Screen
-					name={TAB_ROUTES_NAMES.HomeScreen}
-					component={HomeScreen}
-					options={{ title: home }}
+					name={HomeScreen}
+					component={HomeTab}
+					initialParams={{ name: HomeScreen }}
 				/>
 
 				<Tab.Screen
-					name={TAB_ROUTES_NAMES.FavoritesScreen}
-					component={FavoritesScreen}
-					options={{ title: favorite }}
+					name={FavoritesScreen}
+					component={FavoritesTab}
+					initialParams={{ name: ProfileScreen }}
 				/>
 			</Tab.Navigator>
 		</View>

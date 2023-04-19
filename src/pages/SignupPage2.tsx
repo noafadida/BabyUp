@@ -2,6 +2,7 @@ import React, { useState, FC } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
+import { ROUTES_NAMES } from '../consts/Routes';
 
 
 declare module 'react-native-datepicker';
@@ -13,6 +14,8 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
 
     const [dateValid, setDateValid] = useState(true);
     const [nameValid, setNameValid] = useState(true);
+
+	const { LoginPage } = ROUTES_NAMES
 
     const handleBirthday = (birthdayValue: any) => {
         const ageMonths = moment().diff(moment(birthdayValue), 'months');
@@ -46,7 +49,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
             dateValid === true &&
             nameValid === true
         ) {
-            navigation.navigate("LoginPage")
+            navigation.navigate(LoginPage)
         }
         else {
             Alert.alert("שגיאה", "יש לנסות שוב ולמלא את הפרטים כנדרש")

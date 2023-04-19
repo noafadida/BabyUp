@@ -1,10 +1,14 @@
 import { View, Text, StyleSheet } from 'react-native'
 
-export const FavoritesScreen = () => (
-	<View style={styles.screen}>
-		<Text>Favorite Screen</Text>
-	</View>
-);
+export const ProfileTab = () => {
+
+	return (
+		<View style={styles.screen}>
+			<Text>Profile Screen</Text>
+		</View>
+	)
+};
+
 const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
