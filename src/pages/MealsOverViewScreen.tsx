@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { View, StyleSheet, FlatList, Text } from 'react-native';
-import { MEALS } from '../data';
 import MealItem from '../components/MealItem';
+import { MEALS } from '../../data';
 
 const MealsOverViewScreen: FC<{ route: any }> = ({ route }) => {
     const catergoryId = route.params.categoryId

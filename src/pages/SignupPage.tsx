@@ -1,6 +1,7 @@
 import React, { useState, FC } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { ROUTES_NAMES } from '../consts/Routes';
 
 
 const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
@@ -15,6 +16,8 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
     const [validUsername, setValidUsername] = useState(true);
     const [validPassword, setValidPassword] = useState(true);
     const [isEqual, setIsEqual] = useState(true);
+
+	const { SignupPage2 } = ROUTES_NAMES
 
     const handleEmailChange = (emailValue: any) => {
         setEmail(emailValue);
@@ -75,7 +78,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
             isEqual === true &&
             isValid === true
         ) {
-            navigation.navigate("SignupPage2")
+            navigation.navigate(SignupPage2)
         }
         else {
             Alert.alert("שגיאה", "יש לנסות שוב ולמלא את הפרטים כנדרש")

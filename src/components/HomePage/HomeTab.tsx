@@ -1,14 +1,15 @@
 import { View, FlatList, StyleSheet } from 'react-native'
+import { CATEGORIES } from '../../../data';
 import CategoryGrid from "../CategoryGrid";
-import { CATEGORIES } from '../../data';
 import { Text } from 'react-native';
+import { ROUTES_NAMES } from '../../consts/Routes';
 
-export const HomeScreen = ({ navigation }: any) => {
-	// console.log('HomeScreen render')
+export const HomeTab = ({ navigation }: any) => {
+	const { MealsOverViewScreen } = ROUTES_NAMES
 
 	const renderCategoryItem = (itemData: any) => {
 		const pressHandler = () => (
-			navigation.navigate("MealsOverViewScreen", { categoryId: itemData.item.id, title: itemData.item.title, })
+			navigation.navigate(MealsOverViewScreen, { categoryId: itemData.item.id, title: itemData.titleת })
 		)
 		return (
 			<CategoryGrid
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
 		alignItems: "center",
-		height:"100%",
+		height: "100%",
 		// backgroundColor: "black"
 	},
 });

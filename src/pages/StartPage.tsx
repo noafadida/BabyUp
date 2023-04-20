@@ -1,14 +1,16 @@
 import React, { FC } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Button, Image } from 'react-native';
+import { ROUTES_NAMES } from '../consts/Routes';
 
 const StartPage: FC<{ navigation: any }> = ({ navigation }) => {
+	const { LoginPage, SignupPage } = ROUTES_NAMES
 
     const handleLogin = () => {
-        navigation.navigate("LoginPage");
+		navigation.navigate(LoginPage);
     };
 
     const handleSignup = () => {
-        navigation.navigate("SignupPage");
+        navigation.navigate(SignupPage);
     };
 
     const handleStartPage = () => {
