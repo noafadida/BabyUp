@@ -1,5 +1,5 @@
-import { Category } from './models/category';
-import { Meal } from './models/meal'
+import { Category } from './src/models/category';
+import Meal from './src/models/meal';
 
 export const CATEGORIES = [
     new Category('c1', 'מתכונים לבוקר', '#FAFAFA'),

@@ -19,7 +19,7 @@ const StartPage: FC<{ navigation: any }> = ({ navigation }) => {
 
     return (
         <View style={styles.body}>
-            <Image source={require('../assets/babyupLogoNew.png')} style={{ resizeMode: 'contain', height: 300, width: 300, }} />
+            <Image source={require('../../assets/babyupLogoNew.png')} style={{ resizeMode: 'contain', height: 300, width: 300, }} />
 
             <View style={styles.container}>
 

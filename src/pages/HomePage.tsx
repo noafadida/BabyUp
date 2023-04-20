@@ -18,7 +18,7 @@ const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) =>
 			headerTitle: () => (
 				<View style={styles.homeHeader}>
 					<Image
-						source={require('../assets/babyuplogo_.png')}
+						source={require('../../assets/babyuplogo_.png')}
 						style={{ resizeMode: 'contain', height: 40, width: 45, }}
 					/>
 					<Text>{route.name}</Text>
