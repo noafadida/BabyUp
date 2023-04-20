@@ -24,37 +24,39 @@ const CategoryGrid = ({ color, title, onPress }: any) => {
 export default CategoryGrid;
 
 const styles = StyleSheet.create({
-	gridItem: {
-		flex: 1,
-		marginVertical: 10,
-		marginHorizontal: 40,
-		borderRadius: 6,
-		elevation: 9,
-		height: 80,
-		shadowColor: "black",
-		shadowOpacity: 0.25,
-		shadowOffset: { width: 0, height: 2 },
-		shadowRadius: 6,
-		backgroundColor: "#FAD9E6",
-		overflow: Platform.OS === 'android' ? "hidden" : 'visible'
-	},
-	button: {
-		flex: 1
-	},
-	buttonPressed: {
-		opacity: 0.4
-	},
-	innerContainer: {
-		flex: 1,
-		padding: 0,
-		justifyContent: "center",
-		alignItems: "center",
-		borderRadius: 6
-	},
-	text: {
-		color: "#FFABE1",
-		fontSize: 18,
-		fontWeight: "bold"
-	}
+    gridItem: {
+        flex: 1,
+        marginTop: 50,
+        marginHorizontal: 65,
+        borderRadius: 6,
+        elevation: 9,
+        height: 70,
+        shadowColor: "#F25287",
+        shadowOpacity: 0.3,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 6,
+        backgroundColor: "#FAD9E6",
+        overflow: Platform.OS === 'android' ? "hidden" : 'visible'
+    },
+    button: {
+        flex: 1,
+        borderRadius: 6,
+    },
+    buttonPressed: {
+        opacity: 0.4,
+    },
+    innerContainer: {
+        flex: 1,
+        padding: 5,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 6,
+    },
+    text: {
+        color: "#212121",
+        fontSize: 18,
+        fontWeight: "bold",
+    },
 
 })
+

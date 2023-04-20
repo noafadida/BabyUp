@@ -18,7 +18,7 @@ const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) =>
 			headerTitle: () => (
 				<View style={styles.homeHeader}>
 					<Image
-						source={require('../../assets/babyuplogo_.png')}
+						source={require('../../assets/babyupLogoNew.png')}
 						style={{ resizeMode: 'contain', height: 40, width: 45, }}
 					/>
 					<Text>{route.name}</Text>
@@ -52,18 +52,27 @@ const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) =>
 					name={ProfileScreen}
 					component={ProfileTab}
 					initialParams={{ name: ProfileScreen }}
+					options={{
+						title: "הפרופיל שלי",
+						headerStyle: { backgroundColor: "#FF6FB5", height: 35 },
+						headerTintColor: "white",
+					}}
 				/>
 
 				<Tab.Screen
 					name={HomeScreen}
 					component={HomeTab}
 					initialParams={{ name: HomeScreen }}
+					options={{
+						title: "עמוד הבית", headerStyle: { backgroundColor: "#FF6FB5", height: 35 }, headerTintColor: "white",
+					}}
 				/>
 
 				<Tab.Screen
 					name={FavoritesScreen}
 					component={FavoritesTab}
 					initialParams={{ name: ProfileScreen }}
+					options={{ title: " המועדפים שלי ", headerStyle: { backgroundColor: "#FF6FB5", height: 35 }, headerTintColor: "white", }}
 				/>
 			</Tab.Navigator>
 		</View>
@@ -73,7 +82,8 @@ const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) =>
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1
+		flex: 1,
+		backgroundColor: "pink"
 	},
 	button: {
 		backgroundColor: '#4285F4',
@@ -85,7 +95,7 @@ const styles = StyleSheet.create({
 	},
 	buttonText: {
 		color: '#fff',
-		fontSize: 18
+		fontSize: 18,
 	},
 	homeHeader: {
 		flexDirection: 'row',
