@@ -1,6 +1,7 @@
 import { View, FlatList, StyleSheet } from 'react-native'
 import { CATEGORIES } from '../../../data';
 import CategoryGrid from "../CategoryGrid";
+import { Text } from 'react-native';
 import { ROUTES_NAMES } from '../../consts/Routes';
 
 export const HomeTab = ({ navigation }: any) => {
@@ -14,17 +15,20 @@ export const HomeTab = ({ navigation }: any) => {
 			<CategoryGrid
 				title={itemData.item.title}
 				color={itemData.item.color}
+				image={itemData.item.image}
 				onPress={pressHandler}
 			/>
 		)
 	}
 	return (
 		<View style={styles.screen} >
-			<FlatList
-				data={CATEGORIES}
-				keyExtractor={(item: any) => item.id}
-				renderItem={renderCategoryItem}
-			/>
+			<View >
+				<FlatList
+					data={CATEGORIES}
+					keyExtractor={(item: any) => item.id}
+					renderItem={renderCategoryItem}
+				/>
+			</View>
 		</View >
 	)
 };
@@ -32,8 +36,8 @@ export const HomeTab = ({ navigation }: any) => {
 const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
-		padding: 10,
-		justifyContent: 'center',
-		backgroundColor: "white"
-	}
+		alignItems: "center",
+		height: "100%",
+		// backgroundColor: "black"
+	},
 });

@@ -2,10 +2,10 @@ import { Category } from './src/models/category';
 import Meal from './src/models/meal';
 
 export const CATEGORIES = [
-    new Category('c1', 'מתכונים לבוקר', '#FAFAFA'),
-    new Category('c2', 'מתכונים לצהריים', '#FAFAFA'),
-    new Category('c3', 'מתכונים לערב', '#FAFAFA'),
-    new Category('c4', 'הטיפים שלנו במיוחד בשבילכם !', '#FAFAFA'),
+    new Category('c1', 'מתכונים לבוקר', '#FAFAFA', 'https://www.nestlebabyandme.co.il/sites/default/files/styles/content_media_desktop/public/content_image/yvgvrt_bnnh_tpvkh_vshybvlt_shvl.webp?itok=2HnBvYLF'),
+    new Category('c2', 'מתכונים לצהריים', '#FAFAFA',   'https://www.nestlebabyandme.co.il/sites/default/files/styles/content_media_desktop/public/content_image/mrq_vp_m_yrqvt_vtryvt.webp?itok=GLsxSVvl'),
+    new Category('c3', 'מתכונים לערב', '#FAFAFA',   'https://www.nestlebabyandme.co.il/sites/default/files/styles/content_media_desktop/public/content_image/qrt_dyyst_dgnym.webp?itok=abfxDz3Q'),
+    new Category('c4', 'הטיפים שלנו במיוחד בשבילכם !', '#FAFAFA',   'https://www.nestlebabyandme.co.il/sites/default/files/styles/content_media_desktop/public/content_image/mrq_vp_m_yrqvt_vtryvt.webp?itok=GLsxSVvl'),
 
 ];
 
