@@ -20,12 +20,12 @@ const App: FC = () => {
       <Stack.Screen
         name="StartPage"
         component={StartPage}
-        options={{ title: "BabyUp" }}
+        options={{ title: "BabyUp"  }}
       ></Stack.Screen>
       <Stack.Screen
         name="LoginPage"
         component={LoginPage}
-        options={{ title: "התחברות" }}
+        options={{ title: "התחברות"  }}
       ></Stack.Screen>
       <Stack.Screen
         name="SignupPage"
@@ -35,7 +35,7 @@ const App: FC = () => {
       <Stack.Screen
         name="HomePage"
         component={HomePage}
-        options={{ title: "דף הבית", headerBackVisible: false }}
+        options={{ title: " לכל הקטגוריות", headerBackVisible: false }}
       ></Stack.Screen>
       <Stack.Screen
         name="SignupPage2"
@@ -50,13 +50,16 @@ const App: FC = () => {
       <Stack.Screen
         name="MealsOverViewScreen"
         component={MealsOverViewScreen}
-        options={{ title: "MealsOverViewScreen ", headerStyle: { backgroundColor: "Black" } }}
+        options={{
+          title: "MealsOverViewScreen", headerStyle: { backgroundColor: "white" },headerTintColor: "pink",
+      }}
+        // options={{ title: "MealsOverViewScreen ", headerStyle: { backgroundColor: "Black" } }}
       ></Stack.Screen>
     </Stack.Navigator>
   );
 
   const navOptions = {
-    headerTitle: () => <Image source={require('./assets/babyuplogo_.png')} style={{ resizeMode: 'contain', height: 40, width: 45, }} />
+    headerTitle: () => <Image source={require('./assets/babyupLogoNew.png')} style={{ height: 55, width: 55}}/>
   };
 
   return (

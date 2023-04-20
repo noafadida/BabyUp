@@ -33,26 +33,27 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		elevation: 4,
 		shadowColor: "#8D7B68",
-		shadowOpacity: 0.3,
-		shadowOffset: { width: 0, height: 4 },
+		shadowOpacity: 0.25,
+		shadowOffset: { width: 0, height: 2 },
 		shadowRadius: 6,
 		overflow: Platform.OS === 'android' ? "hidden" : 'visible'
-
 	},
 	innerContainer: {
 		borderRadius: 4,
-		overflow: 'hidden'
+		overflow: 'hidden',
 	},
 	image: {
 		width: "100%",
-		height: 200
+		height: 200,
+		opacity: 0.9,
 	},
 	title: {
-		fontSize: 14,
-		color: "#FFABE1",
+		fontSize: 16,
 		fontWeight: "bold",
+		letterSpacing: 0.3,
 		textAlign: "center",
-		margin: 10
+		marginTop: 7,
+		// color:"white"
 	},
 	details: {
 		flexDirection: 'row',
@@ -61,11 +62,11 @@ const styles = StyleSheet.create({
 		justifyContent: "center"
 	},
 	detailItem: {
-		marginHorizontal: 10,
-		fontSize: 12,
-		fontWeight:"bold"
+		marginHorizontal: 45,
+		fontSize: 14,
+		color: "#AAAAAA",
 	},
 	buttonPressed: {
-		opacity: 0.5,
+		opacity: 0.4,
 	},
 })
