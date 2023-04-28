@@ -1,8 +1,13 @@
 import React, { useState, FC } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity, ViewStyle } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
 import { ROUTES_NAMES } from '../consts/Routes';
+import { GlobalStyles } from '../consts/styles';
+
+interface InputContainerStyle extends ViewStyle {
+    marginVertical?: number;
+}
 
 
 declare module 'react-native-datepicker';
@@ -15,7 +20,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
     const [dateValid, setDateValid] = useState(true);
     const [nameValid, setNameValid] = useState(true);
 
-	const { LoginPage } = ROUTES_NAMES
+    const { LoginPage } = ROUTES_NAMES
 
     const handleBirthday = (birthdayValue: any) => {
         const ageMonths = moment().diff(moment(birthdayValue), 'months');
@@ -60,12 +65,12 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.head}>
-                <Text style={styles.titleText}>יצירת משתמש חדש</Text>
+                <Text style={GlobalStyles.titleTextStyle}>יצירת משתמש חדש</Text>
             </View>
 
-            <View style={styles.inputContainer}>
+            <View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
                 <TextInput
-                    style={styles.input}
+                    style={GlobalStyles.inputStyle}
                     placeholder="שם התינוק/ת"
                     value={babyName}
                     onChangeText={handleBabyNameChange}
@@ -74,9 +79,9 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
             </View>
 
 
-            <View style={styles.inputContainer}>
+            <View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
                 <TextInput
-                    style={styles.input}
+                    style={GlobalStyles.inputStyle}
                     placeholder="תאריך לידה של התינוק/ת"
                     value={birthdate.toDateString()}
                     onTouchStart={() => {
@@ -87,7 +92,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
             <Text style={styles.birthText}>הכנס את תאריך הלידה של התינוק/ת</Text>
 
             {showDatePicker && (
-                <View style={styles.inputContainer}>
+                <View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
                     <DatePicker
                         style={styles.inputDate}
                         date={birthdate}
@@ -101,21 +106,22 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
                             setBirthdate(date);
                             handleBirthday(date)
                         }}
+                        
                     />
-                    <Button title="Done" onPress={() => setShowDatePicker(false)} />
+                    <Button color={GlobalStyles.colors.btnColor} title="Done" onPress={() => setShowDatePicker(false)} />
                 </View>
             )}
 
 
             {!nameValid && (
-                <Text style={styles.errorText}> יש להזין שם עם 2 אותיות לפחות </Text>
+                <Text style={GlobalStyles.errorText}> יש להזין שם עם 2 אותיות לפחות </Text>
             )}
 
             {!dateValid && (
-                <Text style={styles.errorText}>גיל התינוק/ת חייב להיות בין 6 ל18 חודשים </Text>
+                <Text style={GlobalStyles.errorText}>גיל התינוק/ת חייב להיות בין 6 ל18 חודשים </Text>
             )}
-            <TouchableOpacity style={styles.button} onPress={validateFields}>
-                <Text style={styles.buttonText}> הרשמה </Text>
+            <TouchableOpacity style={GlobalStyles.buttonPinkStyle} onPress={validateFields}>
+                <Text style={GlobalStyles.buttonPinkTextStyle}> הרשמה </Text>
             </TouchableOpacity>
         </View>
     );
@@ -126,68 +132,24 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         paddingHorizontal: 20,
+        backgroundColor: GlobalStyles.colors.appBodyBackColor,
     },
     head: {
         flex: 0.4,
         justifyContent: 'flex-end',
         margin: 20
     },
-    titleText: {
-        fontSize: 22,
-    },
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 8,
-        width: '100%',
-    },
-    input: {
-        flex: 1,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        paddingVertical: 8,
-        paddingHorizontal: 12,
-        borderRadius: 4,
-        marginRight: 8,
-    },
     inputDate: {
         flex: 1,
         borderWidth: 0,
         paddingVertical: 8,
-        paddingHorizontal: 15,
-        borderRadius: 5,
-        marginRight: 0,
-    },
-    disabledButton: {
-        opacity: 0.5,
-    },
-    button: {
-        backgroundColor: '#4285F4',
-        paddingVertical: 10,
-        paddingHorizontal: 70,
-        borderRadius: 5,
-        marginTop: 20,
-        marginBottom: 20
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 18,
-    },
-    errorText: {
-        color: 'red',
-        marginBottom: 16,
-    },
-    errorInput: {
-        flex: 1,
-        borderWidth: 1,
-        borderColor: 'red',
-        paddingVertical: 8,
-        paddingHorizontal: 12,
-        borderRadius: 4,
-        marginRight: 8,
+        paddingHorizontal: 2,
+        borderRadius: 10,
     },
     birthText: {
-        color: 'pink'
+        color: '#ccc',
+        fontSize: 16,
+        fontWeight: "400"
     }
 });
 

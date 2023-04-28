@@ -4,7 +4,7 @@
     "slug": "babyup",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/babyupLogoNew",
+    "icon": "./assets/babyuplogo_.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/babyupLogoNew.png",

@@ -9,43 +9,47 @@ import { HomeTab } from '../components/HomePage/HomeTab';
 import { FavoritesTab } from '../components/HomePage/FavoriteTab';
 
 
-const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) => {
+
+const HomePage: FC<{ route: any, navigation: any, }> = ({ navigation, route }) => {
 	const Tab = createBottomTabNavigator();
 	const { FavoritesScreen, HomeScreen, ProfileScreen } = TAB_ROUTES_NAMES
+
+	const name = route.params //NEED TO FIX
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			headerTitle: () => (
 				<View style={styles.homeHeader}>
+					<Text style={styles.text}>BabyUp</Text>
 					<Image
 						source={require('../../assets/babyupLogoNew.png')}
-						style={{ resizeMode: 'contain', height: 40, width: 45, }}
+						style={styles.image}
 					/>
-					<Text>{route.name}</Text>
 				</View>
 			)
 		});
-	}, [navigation]);
+	}, [name, route]);
 
 	return (
 		<View style={styles.container}>
 			<Tab.Navigator
 				screenOptions={({ route }) => ({
 					tabBarIcon: ({ focused, color, size }) => {
-						let iconName: String | undefined;
+						let iconName: string | undefined;
 						if (route.name === HomeScreen) {
 							iconName = focused ? "home" : "home-outline";
 						} else if (route.name === ProfileScreen) {
-							iconName = focused ? "person-circle" : "person-circle-outline";
+							iconName = focused ? "person" : "person-outline";
 						} else if (route.name === FavoritesScreen) {
 							iconName = focused ? 'ios-heart' : 'ios-heart-outline'
 						}
-
 						return <Ionicons name={iconName as TIcon} size={size} color={color} />;
 					},
-					tabBarActiveTintColor: "#4285F4",
-					tabBarInactiveTintColor: "grey",
-					headerShown: false
+					tabBarActiveTintColor: "#ff477e",
+					tabBarInactiveTintColor: "#ccc",
+					headerShown: false,
+					tabBarStyle: { paddingTop: 6 },
+
 				})}
 			>
 				<Tab.Screen
@@ -53,54 +57,50 @@ const HomePage: FC<{ route: any, navigation: any }> = ({ navigation, route }) =>
 					component={ProfileTab}
 					initialParams={{ name: ProfileScreen }}
 					options={{
-						title: "הפרופיל שלי",
-						headerStyle: { backgroundColor: "#FF6FB5", height: 35 },
-						headerTintColor: "white",
+						title: "הפרופיל שלי"
 					}}
 				/>
-
 				<Tab.Screen
 					name={HomeScreen}
 					component={HomeTab}
 					initialParams={{ name: HomeScreen }}
 					options={{
-						title: "עמוד הבית", headerStyle: { backgroundColor: "#FF6FB5", height: 35 }, headerTintColor: "white",
+						title: "עמוד הבית"
 					}}
 				/>
-
 				<Tab.Screen
 					name={FavoritesScreen}
 					component={FavoritesTab}
-					initialParams={{ name: ProfileScreen }}
-					options={{ title: " המועדפים שלי ", headerStyle: { backgroundColor: "#FF6FB5", height: 35 }, headerTintColor: "white", }}
+					initialParams={{ name: FavoritesScreen }}
+					options={{ title: "המועדפים שלי" }}
 				/>
 			</Tab.Navigator>
 		</View>
-
 	);
 }
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "pink"
-	},
-	button: {
-		backgroundColor: '#4285F4',
-		paddingVertical: 10,
-		paddingHorizontal: 70,
-		borderRadius: 5,
-		marginTop: 20,
-		marginBottom: 20
-	},
-	buttonText: {
-		color: '#fff',
-		fontSize: 18,
 	},
 	homeHeader: {
 		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		justifyContent: "center",
+		left: 145
+	},
+	text: {
+		color: "white",
+		fontFamily: "DancingScript",
+		fontSize: 20,
+		textAlignVertical: "center",
+		marginBottom: 5, 
+		letterSpacing:0.9
+	},
+	image: {
+		resizeMode: 'contain',
+		height: 50,
+		width: 50
 	}
 });
 

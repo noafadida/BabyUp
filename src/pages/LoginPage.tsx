@@ -1,8 +1,13 @@
 import React, { useState, FC } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, ViewStyle } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ROUTES_NAMES } from '../consts/Routes';
+import { GlobalStyles } from '../consts/styles';
 
+interface InputContainerStyle extends ViewStyle {
+	marginVertical?: number;
+}
+  
 const LoginPage: FC<{ navigation: any }> = ({ navigation }) => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
@@ -25,35 +30,35 @@ const LoginPage: FC<{ navigation: any }> = ({ navigation }) => {
 	return (
 		<View style={styles.container}>
 			<View style={styles.head}>
-				<Text style={styles.titleText}>התחברות</Text>
+				<Text style={GlobalStyles.titleTextStyle}>התחברות</Text>
 			</View>
-			<View style={styles.inputContainer}>
+			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
 				<TextInput
-					style={styles.input}
+					style={GlobalStyles.inputStyle}
 					placeholder="שם משתמש"
 					value={username}
 					onChangeText={setUsername}
 				/>
 			</View>
 
-			<View style={styles.inputContainer}>
+			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
 				<TextInput
-					style={styles.input}
+					style={GlobalStyles.inputStyle}
 					placeholder="סיסמא"
 					value={password}
 					secureTextEntry={!showPassword}
 					onChangeText={setPassword}
 				/>
 				<TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-					<MaterialIcons name={showPassword ? "visibility" : "visibility-off"} size={24} color="#4285F4" />
+					<MaterialIcons name={showPassword ? "visibility" : "visibility-off"} size={24} color="#ccc" />
 				</TouchableOpacity>
 			</View>
 
-			<TouchableOpacity style={styles.button} onPress={handleLogin}>
-				<Text style={styles.buttonText}> כניסה </Text>
+			<TouchableOpacity style={GlobalStyles.buttonPinkStyle} onPress={handleLogin}>
+				<Text style={GlobalStyles.buttonPinkTextStyle}> כניסה </Text>
 			</TouchableOpacity>
-			<Button title="  ליצירת חשבון חדש" onPress={handleSignUp} />
-			<Button title="שכחתי סיסמא " onPress={handlePasswordReset} />
+			<Button color={GlobalStyles.colors.btnColor} title="  ליצירת חשבון חדש" onPress={handleSignUp} />
+			<Button color={GlobalStyles.colors.btnColor} title="שכחתי סיסמא " onPress={handlePasswordReset} />
 		</View>
 	);
 }
@@ -63,41 +68,12 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		paddingHorizontal: 20,
+		backgroundColor: GlobalStyles.colors.appBodyBackColor
 	},
 	head: {
 		flex: 0.4,
 		justifyContent: 'flex-end',
 		margin: 20
-	},
-	titleText: {
-		fontSize: 22,
-	},
-	inputContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginVertical: 8,
-		width: '100%',
-	},
-	input: {
-		flex: 1,
-		borderWidth: 1,
-		borderColor: '#ccc',
-		paddingVertical: 8,
-		paddingHorizontal: 12,
-		borderRadius: 4,
-		marginRight: 8,
-	},
-	button: {
-		backgroundColor: '#4285F4',
-		paddingVertical: 10,
-		paddingHorizontal: 70,
-		borderRadius: 5,
-		marginTop: 20,
-		marginBottom: 20
-	},
-	buttonText: {
-		color: '#fff',
-		fontSize: 18,
 	},
 });
 

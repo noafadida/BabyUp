@@ -1,6 +1,11 @@
 import React, { useState, FC } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, ViewStyle } from 'react-native';
 import { ROUTES_NAMES } from '../consts/Routes';
+import { GlobalStyles } from '../consts/styles';
+
+interface InputContainerStyle extends ViewStyle {
+    marginVertical?: number;
+}
 
 const PasswordResetPage: FC<{ navigation: any }> = ({ navigation }) => {
 	const [email, setEmail] = useState('');
@@ -16,7 +21,6 @@ const PasswordResetPage: FC<{ navigation: any }> = ({ navigation }) => {
 		setEmail(emailValue);
 		if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
 			setValidEmail(true)
-			// setIsValid(validateFields());
 		} else {
 			setValidEmail(false)
 		}
@@ -26,18 +30,15 @@ const PasswordResetPage: FC<{ navigation: any }> = ({ navigation }) => {
 		navigation.navigate(LoginPage);
 	};
 
-	const handlePasswordReset = () => {
-		navigation.navigate(PasswordResetPage);
-	};
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.head}>
-				<Text style={styles.titleText}>איפוס סיסמא</Text>
+				<Text style={GlobalStyles.titleTextStyle}>איפוס סיסמא</Text>
 			</View>
-			<View style={styles.inputContainer}>
+			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
 				<TextInput
-					style={styles.input}
+					style={GlobalStyles.inputStyle}
 					placeholder="אימייל"
 					value={email}
 					onChangeText={handleEmailChange}
@@ -47,13 +48,13 @@ const PasswordResetPage: FC<{ navigation: any }> = ({ navigation }) => {
 				/>
 			</View>
 			{!validEmail && (
-				<Text style={styles.errorText}>יש להזין כתובת מייל חוקית  </Text>
+				<Text style={GlobalStyles.errorText}>יש להזין כתובת מייל חוקית  </Text>
 			)}
 
-			<TouchableOpacity style={styles.button} onPress={handlePasswordResetButton}>
-				<Text style={styles.buttonText}>לחץ כאן לאיפוס הסיסמא</Text>
+			<TouchableOpacity style={GlobalStyles.buttonPinkStyle} onPress={handlePasswordResetButton}>
+				<Text style={GlobalStyles.buttonPinkTextStyle}>לחץ כאן לאיפוס הסיסמא</Text>
 			</TouchableOpacity>
-			<Button title=" לעמוד ההתחברות" onPress={handleLogin} />
+			<Button color={GlobalStyles.colors.btnColor} title=" לעמוד ההתחברות" onPress={handleLogin} />
 		</View>
 	);
 }
@@ -63,45 +64,12 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		paddingHorizontal: 20,
+		backgroundColor: GlobalStyles.colors.appBodyBackColor,
 	},
 	head: {
 		flex: 0.4,
 		justifyContent: 'flex-end',
 		margin: 20
-	},
-	titleText: {
-		fontSize: 22,
-	},
-	inputContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginVertical: 8,
-		width: '100%',
-	},
-	input: {
-		flex: 1,
-		borderWidth: 1,
-		borderColor: '#ccc',
-		paddingVertical: 8,
-		paddingHorizontal: 12,
-		borderRadius: 4,
-		marginRight: 8,
-	},
-	button: {
-		backgroundColor: '#4285F4',
-		paddingVertical: 10,
-		paddingHorizontal: 50,
-		borderRadius: 5,
-		marginTop: 20,
-		marginBottom: 20
-	},
-	buttonText: {
-		color: '#fff',
-		fontSize: 18,
-	},
-	errorText: {
-		color: 'red',
-		marginBottom: 16,
 	},
 });
 

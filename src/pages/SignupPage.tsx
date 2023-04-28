@@ -1,7 +1,13 @@
 import React, { useState, FC } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Alert, ViewStyle, TextStyle } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ROUTES_NAMES } from '../consts/Routes';
+import { GlobalStyles } from '../consts/styles';
+
+interface InputContainerStyle extends ViewStyle {
+    marginVertical?: number;
+}
+
 
 
 const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
@@ -17,7 +23,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
     const [validPassword, setValidPassword] = useState(true);
     const [isEqual, setIsEqual] = useState(true);
 
-	const { SignupPage2 } = ROUTES_NAMES
+    const { SignupPage2 } = ROUTES_NAMES
 
     const handleEmailChange = (emailValue: any) => {
         setEmail(emailValue);
@@ -89,12 +95,12 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.head}>
-            <Text style={styles.titleText}>יצירת משתמש חדש</Text>
+                <Text style={GlobalStyles.titleTextStyle}>יצירת משתמש חדש</Text>
             </View>
-            
-            <View style={styles.inputContainer}>
+
+            <View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
                 <TextInput
-                    style={styles.input}
+                    style={GlobalStyles.inputStyle}
                     placeholder="אימייל"
                     value={email}
                     onChangeText={handleEmailChange}
@@ -104,32 +110,32 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
                 />
             </View>
 
-            <View style={styles.inputContainer}>
+            <View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
                 <TextInput
-                    style={styles.input}
+                    style={GlobalStyles.inputStyle}
                     placeholder="שם משתמש"
                     value={username}
                     onChangeText={handleUsernameChange}
                 />
             </View>
 
-            <View style={styles.inputContainer}>
+            <View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
                 <TextInput
-                    style={styles.input}
+                    style={GlobalStyles.inputStyle}
                     placeholder="סיסמא"
                     value={password}
                     secureTextEntry={!showPassword}
                     onChangeText={handlePasswordChange}
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                    <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} size={24} color="#4285F4" />
+                    <MaterialIcons name={showPassword ? "visibility" : "visibility-off"} size={24} color="#ccc" />
                 </TouchableOpacity>
             </View>
 
-            <View style={styles.inputContainer}>
+            <View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
                 {isEqual &&
                     <TextInput
-                        style={styles.input}
+                    style={GlobalStyles.inputStyle}
                         placeholder="יש להקליד שוב את הסיסמא "
                         value={confirmPassword}
                         secureTextEntry={!showConfirmPassword}
@@ -137,7 +143,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
                     />}
                 {!isEqual &&
                     <TextInput
-                        style={styles.errorInput}
+                        style={styles.errorInputContainer}
                         placeholder="Confirm Password"
                         value={confirmPassword}
                         secureTextEntry={!showConfirmPassword}
@@ -145,23 +151,28 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
                     />}
 
                 <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
-                    <MaterialIcons name={showConfirmPassword ? "visibility" : "visibility-off"} size={24} color="#4285F4" />
+                    <MaterialIcons name={showConfirmPassword ? "visibility" : "visibility-off"} size={24} color="#ccc" />
                 </TouchableOpacity>
             </View>
 
             {!validEmail && (
-                <Text style={styles.errorText}>יש להזין כתובת מייל חוקית  </Text>
-            )}
+                <Text style={GlobalStyles.errorText}>יש להזין כתובת מייל חוקית  </Text>
+    )
+}
 
-            {!validUsername && (
-                <Text style={styles.errorText}> יש להזין שם משתמש עם 3 תווים לפחות </Text>
-            )}
+{
+    !validUsername && (
+        <Text style={GlobalStyles.errorText}> יש להזין שם משתמש עם 3 תווים לפחות </Text>
+    )
+}
 
-            {!validPassword && (
-                <Text style={styles.errorText}>יש להזין סיסמא עם 6 תווים לפחות </Text>
-            )}
-            <Button title="המשך" onPress={validateFields} />
-        </View>
+{
+    !validPassword && (
+        <Text style={GlobalStyles.errorText}>יש להזין סיסמא עם 6 תווים לפחות </Text>
+    )
+}
+<Button color={GlobalStyles.colors.btnColor} title="המשך" onPress={validateFields} />
+        </View >
     );
 }
 
@@ -170,50 +181,14 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         paddingHorizontal: 20,
+        backgroundColor: GlobalStyles.colors.appBodyBackColor,
     },
     head: {
         flex: 0.4,
         justifyContent: 'flex-end',
-        margin:20
+        margin: 20
     },
-    titleText: {
-        fontSize: 22,
-    },
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 8,
-        width: '100%',
-    },
-    input: {
-        flex: 1,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        paddingVertical: 8,
-        paddingHorizontal: 12,
-        borderRadius: 4,
-        marginRight: 8,
-    },
-    button: {
-        backgroundColor: 'blue',
-        paddingVertical: 12,
-        paddingHorizontal: 24,
-        borderRadius: 4,
-        marginTop: 20,
-    },
-    disabledButton: {
-        opacity: 0.5,
-    },
-    buttonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 18,
-    },
-    errorText: {
-        color: 'red',
-        marginBottom: 16,
-    },
-    errorInput: {
+    errorInputContainer: {
         flex: 1,
         borderWidth: 1,
         borderColor: 'red',
@@ -222,7 +197,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         marginRight: 8,
     },
-  
+
 });
 
 export default SignupPage;

@@ -1,40 +1,37 @@
-import { useLayoutEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { StyleSheet, View, Text, Image } from 'react-native'
+import { FC, useLayoutEffect } from 'react'
+import MealList from '../MealList/MealList';
+import { MEALS } from '../../../data';
+import { useSelector } from 'react-redux';
+import { GlobalStyles } from '../../consts/styles';
 
-export const FavoritesTab = ({ route, navigation }: any) => {
-	console.log(route.params)
-	const { name } = route.params //NEED TO FIX
+export const FavoritesTab: FC<{ navigation: any, route: any }> = ({ navigation, route }: any) => {
 
-	useLayoutEffect(() => {
-		navigation.setOptions({
-			headerTitle: () => (
-				<View style={styles.homeHeader}>
-					<Image
-						source={require('../../../assets/babyuplogo_.png')}
-						style={{ resizeMode: 'contain', height: 40, width: 45, }}
-					/>
-					<Text>sdad</Text>
-				</View>
-			)
-		});
-	}, [navigation]);
+	const favoriteMealIds: any = useSelector((state: any) => state.favoriteMeals.ids);
+	const favoriteMeals = MEALS.filter((meal) => favoriteMealIds.includes(meal.id))
 
+	if (favoriteMeals.length === 0) {
+		return (
+			<View style={styles.rootContainer}>
+				<Text style={styles.text}>You have no favorite meals yet.</Text>
+			</View>
+		)
+	}
 	return (
-		<View style={styles.screen}>
-			<Text>Favorite Screen</Text>
-		</View>
+		<MealList items={favoriteMeals} navigation={navigation} route={route} />
 	)
 }
 const styles = StyleSheet.create({
-	screen: {
+	rootContainer: {
 		flex: 1,
-		padding: 10,
-		justifyContent: 'center',
-		backgroundColor: "white"
+		justifyContent: "center",
+		alignContent: 'center',
+		backgroundColor: GlobalStyles.colors.appBodyBackColor
 	},
-	homeHeader: {
-	flexDirection: 'row',
-	justifyContent: 'center',
-	alignItems: 'center'
-}
+	text: {
+		fontSize: 18,
+		fontWeight: "500",
+		color: "pink",
+		textAlign: "center"
+	},
 });
