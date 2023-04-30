@@ -4,26 +4,23 @@ import { ROUTES_NAMES } from '../consts/Routes';
 import { GlobalStyles } from '../consts/styles';
 
 interface InputContainerStyle extends ViewStyle {
-    marginVertical?: number;
+	marginVertical?: number;
 }
 
 const PasswordResetPage: FC<{ navigation: any }> = ({ navigation }) => {
 	const [email, setEmail] = useState('');
 	const [validEmail, setValidEmail] = useState(true);
 
-	const { LoginPage, PasswordResetPage } = ROUTES_NAMES
+	const { LoginPage } = ROUTES_NAMES
 
 	const handlePasswordResetButton = () => {
 		// Handle password reset logic here
 	};
 
 	const handleEmailChange = (emailValue: any) => {
+		const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)
 		setEmail(emailValue);
-		if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
-			setValidEmail(true)
-		} else {
-			setValidEmail(false)
-		}
+		setValidEmail(isEmailValid ? true : false)
 	};
 
 	const handleLogin = () => {

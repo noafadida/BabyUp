@@ -4,11 +4,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Image, View, Text, StyleSheet } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons'
-import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
-
 import { GlobalStyles } from './src/consts/styles';
 import { SCREEN_NAMES } from "./src/consts/Routes";
+import { store } from './src/store/redux/store';
+import { useFonts } from 'expo-font';
 import HomePage from "./src/pages/HomePage";
 import StartPage from "./src/pages/StartPage";
 import LoginPage from "./src/pages/LoginPage";
@@ -20,26 +20,21 @@ import MealDetailScreen from './src/pages/MealDetailScreen';
 import AboutUsPage from './src/pages/AboutUsPage';
 import CallUsPage from './src/pages/CallUsPage'
 import QuestionsPage from './src/pages/QuestionsPage';
-import { store } from './src/store/redux/store';
-
-import { useFonts } from 'expo-font';
 import Fonts from './assets/fonts/fonts';
-
+import 'react-native-gesture-handler';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
 
 const App: FC = () => {
-	const [loaded] = useFonts({
-		DancingScript: Fonts.DancingScript,
-		// add more fonts as needed
-	});
+	const [loaded] = useFonts({DancingScript: Fonts.DancingScript});
 
 	if (!loaded) {
-		return null; // or a loading indicator
+		return null;
 	}
-	const { babyUp, login, resetPassword, signup, MealsOverview, home, MealDetails, aboutus, callus, qustions } = SCREEN_NAMES;
+
+	const { babyUp, login, resetPassword, signup, home, aboutus, callus, qustions } = SCREEN_NAMES;
 
 	const headerTitle = () => (
 		<View style={styles.homeHeader}>
