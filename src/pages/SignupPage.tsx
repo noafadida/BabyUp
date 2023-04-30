@@ -1,61 +1,62 @@
-import React, { useState, FC } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Alert, ViewStyle, TextStyle } from 'react-native';
+import React, { useState, FC, useEffect } from 'react';
+import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Alert, ViewStyle } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { ROUTES_NAMES } from '../consts/Routes';
 import { GlobalStyles } from '../consts/styles';
+import { auth, createUserWithEmailAndPassword, sendEmailVerification } from '../firebase';
+import { validateEmail } from '../utils';
+import { EMPTY_STRING } from '../consts/GeneralConsts';
+import { BackendError, incorrectEmail, passwordDidntLong, unmatchedPasswords, usernameIsShort } from '../consts/AlertMessegesConsts';
 
 interface InputContainerStyle extends ViewStyle {
 	marginVertical?: number;
 }
 
-
-
 const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
-	const [email, setEmail] = useState('');
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
-	const [confirmPassword, setConfirmPassword] = useState('');
+	const [email, setEmail] = useState(EMPTY_STRING);
+	const [username, setUsername] = useState(EMPTY_STRING);
+	const [password, setPassword] = useState(EMPTY_STRING);
+	const [confirmPassword, setConfirmPassword] = useState(EMPTY_STRING);
+	const [errorMessage, setErrorMessage] = useState(EMPTY_STRING);
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const [isValid, setIsValid] = useState(false);
-	const [validEmail, setValidEmail] = useState(true);
-	const [validUsername, setValidUsername] = useState(true);
-	const [validPassword, setValidPassword] = useState(true);
-	const [isEqual, setIsEqual] = useState(true);
 
-	const { SignupPage2 } = ROUTES_NAMES
+	useEffect(() => {
+		const isValidEmail = validateEmail(email);
+		!!email && !isValidEmail && setErrorMessage(incorrectEmail)
 
-	const handleEmailChange = (emailValue: any) => {
-		setEmail(emailValue);
-		const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)
-		setValidEmail(isEmailValid ? true : false)
-		setIsValid(isEmailValid ? true : false)
-	};
+		const isDidntValidUsername = !!username && username?.length < 3;
+		isDidntValidUsername && setErrorMessage(usernameIsShort)
 
-	const handleUsernameChange = (usernameValue: any) => {
-		setUsername(usernameValue);
-		setValidUsername(usernameValue.length >= 3 ? true : false)
-		setIsValid(usernameValue.length >= 3 ? true : false)
-	};
+		const isShortPassword = !!password && password?.length < 6;
+		isShortPassword && setErrorMessage(passwordDidntLong);
 
-	const handlePasswordChange = (passwordValue: any) => {
-		setPassword(passwordValue);
-		setValidPassword(passwordValue.length >= 6 ? true : false)
-		setIsValid(passwordValue.length >= 6 ? true : false)
-	};
+		const isPasswordsDifferent = !!password && confirmPassword !== password;
+		isPasswordsDifferent && setErrorMessage(unmatchedPasswords);
 
-	const handleConfirmPasswordChange = (confirmPasswordValue: any) => {
-		setConfirmPassword(confirmPasswordValue);
-		setIsEqual(password === confirmPasswordValue ? true : false)
-		setIsValid(password === confirmPasswordValue ? true : false)
-	};
+		const isValidInputs = isValidEmail && !isDidntValidUsername && !isShortPassword && !isPasswordsDifferent;
+		isValidInputs && setErrorMessage(EMPTY_STRING)
+		setIsValid(isValidInputs);
+	}, [email, password, confirmPassword, username])
 
-	const validateFields = () => {
-		if (validEmail && validUsername && validPassword && isEqual && isValid) {
-			navigation.navigate(SignupPage2)
-			return;
+
+	const handleSignup = async () => {
+		try {
+			if (isValid) {
+				console.log('success')
+			} else {
+				console.log('error')
+			}
+			//await createUserWithEmailAndPassword(auth, email, password)
+			//if (auth.currentUser) {
+			//	await sendEmailVerification(auth.currentUser)
+			//	console.log('email sent')
+			//	//NEED TO CHECK WHY USER CAN LOGIN BEFORE VERIFICATION
+			//}
+			//navigation.navigate(RoutesNames.LOGIN_ROUTE)
+		} catch (e) {
+			Alert.alert(BackendError)
 		}
-		Alert.alert("שגיאה", "יש לנסות שוב ולמלא את הפרטים כנדרש")
 	};
 
 	return (
@@ -69,7 +70,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
 					style={GlobalStyles.inputStyle}
 					placeholder="אימייל"
 					value={email}
-					onChangeText={handleEmailChange}
+					onChangeText={setEmail}
 					keyboardType="email-address"
 					autoCapitalize="none"
 					autoCorrect={false}
@@ -81,7 +82,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
 					style={GlobalStyles.inputStyle}
 					placeholder="שם משתמש"
 					value={username}
-					onChangeText={handleUsernameChange}
+					onChangeText={setUsername}
 				/>
 			</View>
 
@@ -91,7 +92,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
 					placeholder="סיסמא"
 					value={password}
 					secureTextEntry={!showPassword}
-					onChangeText={handlePasswordChange}
+					onChangeText={setPassword}
 				/>
 				<TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
 					<MaterialIcons name={showPassword ? "visibility" : "visibility-off"} size={24} color="#ccc" />
@@ -99,45 +100,19 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
 			</View>
 
 			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
-				{isEqual &&
-					<TextInput
-						style={GlobalStyles.inputStyle}
-						placeholder="יש להקליד שוב את הסיסמא "
-						value={confirmPassword}
-						secureTextEntry={!showConfirmPassword}
-						onChangeText={handleConfirmPasswordChange}
-					/>}
-				{!isEqual &&
-					<TextInput
-						style={styles.errorInputContainer}
-						placeholder="Confirm Password"
-						value={confirmPassword}
-						secureTextEntry={!showConfirmPassword}
-						onChangeText={handleConfirmPasswordChange}
-					/>}
-
+				<TextInput
+					style={GlobalStyles.inputStyle}
+					placeholder="יש להקליד שוב את הסיסמא "
+					value={confirmPassword}
+					secureTextEntry={!showConfirmPassword}
+					onChangeText={setConfirmPassword}
+				/>
 				<TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
 					<MaterialIcons name={showConfirmPassword ? "visibility" : "visibility-off"} size={24} color="#ccc" />
 				</TouchableOpacity>
 			</View>
-
-			{!validEmail && (
-				<Text style={GlobalStyles.errorText}>יש להזין כתובת מייל חוקית  </Text>
-			)
-			}
-
-			{
-				!validUsername && (
-					<Text style={GlobalStyles.errorText}> יש להזין שם משתמש עם 3 תווים לפחות </Text>
-				)
-			}
-
-			{
-				!validPassword && (
-					<Text style={GlobalStyles.errorText}>יש להזין סיסמא עם 6 תווים לפחות </Text>
-				)
-			}
-			<Button color={GlobalStyles.colors.btnColor} title="המשך" onPress={validateFields} />
+			{!!errorMessage && <Text style={GlobalStyles.errorText}>{errorMessage}</Text>}
+			<Button color={GlobalStyles.colors.btnColor} title="הרשמה" onPress={handleSignup} />
 		</View >
 	);
 }

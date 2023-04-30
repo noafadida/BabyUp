@@ -1,0 +1,7 @@
+export const incorrectEmail = 'הכתובת אימייל שהזנת אינה חוקית, אנא נסה שוב'
+export const unfilledInput = 'אופס, שכחת משהו?'
+export const BackendError = 'אופס, משהו השתבש, נא נסה שנית מאוחר יותר'
+export const unmatchedPasswords = 'הסיסמאות אינן זהות, אנא נסה שנית'
+export const passwordDidntLong = 'יש להזין סיסמא עם 6 תווים לפחות'
+export const resetPassword = 'נשלח אימייל לאיפוס הסיסמא'
+export const usernameIsShort = 'יש להזין שם משתמש עם 3 תווים לפחות'
