@@ -1,23 +1,35 @@
-import { useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, Button } from 'react-native'
 import { GlobalStyles } from '../../consts/styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { EMPTY_STRING } from '../../consts/GeneralConsts';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { logoutHandler } from '../../utils';
 
 export const ProfileTab = ({ route, navigation }: any) => {
-	const babyName = "עומר"
-	const babyNameEng = "Omer"
 	const gender = "נקבה"
 	const age = "10 חודשים"
 
+	const [displayName, setDisplayName] = useState(EMPTY_STRING)
+
+	useEffect(() => {
+		const fetchUserInfo = async () => {
+			const user = await AsyncStorage.getItem('user')
+			const userInfo = JSON.parse(user || '')
+			userInfo?.[0].displayName && setDisplayName(userInfo[0].displayName)
+			console.log('USER', userInfo?.[0])
+		}
+		fetchUserInfo()
+	}, [])
 
 	return (
 
 		<View style={styles.screen}>
 			<Image source={require('../../../assets/babyupLogoNew.png')} style={styles.image} />
-			<Text style={GlobalStyles.titleTextStyle}> {babyNameEng} Mommy's</Text>
+			<Text style={GlobalStyles.titleTextStyle}> {displayName} Mommy's</Text>
 			<View style={styles.innerComponent}>
-				<TouchableOpacity style={GlobalStyles.buttonLightStyle}>
-					<Text style={GlobalStyles.buttonLightTextStyle}>עריכת פרופיל</Text>
+				<TouchableOpacity onPress={() => logoutHandler(navigation)} style={GlobalStyles.buttonLightStyle}>
+					<Text style={GlobalStyles.buttonLightTextStyle}>התנתקות</Text>
 				</TouchableOpacity>
 				<TouchableOpacity style={GlobalStyles.buttonLightStyle}>
 					<Text style={GlobalStyles.buttonLightTextStyle}>עריכת פרופיל</Text>
@@ -26,7 +38,7 @@ export const ProfileTab = ({ route, navigation }: any) => {
 			<View style={styles.deatils}>
 				<View style={styles.innerDetails}>
 					<Text style={styles.titleDetails}>שם</Text>
-					<Text style={styles.textDetails}>{babyName}</Text>
+					<Text style={styles.textDetails}>{displayName}</Text>
 				</View>
 				<View style={styles.innerDetails}>
 					<Text style={styles.titleDetails}>גיל</Text>

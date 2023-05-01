@@ -1,22 +1,42 @@
 import React, { useState, FC } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, ViewStyle } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, ViewStyle, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ROUTES_NAMES } from '../consts/Routes';
 import { GlobalStyles } from '../consts/styles';
+import { validateEmail } from '../utils';
+import { EMPTY_STRING } from '../consts/GeneralConsts';
+import { BackendError, incorrectEmail, unfilledInput } from '../consts/AlertMessegesConsts';
+import { auth, signInWithEmailAndPassword } from '../firebase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface InputContainerStyle extends ViewStyle {
 	marginVertical?: number;
 }
-  
+
 const LoginPage: FC<{ navigation: any }> = ({ navigation }) => {
-	const [username, setUsername] = useState('');
+	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [showPassword, setShowPassword] = useState(false);
 
 	const { HomePage, PasswordResetPage, SignupPage } = ROUTES_NAMES
 
-	const handleLogin = () => {
-		navigation.navigate(HomePage);
+	const handleLogin = async () => {
+		try {
+			if (email && password) {
+				if (!validateEmail(email) && email !== EMPTY_STRING) {
+					Alert.alert(incorrectEmail)
+					return
+				}
+				const { user } = await signInWithEmailAndPassword(auth, email, password)
+				await AsyncStorage.setItem('user', JSON.stringify(user?.providerData));
+				navigation.navigate(HomePage);
+			} else {
+				Alert.alert(unfilledInput)
+			}
+		} catch (e) {
+			console.log(e)
+			Alert.alert(BackendError)
+		}
 	};
 
 	const handleSignUp = () => {
@@ -35,9 +55,9 @@ const LoginPage: FC<{ navigation: any }> = ({ navigation }) => {
 			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
 				<TextInput
 					style={GlobalStyles.inputStyle}
-					placeholder="שם משתמש"
-					value={username}
-					onChangeText={setUsername}
+					placeholder="אימייל"
+					value={email}
+					onChangeText={setEmail}
 				/>
 			</View>
 

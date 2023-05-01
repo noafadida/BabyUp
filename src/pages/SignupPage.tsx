@@ -2,10 +2,11 @@ import React, { useState, FC, useEffect } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Alert, ViewStyle } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { GlobalStyles } from '../consts/styles';
-import { auth, createUserWithEmailAndPassword, sendEmailVerification } from '../firebase';
+import { auth, createUserWithEmailAndPassword, updateProfile } from '../firebase';
 import { validateEmail } from '../utils';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { BackendError, incorrectEmail, passwordDidntLong, unmatchedPasswords, usernameIsShort } from '../consts/AlertMessegesConsts';
+import { ROUTES_NAMES } from '../consts/Routes';
 
 interface InputContainerStyle extends ViewStyle {
 	marginVertical?: number;
@@ -20,6 +21,8 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const [isValid, setIsValid] = useState(false);
+
+	const { SignupPage2 } = ROUTES_NAMES;
 
 	useEffect(() => {
 		const isValidEmail = validateEmail(email);
@@ -43,17 +46,10 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
 	const handleSignup = async () => {
 		try {
 			if (isValid) {
-				console.log('success')
+				navigation.navigate(SignupPage2, { email, password, username })
 			} else {
-				console.log('error')
+				Alert.alert('נסה שנית')
 			}
-			//await createUserWithEmailAndPassword(auth, email, password)
-			//if (auth.currentUser) {
-			//	await sendEmailVerification(auth.currentUser)
-			//	console.log('email sent')
-			//	//NEED TO CHECK WHY USER CAN LOGIN BEFORE VERIFICATION
-			//}
-			//navigation.navigate(RoutesNames.LOGIN_ROUTE)
 		} catch (e) {
 			Alert.alert(BackendError)
 		}
@@ -122,7 +118,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		paddingHorizontal: 20,
-		backgroundColor: GlobalStyles.colors.appBodyBackColor,
+		backgroundColor: GlobalStyles.colors.appBodyBackColor
 	},
 	head: {
 		flex: 0.4,
@@ -136,7 +132,7 @@ const styles = StyleSheet.create({
 		paddingVertical: 8,
 		paddingHorizontal: 12,
 		borderRadius: 4,
-		marginRight: 8,
+		marginRight: 8
 	},
 
 });

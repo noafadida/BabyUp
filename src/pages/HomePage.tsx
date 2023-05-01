@@ -8,12 +8,9 @@ import { ProfileTab } from '../components/HomePage/ProfileTab';
 import { HomeTab } from '../components/HomePage/HomeTab';
 import { FavoritesTab } from '../components/HomePage/FavoriteTab';
 
-
-
 const HomePage: FC<{ route: any, navigation: any, }> = ({ navigation, route }) => {
 	const Tab = createBottomTabNavigator();
 	const { FavoritesScreen, HomeScreen, ProfileScreen } = TAB_ROUTES_NAMES
-
 	const name = route.params //NEED TO FIX
 
 	useLayoutEffect(() => {
@@ -94,8 +91,8 @@ const styles = StyleSheet.create({
 		fontFamily: "DancingScript",
 		fontSize: 20,
 		textAlignVertical: "center",
-		marginBottom: 5, 
-		letterSpacing:0.9
+		marginBottom: 5,
+		letterSpacing: 0.9
 	},
 	image: {
 		resizeMode: 'contain',

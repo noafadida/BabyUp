@@ -1,18 +1,23 @@
 import React, { useState, FC } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity, ViewStyle } from 'react-native';
-import DatePicker from 'react-native-datepicker';
-import moment from 'moment';
 import { ROUTES_NAMES } from '../consts/Routes';
 import { GlobalStyles } from '../consts/styles';
+import { auth, createUserWithEmailAndPassword, db, doc, setDoc, updateProfile } from '../firebase';
+import DatePicker from 'react-native-datepicker';
+import moment from 'moment';
 
 interface InputContainerStyle extends ViewStyle {
 	marginVertical?: number;
 }
 
+type Props = {
+	navigation?: any;
+	route?: any;
+}
 
 declare module 'react-native-datepicker';
 
-const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
+const SignupPage: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
 	const [babyName, setBabyName] = useState('');
 	const [birthdate, setBirthdate] = useState<Date>(new Date());
 	const [showDatePicker, setShowDatePicker] = useState(false);
@@ -42,11 +47,26 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
 
 
 	const validateFields = () => {
-		if (dateValid && nameValid) {
-			navigation.navigate(LoginPage)
-			return;
-		};
-		Alert.alert("שגיאה", "יש לנסות שוב ולמלא את הפרטים כנדרש")
+		return dateValid && nameValid;
+	}
+
+	const handleSignup = async () => {
+		try {
+			if (validateFields()) {
+				const { email, password, username } = route?.params || {}
+				await createUserWithEmailAndPassword(auth, email, password)
+				if (auth?.currentUser) {
+					updateProfile(auth.currentUser, {
+						displayName: babyName
+					})
+				}
+				navigation.navigate(LoginPage)
+			} else {
+				Alert.alert("שגיאה", "יש לנסות שוב ולמלא את הפרטים כנדרש")
+			}
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	return (
@@ -107,7 +127,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
 			{!dateValid && (
 				<Text style={GlobalStyles.errorText}>גיל התינוק/ת חייב להיות בין 6 ל18 חודשים </Text>
 			)}
-			<TouchableOpacity style={GlobalStyles.buttonPinkStyle} onPress={validateFields}>
+			<TouchableOpacity style={GlobalStyles.buttonPinkStyle} onPress={handleSignup}>
 				<Text style={GlobalStyles.buttonPinkTextStyle}> הרשמה </Text>
 			</TouchableOpacity>
 		</View>
