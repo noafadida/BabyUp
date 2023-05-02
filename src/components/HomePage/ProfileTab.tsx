@@ -1,23 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, Button } from 'react-native'
+import { View, Text, StyleSheet, Image } from 'react-native'
 import { GlobalStyles } from '../../consts/styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { EMPTY_STRING } from '../../consts/GeneralConsts';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { logoutHandler } from '../../utils';
+import { getDoc, doc, db } from '../../firebase'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from 'moment';
+
+const INITIAL_BABY_INFO_VALUE = {
+	babyAge: EMPTY_STRING,
+	babyName: EMPTY_STRING,
+	babyBirthDate: EMPTY_STRING,
+	parentName: EMPTY_STRING,
+	gender: EMPTY_STRING
+}
+type BabyInfo = {
+	babyAge: string;
+	babyName: string;
+	babyBirthDate: string;
+	parentName: string;
+	gender: string;
+}
 
 export const ProfileTab = ({ route, navigation }: any) => {
-	const gender = "נקבה"
-	const age = "10 חודשים"
-
-	const [displayName, setDisplayName] = useState(EMPTY_STRING)
+	const [babyInfo, setBabyInfo] = useState<BabyInfo>(INITIAL_BABY_INFO_VALUE)
 
 	useEffect(() => {
 		const fetchUserInfo = async () => {
 			const user = await AsyncStorage.getItem('user')
 			const userInfo = JSON.parse(user || '')
-			userInfo?.[0].displayName && setDisplayName(userInfo[0].displayName)
-			console.log('USER', userInfo?.[0])
+			const docRef = await getDoc(doc(db, "users", userInfo));
+			const docData: any = docRef.data()
+			const { babyName, babyBirthDate, parentName, gender } = docData || {};
+			const ageMonths = moment().diff(moment(babyBirthDate), 'months');
+			setBabyInfo({
+				babyAge: ageMonths.toString(),
+				babyBirthDate: babyBirthDate,
+				babyName,
+				parentName,
+				gender: gender === 'MALE' ? 'זכר' : 'נקבה'
+			})
 		}
 		fetchUserInfo()
 	}, [])
@@ -26,7 +49,7 @@ export const ProfileTab = ({ route, navigation }: any) => {
 
 		<View style={styles.screen}>
 			<Image source={require('../../../assets/babyupLogoNew.png')} style={styles.image} />
-			<Text style={GlobalStyles.titleTextStyle}> {displayName} Mommy's</Text>
+			<Text style={GlobalStyles.titleTextStyle}>Parent Name: {babyInfo?.parentName}</Text>
 			<View style={styles.innerComponent}>
 				<TouchableOpacity onPress={() => logoutHandler(navigation)} style={GlobalStyles.buttonLightStyle}>
 					<Text style={GlobalStyles.buttonLightTextStyle}>התנתקות</Text>
@@ -35,21 +58,19 @@ export const ProfileTab = ({ route, navigation }: any) => {
 					<Text style={GlobalStyles.buttonLightTextStyle}>עריכת פרופיל</Text>
 				</TouchableOpacity>
 			</View>
-			<View style={styles.deatils}>
+			<View style={[styles.deatils, { backgroundColor: babyInfo?.gender === 'זכר' ? '#c3e1ed' : '#FFD6EC'}]}>
 				<View style={styles.innerDetails}>
 					<Text style={styles.titleDetails}>שם</Text>
-					<Text style={styles.textDetails}>{displayName}</Text>
+					<Text style={styles.textDetails}>{babyInfo?.babyName}</Text>
 				</View>
 				<View style={styles.innerDetails}>
 					<Text style={styles.titleDetails}>גיל</Text>
-					<Text style={styles.textDetails}>{age}</Text>
+					<Text style={styles.textDetails}>{babyInfo?.babyAge} חודשים</Text>
 				</View>
 				<View style={styles.innerDetails}>
 					<Text style={styles.titleDetails}>מין</Text>
-					<Text style={styles.textDetails}>{gender}</Text>
+					<Text style={styles.textDetails}>{babyInfo.gender}</Text>
 				</View>
-
-
 			</View>
 		</View>
 	)
@@ -60,7 +81,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingTop: 35,
 		alignItems: "center",
-		backgroundColor: GlobalStyles.colors.appBodyBackColor,
+		backgroundColor: GlobalStyles.colors.appBodyBackColor
 	},
 	image: {
 		width: 250,
@@ -73,14 +94,14 @@ const styles = StyleSheet.create({
 		marginBottom: 15
 	},
 	deatils: {
-		backgroundColor: "#FFD6EC",
 		flexDirection: "column",
 		justifyContent: 'center',
 		alignItems: "flex-end",
 		width: "74%",
 		flex: 0.3,
 		gap: 10,
-		borderRadius: 8
+		borderRadius: 8,
+		paddingVertical: 20
 	},
 	titleDetails: {
 		fontSize: 18,

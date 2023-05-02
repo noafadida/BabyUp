@@ -1,9 +1,9 @@
 import { initializeApp } from 'firebase/app';
 import {
 	getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendEmailVerification,
-	signOut, sendPasswordResetEmail, updateProfile
+	signOut, sendPasswordResetEmail
 } from "firebase/auth";
-import { getFirestore, collection, getDocs, setDoc, doc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, setDoc, doc, getDoc } from "firebase/firestore";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const firebaseConfig = {
@@ -21,8 +21,11 @@ const db = getFirestore(app);
 
 onAuthStateChanged(auth, async (user) => {
 	if (user) {
-		console.log('user logged in', user)
-		await AsyncStorage.setItem('user', JSON.stringify(user?.providerData));
+		console.log('user logged in')
+		const myUser = user as any
+		console.log('FIREBASE',user)
+		console.log('FIREBASE',user?.providerData)
+		await AsyncStorage.setItem('user', JSON.stringify(myUser?.providerData?.uid));
 	} else {
 		console.log('user logged out')
 		await AsyncStorage.removeItem('user');
@@ -30,6 +33,6 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 export {
-	app, auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, signOut, sendPasswordResetEmail, updateProfile,
-	db, collection, getDocs, setDoc, doc
+	app, auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, signOut, sendPasswordResetEmail,
+	db, collection, getDocs, setDoc, doc, getDoc
 }

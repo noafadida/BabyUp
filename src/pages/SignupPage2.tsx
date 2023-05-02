@@ -1,10 +1,12 @@
-import React, { useState, FC } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity, ViewStyle } from 'react-native';
+import React, { useState, FC, useEffect } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity, ViewStyle, Pressable } from 'react-native';
 import { ROUTES_NAMES } from '../consts/Routes';
 import { GlobalStyles } from '../consts/styles';
-import { auth, createUserWithEmailAndPassword, db, doc, setDoc, updateProfile } from '../firebase';
+import { auth, createUserWithEmailAndPassword, db, doc as firebaseDoc, setDoc } from '../firebase';
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
+import { EMPTY_STRING } from '../consts/GeneralConsts';
+import { Ionicons } from '@expo/vector-icons';
 
 interface InputContainerStyle extends ViewStyle {
 	marginVertical?: number;
@@ -15,50 +17,46 @@ type Props = {
 	route?: any;
 }
 
+type Gender = 'MALE' | 'FEMALE';
+
 declare module 'react-native-datepicker';
 
 const SignupPage: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
 	const [babyName, setBabyName] = useState('');
-	const [birthdate, setBirthdate] = useState<Date>(new Date());
+	const [birthdate, setBirthdate] = useState<string>(EMPTY_STRING);
 	const [showDatePicker, setShowDatePicker] = useState(false);
 
 	const [dateValid, setDateValid] = useState(true);
 	const [nameValid, setNameValid] = useState(true);
 
+	const [Gender, setGender] = useState<Gender>('FEMALE');
+
 	const { LoginPage } = ROUTES_NAMES
 
-	const handleBirthday = (birthdayValue: any) => {
-		const ageMonths = moment().diff(moment(birthdayValue), 'months');
-		console.log("ageMonths of the baby: ", ageMonths)
-
-		if (ageMonths < 6 || ageMonths > 18) {
-			Alert.alert("שגיאה", "גיל התינוק/ת חייב להיות בין 6 ל18 חודשים")
-			setDateValid(false)
-			return
+	useEffect(() => {
+		if (birthdate !== EMPTY_STRING) {
+			const ageMonths = moment().diff(moment(birthdate), 'months');
+			if (ageMonths < 6 || ageMonths > 18) {
+				Alert.alert("גיל התינוק/ת חייב להיות בין 6 ל18 חודשים")
+				setDateValid(false)
+				return
+			}
+			setDateValid(true)
 		}
-		setDateValid(true)
-		setBirthdate(birthdayValue);
-	};
+	}, [birthdate])
 
 	const handleBabyNameChange = (babyNameValue: any) => {
 		setBabyName(babyNameValue);
-		setNameValid(babyNameValue.length >= 2 ? true : false)
+		setNameValid(babyNameValue.length >= 2)
 	};
-
-
-	const validateFields = () => {
-		return dateValid && nameValid;
-	}
 
 	const handleSignup = async () => {
 		try {
-			if (validateFields()) {
-				const { email, password, username } = route?.params || {}
+			if (dateValid && nameValid) {
+				const { email, password } = route?.params || {}
 				await createUserWithEmailAndPassword(auth, email, password)
 				if (auth?.currentUser) {
-					updateProfile(auth.currentUser, {
-						displayName: babyName
-					})
+					saveUserInfo(auth?.currentUser?.uid)
 				}
 				navigation.navigate(LoginPage)
 			} else {
@@ -66,6 +64,24 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
 			}
 		} catch (error) {
 			console.log(error)
+		}
+	}
+
+	const saveUserInfo = async (uid: string) => {
+		try {
+			const { username, email } = route?.params || {}
+			const docData = {
+				parentName: username,
+				gender: Gender,
+				babyBirthDate: birthdate,
+				babyName,
+				email
+			}
+			const docRef = firebaseDoc(db, "users", uid);
+			await setDoc(docRef, docData);
+			console.log('success to add document')
+		} catch (e) {
+			Alert.alert("Error adding document")
 		}
 	}
 
@@ -85,12 +101,11 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
 				/>
 			</View>
 
-
 			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
 				<TextInput
 					style={GlobalStyles.inputStyle}
 					placeholder="תאריך לידה של התינוק/ת"
-					value={birthdate.toDateString()}
+					value={birthdate}
 					onTouchStart={() => {
 						setShowDatePicker(true);
 					}}
@@ -108,11 +123,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
 						format="YYYY-MM-DD"
 						confirmBtnText="Confirm"
 						cancelBtnText="Cancel"
-						onDateChange={(newDate: string) => {
-							const date = new Date(newDate); // Convert string to Date object
-							setBirthdate(date);
-							handleBirthday(date)
-						}}
+						onDateChange={setBirthdate}
 
 					/>
 					<Button color={GlobalStyles.colors.btnColor} title="Done" onPress={() => setShowDatePicker(false)} />
@@ -127,6 +138,15 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
 			{!dateValid && (
 				<Text style={GlobalStyles.errorText}>גיל התינוק/ת חייב להיות בין 6 ל18 חודשים </Text>
 			)}
+			<View style={styles.gender}>
+				<Pressable onPress={() => setGender('MALE')} style={[styles.genderButton, Gender === 'MALE' && { backgroundColor: '#abd3e7' }]}>
+					<Ionicons style={styles.genderIcon} name="male-outline" size={24} color="#63a5c5" />
+				</Pressable>
+				<Pressable onPress={() => setGender('FEMALE')} style={[styles.genderButton, Gender === 'FEMALE' && { backgroundColor: '#f6c3cf' }]}>
+					<Ionicons style={styles.genderIcon} name="female-outline" size={24} color="#bf697c" />
+				</Pressable>
+			</View>
+
 			<TouchableOpacity style={GlobalStyles.buttonPinkStyle} onPress={handleSignup}>
 				<Text style={GlobalStyles.buttonPinkTextStyle}> הרשמה </Text>
 			</TouchableOpacity>
@@ -156,7 +176,22 @@ const styles = StyleSheet.create({
 	birthText: {
 		color: '#ccc',
 		fontSize: 16,
-		fontWeight: "400"
+		fontWeight: "400",
+		marginBottom: 10
+	},
+	genderButton: {
+		paddingVertical: 10,
+		paddingHorizontal: 20,
+		marginHorizontal: 10,
+		borderRadius: 10
+	},
+	gender: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	genderIcon: {
+		marginHorizontal: 10
 	}
 });
 

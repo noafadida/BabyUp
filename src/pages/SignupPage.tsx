@@ -2,7 +2,6 @@ import React, { useState, FC, useEffect } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Alert, ViewStyle } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { GlobalStyles } from '../consts/styles';
-import { auth, createUserWithEmailAndPassword, updateProfile } from '../firebase';
 import { validateEmail } from '../utils';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { BackendError, incorrectEmail, passwordDidntLong, unmatchedPasswords, usernameIsShort } from '../consts/AlertMessegesConsts';

@@ -14,8 +14,8 @@ interface InputContainerStyle extends ViewStyle {
 }
 
 const LoginPage: FC<{ navigation: any }> = ({ navigation }) => {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [email, setEmail] = useState(EMPTY_STRING);
+	const [password, setPassword] = useState(EMPTY_STRING);
 	const [showPassword, setShowPassword] = useState(false);
 
 	const { HomePage, PasswordResetPage, SignupPage } = ROUTES_NAMES
@@ -28,7 +28,7 @@ const LoginPage: FC<{ navigation: any }> = ({ navigation }) => {
 					return
 				}
 				const { user } = await signInWithEmailAndPassword(auth, email, password)
-				await AsyncStorage.setItem('user', JSON.stringify(user?.providerData));
+				await AsyncStorage.setItem('user', JSON.stringify(user?.uid));
 				navigation.navigate(HomePage);
 			} else {
 				Alert.alert(unfilledInput)
