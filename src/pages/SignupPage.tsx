@@ -123,17 +123,7 @@ const styles = StyleSheet.create({
 		flex: 0.4,
 		justifyContent: 'flex-end',
 		margin: 20
-	},
-	errorInputContainer: {
-		flex: 1,
-		borderWidth: 1,
-		borderColor: 'red',
-		paddingVertical: 8,
-		paddingHorizontal: 12,
-		borderRadius: 4,
-		marginRight: 8
-	},
-
+	}
 });
 
 export default SignupPage;

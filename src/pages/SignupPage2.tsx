@@ -4,9 +4,11 @@ import { ROUTES_NAMES } from '../consts/Routes';
 import { GlobalStyles } from '../consts/styles';
 import { auth, createUserWithEmailAndPassword, db, doc as firebaseDoc, setDoc } from '../firebase';
 import DatePicker from 'react-native-datepicker';
-import moment from 'moment';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { Ionicons } from '@expo/vector-icons';
+import { Gender } from '../types';
+import moment from 'moment';
+declare module 'react-native-datepicker';
 
 interface InputContainerStyle extends ViewStyle {
 	marginVertical?: number;
@@ -16,10 +18,6 @@ type Props = {
 	navigation?: any;
 	route?: any;
 }
-
-type Gender = 'MALE' | 'FEMALE';
-
-declare module 'react-native-datepicker';
 
 const SignupPage: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
 	const [babyName, setBabyName] = useState('');

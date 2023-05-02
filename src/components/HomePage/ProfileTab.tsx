@@ -7,6 +7,8 @@ import { logoutHandler } from '../../utils';
 import { getDoc, doc, db } from '../../firebase'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
+import CustomModal from '../CustomModal';
+import UpdateBabyInfoModal from './UpdateBabyInfoModal';
 
 const INITIAL_BABY_INFO_VALUE = {
 	babyAge: EMPTY_STRING,
@@ -25,6 +27,7 @@ type BabyInfo = {
 
 export const ProfileTab = ({ route, navigation }: any) => {
 	const [babyInfo, setBabyInfo] = useState<BabyInfo>(INITIAL_BABY_INFO_VALUE)
+	const [isUpdateBabyInfoModalOpen, setIsUpdateBabyInfoModalOpen] = useState<boolean>(false)
 
 	useEffect(() => {
 		const fetchUserInfo = async () => {
@@ -47,18 +50,23 @@ export const ProfileTab = ({ route, navigation }: any) => {
 
 	return (
 
-		<View style={styles.screen}>
+		<View style={[styles.screen, { backgroundColor: babyInfo?.gender === 'זכר' ? '#d4e6ed' : GlobalStyles.colors.appBodyBackColor }]}>
 			<Image source={require('../../../assets/babyupLogoNew.png')} style={styles.image} />
 			<Text style={GlobalStyles.titleTextStyle}>Parent Name: {babyInfo?.parentName}</Text>
 			<View style={styles.innerComponent}>
 				<TouchableOpacity onPress={() => logoutHandler(navigation)} style={GlobalStyles.buttonLightStyle}>
 					<Text style={GlobalStyles.buttonLightTextStyle}>התנתקות</Text>
 				</TouchableOpacity>
-				<TouchableOpacity style={GlobalStyles.buttonLightStyle}>
+				<TouchableOpacity onPress={() => setIsUpdateBabyInfoModalOpen(true)} style={GlobalStyles.buttonLightStyle}>
 					<Text style={GlobalStyles.buttonLightTextStyle}>עריכת פרופיל</Text>
 				</TouchableOpacity>
+				{isUpdateBabyInfoModalOpen && (
+					<CustomModal onClose={() => setIsUpdateBabyInfoModalOpen(false)} visible={isUpdateBabyInfoModalOpen} animationType='fade' transparent>
+						<UpdateBabyInfoModal />
+					</CustomModal>
+				)}
 			</View>
-			<View style={[styles.deatils, { backgroundColor: babyInfo?.gender === 'זכר' ? '#c3e1ed' : '#FFD6EC'}]}>
+			<View style={[styles.deatils, { backgroundColor: babyInfo?.gender === 'זכר' ? '#afd4e3' : '#FFD6EC' }]}>
 				<View style={styles.innerDetails}>
 					<Text style={styles.titleDetails}>שם</Text>
 					<Text style={styles.textDetails}>{babyInfo?.babyName}</Text>
@@ -80,8 +88,7 @@ const styles = StyleSheet.create({
 	screen: {
 		flex: 1,
 		paddingTop: 35,
-		alignItems: "center",
-		backgroundColor: GlobalStyles.colors.appBodyBackColor
+		alignItems: "center"
 	},
 	image: {
 		width: 250,

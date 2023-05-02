@@ -5,3 +5,5 @@ export const unmatchedPasswords = 'הסיסמאות אינן זהות, אנא נ
 export const passwordDidntLong = 'יש להזין סיסמא עם 6 תווים לפחות'
 export const resetPassword = 'נשלח אימייל לאיפוס הסיסמא'
 export const usernameIsShort = 'יש להזין שם משתמש עם 3 תווים לפחות'
+export const babyNameIsShort = 'יש להזין שם תינוק/ת עם 3 תווים לפחות'
+export const babyNotInTheRightAge = 'גיל התינוק/ת חייב להיות בין 6 ל18 חודשים'

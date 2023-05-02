@@ -22,10 +22,7 @@ const db = getFirestore(app);
 onAuthStateChanged(auth, async (user) => {
 	if (user) {
 		console.log('user logged in')
-		const myUser = user as any
-		console.log('FIREBASE',user)
-		console.log('FIREBASE',user?.providerData)
-		await AsyncStorage.setItem('user', JSON.stringify(myUser?.providerData?.uid));
+		await AsyncStorage.setItem('user', JSON.stringify(user?.uid));
 	} else {
 		console.log('user logged out')
 		await AsyncStorage.removeItem('user');
