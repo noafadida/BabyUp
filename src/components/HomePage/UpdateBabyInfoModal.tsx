@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, ViewStyle, Button, Pressable } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ViewStyle, Button, Pressable, Alert } from 'react-native';
 import { EMPTY_STRING } from '../../consts/GeneralConsts';
-import { validateEmail } from '../../utils';
-import { babyNameIsShort, babyNotInTheRightAge, incorrectEmail, usernameIsShort } from '../../consts/AlertMessegesConsts';
+import { babyNameIsShort, babyNotInTheRightAge, usernameIsShort } from '../../consts/AlertMessegesConsts';
 import { GlobalStyles } from '../../consts/styles';
 import { Gender } from '../../types';
 import { Ionicons } from '@expo/vector-icons';
+import { doc, setDoc, db } from '../../firebase'
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 declare module 'react-native-datepicker';
 
 interface InputContainerStyle extends ViewStyle {
 	marginVertical?: number;
 }
 
-export default function UpdateBabyInfoModal() {
-	const [email, setEmail] = useState(EMPTY_STRING);
+type Props = {
+	onClose: () => void;
+}
+
+export default function UpdateBabyInfoModal({ onClose }: Props) {
 	const [username, setUsername] = useState(EMPTY_STRING);
 	const [errorMessage, setErrorMessage] = useState(EMPTY_STRING);
 	const [babyName, setBabyName] = useState(EMPTY_STRING);
@@ -25,18 +29,15 @@ export default function UpdateBabyInfoModal() {
 	const [Gender, setGender] = useState<Gender>('FEMALE');
 
 	useEffect(() => {
-		const isValidEmail = validateEmail(email);
-		!!email && !isValidEmail && setErrorMessage(incorrectEmail)
-
 		const isDidntValidUsername = !!username && username?.length < 3;
 		isDidntValidUsername && setErrorMessage(usernameIsShort)
 
 		const isBabyNameDidntValid = !!babyName && babyName?.length < 3;
 		isBabyNameDidntValid && setErrorMessage(babyNameIsShort)
 
-		const isValidInputs = isValidEmail && !isDidntValidUsername && !isBabyNameDidntValid && isDateValid;
+		const isValidInputs = !isDidntValidUsername && !isBabyNameDidntValid && isDateValid;
 		isValidInputs && setErrorMessage(EMPTY_STRING)
-	}, [email, username])
+	}, [username, babyName, isDateValid])
 
 
 	useEffect(() => {
@@ -51,27 +52,39 @@ export default function UpdateBabyInfoModal() {
 		}
 	}, [birthdate])
 
+	const updateUserInfoHandler = async () => {
+		if (!!username && !!Gender && !!birthdate && !!babyName) {
+			try {
+				const updatedInfo = {
+					parentName: username,
+					gender: Gender,
+					babyBirthDate: birthdate,
+					babyName
+				}
+				console.log(updatedInfo)
+				const uid = await AsyncStorage.getItem('user')
+				const parsedUID = JSON.parse(uid || '')
+				const docRef = doc(db, "users", parsedUID);
+				await setDoc(docRef, updatedInfo);
+				console.log('success to add document')
+				onClose()
+			} catch (error) {
+				Alert.alert('Oops, try again later')
+			}
+		} else {
+			console.log('ERROR', errorMessage)
+		}
+	}
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.head}>
 				<Text style={[GlobalStyles.titleTextStyle, { color: 'white' }]}>עריכת פרופיל</Text>
 			</View>
-			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
-				<TextInput
-					style={[GlobalStyles.inputStyle, { borderColor: 'white' }]}
-					placeholder="אימייל"
-					value={email}
-					onChangeText={setEmail}
-					keyboardType="email-address"
-					autoCapitalize="none"
-					autoCorrect={false}
-				/>
-			</View>
 
 			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
 				<TextInput
-					style={[GlobalStyles.inputStyle, { borderColor: 'white' }]}
+					style={[GlobalStyles.inputStyle, { borderColor: 'white', textAlign: 'right' }]}
 					placeholder="שם משתמש"
 					value={username}
 					onChangeText={setUsername}
@@ -79,7 +92,7 @@ export default function UpdateBabyInfoModal() {
 			</View>
 			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
 				<TextInput
-					style={[GlobalStyles.inputStyle, { borderColor: 'white' }]}
+					style={[GlobalStyles.inputStyle, { borderColor: 'white', textAlign: 'right' }]}
 					placeholder="שם התינוק/ת"
 					value={babyName}
 					onChangeText={setBabyName}
@@ -89,7 +102,7 @@ export default function UpdateBabyInfoModal() {
 
 			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
 				<TextInput
-					style={[GlobalStyles.inputStyle, { borderColor: 'white' }]}
+					style={[GlobalStyles.inputStyle, { borderColor: 'white', textAlign: 'right' }]}
 					placeholder="תאריך לידה של התינוק/ת"
 					value={birthdate}
 					onTouchStart={() => {
@@ -126,6 +139,9 @@ export default function UpdateBabyInfoModal() {
 				</Pressable>
 			</View>
 			{!!errorMessage && <Text style={[GlobalStyles.errorText, { marginTop: 10 }]}>{errorMessage}</Text>}
+			<Pressable style={styles.updateButton} onPress={updateUserInfoHandler}>
+				<Text>שמור שינויים</Text>
+			</Pressable>
 		</View>
 	)
 }
@@ -175,4 +191,10 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 2,
 		borderRadius: 10
 	},
+	updateButton: {
+		padding: 10,
+		backgroundColor: '#ddd',
+		marginTop: 10,
+		borderRadius: 10
+	}
 });
