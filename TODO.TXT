@@ -1,2 +1,0 @@
-add logout function in drawer tab
-add signup with full details in signup2 screen

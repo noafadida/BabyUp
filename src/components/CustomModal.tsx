@@ -13,7 +13,7 @@ export default function CustomModal({ visible, onClose, animationType, transpare
 	const { overlay } = styles;
 
 	return (
-		<Modal animationType={animationType} transparent={transparent} visible={visible} onRequestClose={onClose}>
+		<Modal  animationType={animationType} transparent={transparent} visible={visible} onRequestClose={onClose}>
 			<TouchableOpacity style={overlay} onPress={onClose}>
 				{children}
 			</TouchableOpacity>

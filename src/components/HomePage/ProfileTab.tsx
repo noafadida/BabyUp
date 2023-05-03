@@ -4,7 +4,7 @@ import { GlobalStyles } from '../../consts/styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { EMPTY_STRING } from '../../consts/GeneralConsts';
 import { logoutHandler } from '../../utils';
-import { getDoc, doc, db } from '../../firebase'
+import { getDoc, doc, db, onSnapshot } from '../../firebase'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 import CustomModal from '../CustomModal';
@@ -30,16 +30,16 @@ export let babyGender = EMPTY_STRING
 export const ProfileTab = ({ route, navigation }: any) => {
 	const [babyInfo, setBabyInfo] = useState<BabyInfo>(INITIAL_BABY_INFO_VALUE)
 	const [isUpdateBabyInfoModalOpen, setIsUpdateBabyInfoModalOpen] = useState<boolean>(false)
+	const [isInfoChanged, setIsInfoChanged] = useState(false);
 
 	useEffect(() => {
 		const fetchUserInfo = async () => {
 			const user = await AsyncStorage.getItem('user')
-			const userInfo = JSON.parse(user || '')
+			const userInfo = JSON.parse(user || EMPTY_STRING)
 			const docRef = await getDoc(doc(db, "users", userInfo));
 			const docData: any = docRef.data()
 			const { babyName, babyBirthDate, parentName, gender } = docData || {};
-			const ageMonths = moment().diff(moment(babyBirthDate), 'months');
-			babyGender = gender === 'MALE' ? 'זכר' : 'נקבה'
+			const ageMonths = getAgeMonth(babyBirthDate)
 			setBabyInfo({
 				babyAge: ageMonths.toString(),
 				babyBirthDate: babyBirthDate,
@@ -50,6 +50,34 @@ export const ProfileTab = ({ route, navigation }: any) => {
 		}
 		fetchUserInfo()
 	}, [])
+
+	useEffect(() => {
+		const fetchChangesFromDB = async () => {
+			const user = await AsyncStorage.getItem('user')
+			const userInfo = JSON.parse(user || EMPTY_STRING)
+			onSnapshot(doc(db, "users", userInfo), (doc) => {
+				const { babyBirthDate, babyName, parentName, gender } = doc.data() || {}
+				const ageMonths = getAgeMonth(babyBirthDate)
+				setBabyInfo({
+					babyAge: ageMonths.toString(),
+					babyBirthDate: babyBirthDate,
+					babyName,
+					parentName,
+					gender: gender === 'MALE' ? 'זכר' : 'נקבה'
+				})
+			});
+		}
+		fetchChangesFromDB()
+	}, [isInfoChanged])
+
+	const getAgeMonth = (babyBirthDate: any) => {
+		return moment().diff(moment(babyBirthDate), 'months');
+	}
+
+	const onModalClose = () => {
+		setIsInfoChanged(true)
+		setIsUpdateBabyInfoModalOpen(false)
+	}
 
 	return (
 
@@ -65,7 +93,7 @@ export const ProfileTab = ({ route, navigation }: any) => {
 				</TouchableOpacity>
 				{isUpdateBabyInfoModalOpen && (
 					<CustomModal onClose={() => setIsUpdateBabyInfoModalOpen(false)} visible={isUpdateBabyInfoModalOpen} animationType='fade' transparent>
-						<UpdateBabyInfoModal />
+						<UpdateBabyInfoModal onClose={onModalClose} />
 					</CustomModal>
 				)}
 			</View>
