@@ -25,6 +25,8 @@ type BabyInfo = {
 	gender: string;
 }
 
+export let babyGender = EMPTY_STRING
+
 export const ProfileTab = ({ route, navigation }: any) => {
 	const [babyInfo, setBabyInfo] = useState<BabyInfo>(INITIAL_BABY_INFO_VALUE)
 	const [isUpdateBabyInfoModalOpen, setIsUpdateBabyInfoModalOpen] = useState<boolean>(false)
@@ -37,6 +39,7 @@ export const ProfileTab = ({ route, navigation }: any) => {
 			const docData: any = docRef.data()
 			const { babyName, babyBirthDate, parentName, gender } = docData || {};
 			const ageMonths = moment().diff(moment(babyBirthDate), 'months');
+			babyGender = gender === 'MALE' ? 'זכר' : 'נקבה'
 			setBabyInfo({
 				babyAge: ageMonths.toString(),
 				babyBirthDate: babyBirthDate,
@@ -50,15 +53,15 @@ export const ProfileTab = ({ route, navigation }: any) => {
 
 	return (
 
-		<View style={[styles.screen, { backgroundColor: babyInfo?.gender === 'זכר' ? '#d4e6ed' : GlobalStyles.colors.appBodyBackColor }]}>
+		<View style={[styles.profileTabScreen, {backgroundColor: babyInfo?.gender === 'נקבה' ? '#ffe4f3' : "#E9F8F9"}]}>
 			<Image source={require('../../../assets/babyupLogoNew.png')} style={styles.image} />
-			<Text style={GlobalStyles.titleTextStyle}>Parent Name: {babyInfo?.parentName}</Text>
+			<Text style={[GlobalStyles.titleTextStyleName, { color: babyInfo?.gender === 'נקבה' ? '#fb6f92' : "#6DA9E4", }]}>{babyInfo?.babyName}'s Mommy</Text>
 			<View style={styles.innerComponent}>
 				<TouchableOpacity onPress={() => logoutHandler(navigation)} style={GlobalStyles.buttonLightStyle}>
-					<Text style={GlobalStyles.buttonLightTextStyle}>התנתקות</Text>
+					<Text style={[GlobalStyles.buttonLightTextStyle, { color: babyInfo?.gender === 'נקבה' ? '#fb6f92' : "#6DA9E4", }]}>התנתקות</Text>
 				</TouchableOpacity>
 				<TouchableOpacity onPress={() => setIsUpdateBabyInfoModalOpen(true)} style={GlobalStyles.buttonLightStyle}>
-					<Text style={GlobalStyles.buttonLightTextStyle}>עריכת פרופיל</Text>
+					<Text style={[GlobalStyles.buttonLightTextStyle, { color: babyInfo?.gender === 'נקבה' ? '#fb6f92' : "#6DA9E4", }]}>עריכת פרופיל</Text>
 				</TouchableOpacity>
 				{isUpdateBabyInfoModalOpen && (
 					<CustomModal onClose={() => setIsUpdateBabyInfoModalOpen(false)} visible={isUpdateBabyInfoModalOpen} animationType='fade' transparent>
@@ -66,17 +69,21 @@ export const ProfileTab = ({ route, navigation }: any) => {
 					</CustomModal>
 				)}
 			</View>
-			<View style={[styles.deatils, { backgroundColor: babyInfo?.gender === 'זכר' ? '#afd4e3' : '#FFD6EC' }]}>
+			<View style={[styles.deatils, { backgroundColor: babyInfo?.gender === 'זכר' ? '#B9E0FF' : '#FFD6EC' }]}>
 				<View style={styles.innerDetails}>
-					<Text style={styles.titleDetails}>שם</Text>
+					<Text style={[styles.titleDetails,{color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7"}]}>שם</Text>
 					<Text style={styles.textDetails}>{babyInfo?.babyName}</Text>
 				</View>
 				<View style={styles.innerDetails}>
-					<Text style={styles.titleDetails}>גיל</Text>
+					<Text style={[styles.titleDetails,{color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7"}]}>הורה</Text>
+					<Text style={styles.textDetails}>{babyInfo?.parentName}</Text>
+				</View>
+				<View style={styles.innerDetails}>
+					<Text style={[styles.titleDetails,{color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7"}]}>גיל</Text>
 					<Text style={styles.textDetails}>{babyInfo?.babyAge} חודשים</Text>
 				</View>
 				<View style={styles.innerDetails}>
-					<Text style={styles.titleDetails}>מין</Text>
+					<Text style={[styles.titleDetails,{color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7"}]}>מין</Text>
 					<Text style={styles.textDetails}>{babyInfo.gender}</Text>
 				</View>
 			</View>
@@ -85,11 +92,6 @@ export const ProfileTab = ({ route, navigation }: any) => {
 };
 
 const styles = StyleSheet.create({
-	screen: {
-		flex: 1,
-		paddingTop: 35,
-		alignItems: "center"
-	},
 	image: {
 		width: 250,
 		height: 250,
@@ -122,5 +124,10 @@ const styles = StyleSheet.create({
 		flexDirection: "row-reverse",
 		marginHorizontal: 20,
 		gap: 10
-	}
+	},
+	profileTabScreen: {
+		flex: 1,
+		paddingTop: 35,
+		alignItems: "center",		
+	},
 });

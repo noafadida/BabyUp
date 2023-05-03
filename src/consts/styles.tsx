@@ -1,5 +1,5 @@
-export const GlobalStyles = {
 
+export const GlobalStyles = {
 	colors: {
 		headerBackColor: "#ff85a1",
 		headerTextColor: "white",
@@ -68,12 +68,14 @@ export const GlobalStyles = {
 		fontSize: 18,
 	},
 	buttonLightTextStyle: {
-		color: "#FF8DC7",
 		fontSize: 18,
 	},
 	titleTextStyle: {
 		fontSize: 24,
 		color: "#fb6f92"
+	},
+	titleTextStyleName: {
+		fontSize: 24,
 	},
 	errorText: {
 		color: "#F15A59",

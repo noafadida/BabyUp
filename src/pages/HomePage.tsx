@@ -10,6 +10,7 @@ import { FavoritesTab } from '../components/HomePage/FavoriteTab';
 
 const HomePage: FC<{ route: any, navigation: any, }> = ({ navigation, route }) => {
 	const Tab = createBottomTabNavigator();
+
 	const { FavoritesScreen, HomeScreen, ProfileScreen } = TAB_ROUTES_NAMES
 	const name = route.params //NEED TO FIX
 
