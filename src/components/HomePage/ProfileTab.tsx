@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native'
 import { GlobalStyles } from '../../consts/styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -32,7 +32,7 @@ export const ProfileTab = ({ route, navigation }: any) => {
 	const [isUpdateBabyInfoModalOpen, setIsUpdateBabyInfoModalOpen] = useState<boolean>(false)
 	const [isInfoChanged, setIsInfoChanged] = useState(false);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const fetchUserInfo = async () => {
 			const user = await AsyncStorage.getItem('user')
 			const userInfo = JSON.parse(user || EMPTY_STRING)
@@ -81,7 +81,7 @@ export const ProfileTab = ({ route, navigation }: any) => {
 
 	return (
 
-		<View style={[styles.profileTabScreen, {backgroundColor: babyInfo?.gender === 'נקבה' ? '#ffe4f3' : "#E9F8F9"}]}>
+		<View style={[styles.profileTabScreen, { backgroundColor: babyInfo?.gender === 'נקבה' ? '#ffe4f3' : "#E9F8F9" }]}>
 			<Image source={require('../../../assets/babyupLogoNew.png')} style={styles.image} />
 			<Text style={[GlobalStyles.titleTextStyleName, { color: babyInfo?.gender === 'נקבה' ? '#fb6f92' : "#6DA9E4", }]}>{babyInfo?.babyName}'s Mommy</Text>
 			<View style={styles.innerComponent}>
@@ -99,19 +99,19 @@ export const ProfileTab = ({ route, navigation }: any) => {
 			</View>
 			<View style={[styles.deatils, { backgroundColor: babyInfo?.gender === 'זכר' ? '#B9E0FF' : '#FFD6EC' }]}>
 				<View style={styles.innerDetails}>
-					<Text style={[styles.titleDetails,{color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7"}]}>שם</Text>
+					<Text style={[styles.titleDetails, { color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7" }]}>שם</Text>
 					<Text style={styles.textDetails}>{babyInfo?.babyName}</Text>
 				</View>
 				<View style={styles.innerDetails}>
-					<Text style={[styles.titleDetails,{color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7"}]}>הורה</Text>
+					<Text style={[styles.titleDetails, { color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7" }]}>הורה</Text>
 					<Text style={styles.textDetails}>{babyInfo?.parentName}</Text>
 				</View>
 				<View style={styles.innerDetails}>
-					<Text style={[styles.titleDetails,{color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7"}]}>גיל</Text>
+					<Text style={[styles.titleDetails, { color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7" }]}>גיל</Text>
 					<Text style={styles.textDetails}>{babyInfo?.babyAge} חודשים</Text>
 				</View>
 				<View style={styles.innerDetails}>
-					<Text style={[styles.titleDetails,{color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7"}]}>מין</Text>
+					<Text style={[styles.titleDetails, { color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7" }]}>מין</Text>
 					<Text style={styles.textDetails}>{babyInfo.gender}</Text>
 				</View>
 			</View>
@@ -156,6 +156,6 @@ const styles = StyleSheet.create({
 	profileTabScreen: {
 		flex: 1,
 		paddingTop: 35,
-		alignItems: "center",		
+		alignItems: "center",
 	},
 });

@@ -57,12 +57,10 @@ export default function UpdateBabyInfoModal({ onClose }: Props) {
 					babyBirthDate: birthdate,
 					babyName
 				}
-				console.log(updatedInfo)
 				const uid = await AsyncStorage.getItem('user')
 				const parsedUID = JSON.parse(uid || '')
 				const docRef = doc(db, "users", parsedUID);
 				await setDoc(docRef, updatedInfo);
-				console.log('success to add document')
 				onClose()
 			} catch (error) {
 				Alert.alert('Oops, try again later')
