@@ -8,10 +8,7 @@ import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { BackendError, incorrectEmail, unfilledInput } from '../consts/AlertMessegesConsts';
 import { auth, signInWithEmailAndPassword } from '../firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-interface InputContainerStyle extends ViewStyle {
-	marginVertical?: number;
-}
+import { InputContainerStyle } from '../types';
 
 const LoginPage: FC<{ navigation: any }> = ({ navigation }) => {
 	const [email, setEmail] = useState(EMPTY_STRING);

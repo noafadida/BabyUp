@@ -3,17 +3,13 @@ import { View, Text, TextInput, StyleSheet, ViewStyle, Button, Pressable, Alert 
 import { EMPTY_STRING } from '../../consts/GeneralConsts';
 import { babyNameIsShort, babyNotInTheRightAge, usernameIsShort } from '../../consts/AlertMessegesConsts';
 import { GlobalStyles } from '../../consts/styles';
-import { Gender } from '../../types';
+import { Gender, InputContainerStyle } from '../../types';
 import { Ionicons } from '@expo/vector-icons';
 import { doc, setDoc, db } from '../../firebase'
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 declare module 'react-native-datepicker';
-
-interface InputContainerStyle extends ViewStyle {
-	marginVertical?: number;
-}
 
 type Props = {
 	onClose: () => void;

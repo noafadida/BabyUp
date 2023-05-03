@@ -6,13 +6,9 @@ import { auth, createUserWithEmailAndPassword, db, doc as firebaseDoc, setDoc } 
 import DatePicker from 'react-native-datepicker';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { Ionicons } from '@expo/vector-icons';
-import { Gender } from '../types';
+import { Gender, InputContainerStyle } from '../types';
 import moment from 'moment';
 declare module 'react-native-datepicker';
-
-interface InputContainerStyle extends ViewStyle {
-	marginVertical?: number;
-}
 
 type Props = {
 	navigation?: any;
