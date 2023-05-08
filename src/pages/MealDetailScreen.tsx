@@ -1,21 +1,25 @@
-import React, { FC, useLayoutEffect, useState } from 'react';
-import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
+import React, { FC, useEffect, useLayoutEffect, useState } from 'react';
+import { View, StyleSheet, Text, Image, ScrollView, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
 import { MEALS } from '../../data';
 import { addFavorite, removeFavorite } from '../store/redux/favorites';
 import { GlobalStyles } from '../consts/styles';
+import { Ionicons } from '@expo/vector-icons';
 import Subtitle from '../components/MealDetails/Subtitle';
 import List from '../components/MealDetails/List';
 import IconButton from '../components/IconButton';
 import StarRating from 'react-native-star-rating';
-import { Ionicons } from '@expo/vector-icons';
+import { BackendError } from '../consts/AlertMessegesConsts';
+import { retrieveUserData } from '../utils';
+import { doc, db, setDoc, getDoc } from '../firebase'
 
 
 
 const MealDetailScreen: FC<{ route?: any, navigation?: any }> = ({ route, navigation }) => {
-	const favoriteMealIds: any = useSelector((state: any) => state.favoriteMeals.ids)
-	const dispatch = useDispatch();
+	const favoriteMealIds: any = useSelector((state: any) => state.favoriteMeals.ids);
+	const [favoriteMeals, setFavoriteMeals] = useState<any>([])
 	const [starCount, setStarCount] = useState(0);
+	const dispatch = useDispatch();
 
 	const onStarRatingPress = (rating: any) => {
 		setStarCount(rating);
@@ -23,10 +27,40 @@ const MealDetailScreen: FC<{ route?: any, navigation?: any }> = ({ route, naviga
 
 	const mealId = route.params.mealId
 	const selectedMeal: any = MEALS.find((meal) => meal.id === mealId)
-	const mealIsFavorite = favoriteMealIds.includes(mealId)
+	const isFavorite = favoriteMealIds.includes(mealId)
 
-	const changeFavoriteStatusHandler = () => {
-		dispatch(mealIsFavorite ? removeFavorite({ id: mealId }) : addFavorite({ id: mealId }))
+	useEffect(() => {
+		const fetchFavoriteMeals = async () => {
+			const uid = await retrieveUserData()
+			if (uid) {
+				const docRef = doc(db, 'favorite', uid);
+				const getDocRef = await getDoc(docRef);
+				const getDocRefData = getDocRef.data()
+				const favoriteMealsData = Object.values(getDocRefData || {})
+				setFavoriteMeals(favoriteMealsData)
+			}
+		}
+		fetchFavoriteMeals()
+	}, [favoriteMealIds])
+
+	const changeFavoriteStatusHandler = async () => {
+		try {
+			dispatch(isFavorite ? removeFavorite({ id: mealId }) : addFavorite({ id: mealId }))
+			const uid = await retrieveUserData()
+			if (uid) {
+				const docRef = doc(db, 'favorite', uid);
+				const getDocRef = await getDoc(docRef);
+				const getDocRefData = getDocRef.data()
+				const removeMeal = { ...getDocRefData }
+				delete removeMeal[mealId]
+				const docData = isFavorite ? removeMeal : { ...getDocRefData, [mealId]: mealId }
+				console.log('docData', docData)
+				await setDoc(docRef, docData);
+			}
+		} catch (e) {
+			console.log(e)
+			Alert.alert(BackendError)
+		}
 	}
 
 	useLayoutEffect(() => {
@@ -35,7 +69,7 @@ const MealDetailScreen: FC<{ route?: any, navigation?: any }> = ({ route, naviga
 			headerRight: () => {
 				return (
 					<IconButton
-						icon={mealIsFavorite ? 'heart' : 'heart-outline'}
+						icon={isFavorite ? 'heart' : 'heart-outline'}
 						color="white"
 						onPress={changeFavoriteStatusHandler}
 					/>)

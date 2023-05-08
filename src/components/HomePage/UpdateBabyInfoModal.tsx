@@ -11,6 +11,7 @@ import DatePicker from 'react-native-datepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomModal from '../CustomModal';
 import AllergyList from '../AllergyList';
+import { retrieveUserData } from '../../utils';
 declare module 'react-native-datepicker';
 
 type Props = {
@@ -63,9 +64,8 @@ export default function UpdateBabyInfoModal({ onClose }: Props) {
 					babyName,
 					selectedAllergies
 				}
-				const uid = await AsyncStorage.getItem('user')
-				const parsedUID = JSON.parse(uid || '')
-				const docRef = doc(db, "users", parsedUID);
+				const uid = await retrieveUserData()
+				const docRef = doc(db, "users", (uid || ''));
 				await setDoc(docRef, updatedInfo);
 				onClose()
 			} catch (error) {

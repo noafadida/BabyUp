@@ -5,7 +5,7 @@ import { SCREEN_NAMES } from '../consts/Routes'
 import { ARTICLES } from '../../data';
 import NewsList from './NewsList/NewsList';
 
-const newsScreen = ({ navigation }: any) => {
+const NewsScreen = ({ navigation }: any) => {
     const displayArticle = ARTICLES.filter((articleItem) => { return articleItem })
 
     useLayoutEffect(() => {
@@ -26,7 +26,7 @@ const newsScreen = ({ navigation }: any) => {
     )
 }
 
-export default newsScreen;
+export default NewsScreen;
 
 const styles = StyleSheet.create({
     container: {
