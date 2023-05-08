@@ -1,11 +1,22 @@
-import { View, FlatList, StyleSheet, TouchableOpacity, Text,Image } from 'react-native'
-import { CATEGORIES } from '../../../data';
+import { View, FlatList, StyleSheet, TouchableOpacity, Text, Image } from 'react-native'
+import { CATEGORIES, ARTICLES } from '../../../data';
 import CategoryGrid from "../CategoryGrid";
 import { ROUTES_NAMES } from '../../consts/Routes';
 import { GlobalStyles } from '../../consts/styles';
+import Article from '../../models/article';
+import NewsItem from '../NewsList/NewsItem';
 
 export const HomeTab = ({ navigation, route }: any) => {
-	const { MealsOverViewScreen } = ROUTES_NAMES
+	const { MealsOverViewScreen, newsScreen, TipsScreen } = ROUTES_NAMES
+	const newArticle: Article[] = ARTICLES.filter((article) => article.id === 'a1')
+
+	const itemProps = {
+		id: newArticle[0].id,
+		imageUrl: newArticle[0].imageUrl,
+		title: newArticle[0].title,
+		subTitle: newArticle[0].subTitle,
+		content: newArticle[0].content
+	}
 
 	const renderCategoryItem = (itemData: any) => {
 		const pressHandler = () => (
@@ -20,55 +31,62 @@ export const HomeTab = ({ navigation, route }: any) => {
 			/>
 		)
 	}
+
+	const newsPressHandler = () => {
+		navigation.navigate(newsScreen)
+	}
+
+	const tipsPressHandler = () => {
+		navigation.navigate(TipsScreen)
+	}
+
 	return (
 		<View style={styles.screen} >
-			<View >
+			<View style={styles.categories} >
 				<FlatList
 					data={CATEGORIES}
 					keyExtractor={(item: any) => item.id}
 					renderItem={renderCategoryItem}
+					numColumns={2}
 				/>
-
 			</View>
-			<Image source={require('../../../assets/babyUp5.png')} style={styles.image} />
+			<View style={styles.newsItem}>
+				<NewsItem navigation={navigation} {...itemProps} />
+			</View>
 			<View style={styles.innerComponent}>
-				<TouchableOpacity style={GlobalStyles.buttonLightPinkStyle}>
+				<TouchableOpacity style={GlobalStyles.buttonLightPinkStyle} onPress={tipsPressHandler}>
 					<Text style={GlobalStyles.buttonPinkTextStyle}> הטיפים שלנו</Text>
 				</TouchableOpacity>
-				<TouchableOpacity style={GlobalStyles.buttonLightStyle}>
+				<TouchableOpacity style={GlobalStyles.buttonLightStyle} onPress={newsPressHandler}>
 					<Text style={GlobalStyles.buttonLightTextStyle}>כתבות חדשות</Text>
 				</TouchableOpacity>
 			</View>
-			
-
-
 		</View >
 	)
 };
 
 const styles = StyleSheet.create({
-	image: {
-		width: 200,
-		height: 200,
-		resizeMode: "contain",
-		alignSelf: "flex-end",
-		// alignItems: "center",
-		// justifyContent:"center",
-		marginTop: 20,
-		marginRight:40
-	},
+
 	screen: {
 		flex: 1,
-		justifyContent: "center",
-		// height: "100%",
-		// alignItems: "center",
+		justifyContent: "space-around",
+		paddingHorizontal: 25,
+		paddingVertical: 30,
 		backgroundColor: GlobalStyles.colors.appBodyBackColor,
 	},
-	innerComponent: {
-		flexDirection: 'row',
-		gap: 10,
-		marginBottom: 20,
-		marginTop: 45,
-		justifyContent: "center",
+	categories: {
+		flex: 0.5,
+		paddingTop: 50,
 	},
+	innerComponent: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: "flex-start",
+		justifyContent: "space-around",
+	},
+	newsItem: {
+		paddingTop: 30,
+		justifyContent: 'flex-end',
+		opacity: 0.9
+	}
 });

@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, Image } from 'react-native'
-import { FC, useLayoutEffect } from 'react'
+import { FC, } from 'react'
 import MealList from '../MealList/MealList';
 import { MEALS } from '../../../data';
 import { useSelector } from 'react-redux';

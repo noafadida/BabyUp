@@ -1,10 +1,9 @@
 import { View, Text, Pressable, StyleSheet, Image, Platform } from 'react-native'
 import React, { FC } from 'react';
-import { ROUTES_NAMES } from '../../consts/Routes';
 import MealDetails from '../MealDetails';
 import { GlobalStyles } from '../../consts/styles';
 
-const MealItem: FC<{ navigation: any }> = ({ id, title, imageUrl, duration, complexity, affordability, navigation }: any) => {
+const MealItem: FC<{ navigation: any }> = ({ id, title, imageUrl, duration, complexity, navigation }: any) => {
 	const selectMealItemHandler = () => {
 		navigation.navigate("MealDetailScreen", {
 			mealId: id
@@ -25,7 +24,6 @@ const MealItem: FC<{ navigation: any }> = ({ id, title, imageUrl, duration, comp
 					</View>
 					<MealDetails
 						duration={duration}
-						affordability={affordability}
 						complexity={complexity}
 					/>
 				</View>
@@ -39,17 +37,14 @@ const styles = StyleSheet.create({
 	mealItem: {
 		marginVertical: 12,
 		marginHorizontal: 15,
-		borderRadius: 4,
-		backgroundColor: '#f3e7e4',
-		elevation: 4,
-		shadowColor: "#ceb5a7",
-		shadowOpacity: 0.5,
+		backgroundColor: 'white',
+        shadowColor: "#ceb5a7",
+		shadowOpacity: 0.3,
 		shadowOffset: { width: 0, height: 2 },
-		shadowRadius: 6,
+		shadowRadius: 1,
 		overflow: Platform.OS === 'android' ? "hidden" : 'visible'
 	},
 	innerContainer: {
-		borderRadius: 4,
 		overflow: 'hidden',
 	},
 	image: {
@@ -59,13 +54,13 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 16,
 		fontWeight: "bold",
-		letterSpacing: 0.3,
+		letterSpacing: 0.4,
 		textAlign: "center",
 		marginTop: 7,
 		color: GlobalStyles.colors.mealNameTitle
 	},
 	buttonPressed: {
-		opacity: 0.7,
+		opacity: 0.9,
 	},
 
 })

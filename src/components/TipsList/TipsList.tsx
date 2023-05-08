@@ -1,22 +1,24 @@
 import React, { FC } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
-import MealItem from './MealItem';
+import TipsItem from './TipsItem';
 import { GlobalStyles } from '../../consts/styles';
 
 
-const MealList: FC<{ navigation: any, items: any, route?: any }> = ({ navigation, items, route }) => {
+const TipsList: FC<{ navigation: any, items: any, route?: any }> = ({ navigation, items, route }) => {
 
-    const renderMealItem = (itemData: any) => {
+    const renderTipItem = (itemData: any) => {
         const item = itemData.item
+        console.log(item.imageUrl)
 
-        const mealItemProps = {
+        const itemProps = {
             id: item.id,
-            title: item.title,
             imageUrl: item.imageUrl,
-            duration: item.duration,
-            complexity: item.complexity,
+            title: item.title,
+            subTitle: item.subTitle,
+            content: item.content
+
         }
-        return <MealItem navigation={navigation} {...mealItemProps} />
+        return <TipsItem navigation={navigation} {...itemProps} />
 
     }
 
@@ -25,13 +27,12 @@ const MealList: FC<{ navigation: any, items: any, route?: any }> = ({ navigation
             <FlatList
                 data={items}
                 keyExtractor={(item): any => item.id}
-                renderItem={renderMealItem}
+                renderItem={renderTipItem}
             />
         </View>
     )
 }
-
-export default MealList
+export default TipsList
 
 const styles = StyleSheet.create({
     container: {

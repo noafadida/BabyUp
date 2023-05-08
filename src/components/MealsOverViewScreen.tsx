@@ -3,6 +3,7 @@ import { MEALS, CATEGORIES } from '../../data';
 import { useLayoutEffect } from 'react'
 import MealList from './MealList/MealList';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import FilteredList from './MealList/FilteredList';
 
 const MealsOverViewScreen: FC<{ route: any, navigation: any }> = ({ route, navigation }) => {
     const catId = route.params.categoryId
@@ -24,7 +25,11 @@ const MealsOverViewScreen: FC<{ route: any, navigation: any }> = ({ route, navig
         })
     }, [catId, navigation])
 
-    return <MealList navigation={navigation} items={diaplayMeals} />
+    return (
+        catId === 'c4' ? <FilteredList navigation={navigation} items={diaplayMeals}/> :
+            <MealList navigation={navigation} items={diaplayMeals} />
+    )
+
 }
 
 const styles = StyleSheet.create({
@@ -34,7 +39,7 @@ const styles = StyleSheet.create({
         textAlignVertical: "center",
         marginBottom: 5,
         letterSpacing: 0.8,
-        textAlign: "center", 
+        textAlign: "center",
     },
     image: {
         resizeMode: 'contain',
@@ -42,9 +47,9 @@ const styles = StyleSheet.create({
         width: 45
     },
     homeHeader: {
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
 })
 
 export default MealsOverViewScreen;

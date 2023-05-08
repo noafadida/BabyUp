@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native'
+import { GlobalStyles } from '../../consts/styles';
 
 function Subtitle({ children }: any) {
     return (
@@ -12,15 +13,15 @@ export default Subtitle;
 
 const styles = StyleSheet.create({
     subTitle: {
-        color: "#ceb5a7",
-        fontSize: 16,
+        color: GlobalStyles.colors.headerBackColor,
+        fontSize: 18,
+        letterSpacing:0.7,
         fontWeight: "500",
         textAlign: "center",
     },
     subTitleContainer: {
-        borderBottomColor: "#f3e7e4",
+        borderBottomColor: "pink",
         borderBottomWidth: 2,
-        padding: 6,
         marginHorizontal: 12,
         marginVertical: 6,
     }

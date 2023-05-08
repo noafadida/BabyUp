@@ -8,6 +8,9 @@ import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { Ionicons } from '@expo/vector-icons';
 import { Gender } from '../types';
 import moment from 'moment';
+import AllergyList from '../components/AllergyList';
+import CustomModal from '../components/CustomModal';
+
 declare module 'react-native-datepicker';
 
 interface InputContainerStyle extends ViewStyle {
@@ -23,11 +26,23 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
 	const [babyName, setBabyName] = useState('');
 	const [birthdate, setBirthdate] = useState<string>(EMPTY_STRING);
 	const [showDatePicker, setShowDatePicker] = useState(false);
-
+	const [isAllergyBabyModalOpen, setIsAllergyBabyModalOpen] = useState<boolean>(false)
 	const [dateValid, setDateValid] = useState(true);
 	const [nameValid, setNameValid] = useState(true);
 
 	const [Gender, setGender] = useState<Gender>('FEMALE');
+
+	const [selectedAllergies, setSelectedAllergies] = useState<string[]>([]);
+
+	console.log(selectedAllergies)
+
+	const toggleAllergy = (allergyId: string) => {
+		if (selectedAllergies.includes(allergyId)) {
+			setSelectedAllergies(selectedAllergies?.filter((id) => id !== allergyId));
+		} else {
+			setSelectedAllergies([...selectedAllergies, allergyId]);
+		}
+	};
 
 	const { LoginPage } = ROUTES_NAMES
 
@@ -73,7 +88,8 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
 				gender: Gender,
 				babyBirthDate: birthdate,
 				babyName,
-				email
+				email,
+				selectedAllergies
 			}
 			const docRef = firebaseDoc(db, "users", uid);
 			await setDoc(docRef, docData);
@@ -81,6 +97,10 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
 		} catch (e) {
 			Alert.alert("Error adding document")
 		}
+	}
+
+	const onModalClose = () => {
+		setIsAllergyBabyModalOpen(false)
 	}
 
 	return (
@@ -144,7 +164,14 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
 					<Ionicons style={styles.genderIcon} name="female-outline" size={24} color="#bf697c" />
 				</Pressable>
 			</View>
-
+			<TouchableOpacity onPress={() => setIsAllergyBabyModalOpen(true)} style={GlobalStyles.buttonLightStyle}>
+				<Text style={[GlobalStyles.buttonLightTextStyle, { color: '#fb6f92' }]}>רגישויות לתינוק/ת </Text>
+			</TouchableOpacity>
+			{isAllergyBabyModalOpen && (
+				<CustomModal onClose={() => setIsAllergyBabyModalOpen(false)} visible={isAllergyBabyModalOpen} animationType='fade' transparent>
+					<AllergyList onClose={onModalClose} toggleAllergy={toggleAllergy} selectedAllergies={selectedAllergies} />
+				</CustomModal>
+			)}
 			<TouchableOpacity style={GlobalStyles.buttonPinkStyle} onPress={handleSignup}>
 				<Text style={GlobalStyles.buttonPinkTextStyle}> הרשמה </Text>
 			</TouchableOpacity>
@@ -190,6 +217,12 @@ const styles = StyleSheet.create({
 	},
 	genderIcon: {
 		marginHorizontal: 10
+	},
+	updateButton: {
+		padding: 10,
+		backgroundColor: '#ddd',
+		marginTop: 10,
+		borderRadius: 10
 	}
 });
 

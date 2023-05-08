@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, ViewStyle, Button, Pressable, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ViewStyle, Button, Pressable, Alert, TouchableOpacity } from 'react-native';
 import { EMPTY_STRING } from '../../consts/GeneralConsts';
 import { babyNameIsShort, babyNotInTheRightAge, usernameIsShort } from '../../consts/AlertMessegesConsts';
 import { GlobalStyles } from '../../consts/styles';
@@ -9,6 +9,8 @@ import { doc, setDoc, db } from '../../firebase'
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomModal from '../CustomModal';
+import AllergyList from '../AllergyList';
 declare module 'react-native-datepicker';
 
 interface InputContainerStyle extends ViewStyle {
@@ -26,7 +28,10 @@ export default function UpdateBabyInfoModal({ onClose }: Props) {
 	const [birthdate, setBirthdate] = useState<string>(EMPTY_STRING);
 	const [showDatePicker, setShowDatePicker] = useState(false);
 	const [isDateValid, setIsDateValid] = useState(true);
+	const [isAllergyBabyModalOpen, setIsAllergyBabyModalOpen] = useState<boolean>(false)
+	const [selectedAllergies, setSelectedAllergies] = useState<string[]>([])
 	const [Gender, setGender] = useState<Gender>('FEMALE');
+
 
 	useEffect(() => {
 		const isDidntValidUsername = !!username && username?.length < 3;
@@ -53,13 +58,14 @@ export default function UpdateBabyInfoModal({ onClose }: Props) {
 	}, [birthdate])
 
 	const updateUserInfoHandler = async () => {
-		if (!!username && !!Gender && !!birthdate && !!babyName) {
+		if (!!username && !!Gender && !!birthdate && !!babyName && !!selectedAllergies) {
 			try {
 				const updatedInfo = {
 					parentName: username,
 					gender: Gender,
 					babyBirthDate: birthdate,
-					babyName
+					babyName,
+					selectedAllergies
 				}
 				console.log(updatedInfo)
 				const uid = await AsyncStorage.getItem('user')
@@ -75,11 +81,22 @@ export default function UpdateBabyInfoModal({ onClose }: Props) {
 			console.log('ERROR', errorMessage)
 		}
 	}
+	const onModalClose = () => {
+		setIsAllergyBabyModalOpen(false)
+	}
+
+	const toggleAllergy = (allergyId: string) => {
+		if (selectedAllergies.includes(allergyId)) {
+			setSelectedAllergies(selectedAllergies?.filter((id) => id !== allergyId));
+		} else {
+			setSelectedAllergies([...selectedAllergies, allergyId]);
+		}
+	};
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.head}>
-				<Text style={[GlobalStyles.titleTextStyle, { color: 'white' }]}>עריכת פרופיל</Text>
+				<Text style={[GlobalStyles.titleTextStyle, { color: '#B7C4CF' }]}>עריכת פרופיל</Text>
 			</View>
 
 			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
@@ -128,19 +145,29 @@ export default function UpdateBabyInfoModal({ onClose }: Props) {
 					<Button color={GlobalStyles.colors.btnColor} title="Done" onPress={() => setShowDatePicker(false)} />
 				</View>
 			)}
+			<TouchableOpacity onPress={() => setIsAllergyBabyModalOpen(true)} style={styles.updateButton}>
+				<Text style={[GlobalStyles.buttonLightTextStyle, { color: '#95BDFF' }]}>רגישויות לתינוק/ת </Text>
+			</TouchableOpacity>
+			{isAllergyBabyModalOpen && (
+				<CustomModal onClose={() => setIsAllergyBabyModalOpen(false)} visible={isAllergyBabyModalOpen} animationType='fade' transparent>
+					<AllergyList onClose={onModalClose} toggleAllergy={toggleAllergy} selectedAllergies={selectedAllergies} />
+				</CustomModal>
+			)}
+
+
 
 
 			<View style={styles.gender}>
-				<Pressable onPress={() => setGender('MALE')} style={[styles.genderButton, Gender === 'MALE' && { backgroundColor: '#abd3e7' }]}>
+				<Pressable onPress={() => setGender('MALE')} style={[styles.genderButton, Gender === 'MALE' && { backgroundColor: '#DFF6FF' }]}>
 					<Ionicons style={styles.genderIcon} name="male-outline" size={24} color="#63a5c5" />
 				</Pressable>
-				<Pressable onPress={() => setGender('FEMALE')} style={[styles.genderButton, Gender === 'FEMALE' && { backgroundColor: '#f6c3cf' }]}>
-					<Ionicons style={styles.genderIcon} name="female-outline" size={24} color="#bf697c" />
+				<Pressable onPress={() => setGender('FEMALE')} style={[styles.genderButton, Gender === 'FEMALE' && { backgroundColor: '#FFD6EC' }]}>
+					<Ionicons style={styles.genderIcon} name="female-outline" size={24} color="#FF8DC7" />
 				</Pressable>
 			</View>
 			{!!errorMessage && <Text style={[GlobalStyles.errorText, { marginTop: 10 }]}>{errorMessage}</Text>}
 			<Pressable style={styles.updateButton} onPress={updateUserInfoHandler}>
-				<Text>שמור שינויים</Text>
+				<Text style={styles.updateButtonTitle}>שמור שינויים</Text>
 			</Pressable>
 		</View>
 	)
@@ -149,7 +176,7 @@ export default function UpdateBabyInfoModal({ onClose }: Props) {
 const styles = StyleSheet.create({
 	container: {
 		width: '80%',
-		backgroundColor: '#afd4e3',
+		backgroundColor: '#ECF2FF',
 		padding: 15,
 		borderRadius: 10,
 		justifyContent: 'center',
@@ -165,16 +192,17 @@ const styles = StyleSheet.create({
 		width: '100%',
 	},
 	birthText: {
-		color: '#ffffff',
-		fontSize: 16,
+		color: '#95BDFF',
+		fontSize: 14,
 		fontWeight: "400",
-		marginBottom: 10
+		marginBottom: 15
 	},
 	genderButton: {
 		paddingVertical: 10,
-		paddingHorizontal: 20,
+		paddingHorizontal: 15,
 		marginHorizontal: 10,
-		borderRadius: 10
+		marginVertical: 15,
+		borderRadius: 8
 	},
 	gender: {
 		flexDirection: 'row',
@@ -182,7 +210,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	genderIcon: {
-		marginHorizontal: 10
+		marginHorizontal: 10,
 	},
 	inputDate: {
 		flex: 1,
@@ -193,8 +221,12 @@ const styles = StyleSheet.create({
 	},
 	updateButton: {
 		padding: 10,
-		backgroundColor: '#ddd',
-		marginTop: 10,
-		borderRadius: 10
+		backgroundColor: 'white',
+		marginVertical: 10,
+		borderRadius: 5
+	},
+	updateButtonTitle: {
+		color: "#95BDFF",
+		fontSize: 16
 	}
 });

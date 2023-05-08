@@ -10,6 +10,10 @@ import PasswordResetPage from "../pages/PasswordResetPage";
 import MealsOverViewScreen from "../components/MealsOverViewScreen";
 import MealDetailScreen from "../pages/MealDetailScreen";
 import DrawerNavigator from "./DrawerNavigator";
+import newsScreen from '../components/newsScreen';
+import TipsScreen from '../components/TipsScreen';
+import ArticleDetailsScreen from '../pages/ArticleDetailsScreen';
+import TipsDetailsScreen from '../pages/TipsDetailsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,7 +29,7 @@ export default function StackNavigator() {
 		</View>
 	)
 
-	const { babyUp, login, resetPassword, signup, home } = SCREEN_NAMES;
+	const { babyUp, login, resetPassword, signup, home, newsScreenName, TipsScreenName } = SCREEN_NAMES;
 
 	return (
 		<Stack.Navigator screenOptions={{
@@ -71,6 +75,24 @@ export default function StackNavigator() {
 				name="MealDetailScreen"
 				component={MealDetailScreen}
 			/>
+			<Stack.Screen
+				name="newsScreen"
+				component={newsScreen}
+				options={{ title: newsScreenName }}
+			/>
+			<Stack.Screen
+				name="ArticleDetailsScreen"
+				component={ArticleDetailsScreen}
+			/>
+			<Stack.Screen
+				name="TipsScreen"
+				component={TipsScreen}
+			/>
+			<Stack.Screen
+				name="TipsDetailsScreen"
+				component={TipsDetailsScreen}
+			/>
+
 		</Stack.Navigator>
 
 	)

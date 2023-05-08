@@ -12,9 +12,9 @@ export const GlobalStyles = {
 		drawerInactiveTextColor: "grey",
 		drawerBackColor: "#ccc",
 
-		mealsBackColor: "#eddcd2",
-		mealTextContent: "#d0b49f",
-		mealNameTitle: "#9f7e69"
+		mealsBackColor: "white",
+		mealTextContent: "pink",
+		mealNameTitle: "#fb6f92"
 	},
 
 	inputContainerStyle: {
@@ -69,6 +69,7 @@ export const GlobalStyles = {
 	},
 	buttonLightTextStyle: {
 		fontSize: 18,
+		color:"#fb6f92"
 	},
 	titleTextStyle: {
 		fontSize: 24,
@@ -82,18 +83,15 @@ export const GlobalStyles = {
 		marginBottom: 16,
 	},
 
-	detailsMeal: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		padding: 8,
-		justifyContent: "center"
-	},
+
 
 	detailItem: {
 		marginHorizontal: 6,
 		fontSize: 14,
-		color: "#d0b49f",
+		color: "white",
 	},
+
+
 
 };
 

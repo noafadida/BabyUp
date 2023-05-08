@@ -9,13 +9,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 import CustomModal from '../CustomModal';
 import UpdateBabyInfoModal from './UpdateBabyInfoModal';
+import { Allergies } from '../../consts';
+import { Allergy } from '../../types';
 
 const INITIAL_BABY_INFO_VALUE = {
 	babyAge: EMPTY_STRING,
 	babyName: EMPTY_STRING,
 	babyBirthDate: EMPTY_STRING,
 	parentName: EMPTY_STRING,
-	gender: EMPTY_STRING
+	gender: EMPTY_STRING,
+	selectedAllergies: []
 }
 type BabyInfo = {
 	babyAge: string;
@@ -23,6 +26,7 @@ type BabyInfo = {
 	babyBirthDate: string;
 	parentName: string;
 	gender: string;
+	selectedAllergies: string[]
 }
 
 export let babyGender = EMPTY_STRING
@@ -38,14 +42,15 @@ export const ProfileTab = ({ route, navigation }: any) => {
 			const userInfo = JSON.parse(user || EMPTY_STRING)
 			const docRef = await getDoc(doc(db, "users", userInfo));
 			const docData: any = docRef.data()
-			const { babyName, babyBirthDate, parentName, gender } = docData || {};
+			const { babyName, babyBirthDate, parentName, gender, selectedAllergies } = docData || {};
 			const ageMonths = getAgeMonth(babyBirthDate)
 			setBabyInfo({
 				babyAge: ageMonths.toString(),
 				babyBirthDate: babyBirthDate,
 				babyName,
 				parentName,
-				gender: gender === 'MALE' ? 'זכר' : 'נקבה'
+				gender: gender === 'MALE' ? 'זכר' : 'נקבה',
+				selectedAllergies
 			})
 		}
 		fetchUserInfo()
@@ -56,14 +61,15 @@ export const ProfileTab = ({ route, navigation }: any) => {
 			const user = await AsyncStorage.getItem('user')
 			const userInfo = JSON.parse(user || EMPTY_STRING)
 			onSnapshot(doc(db, "users", userInfo), (doc) => {
-				const { babyBirthDate, babyName, parentName, gender } = doc.data() || {}
+				const { babyBirthDate, babyName, parentName, gender, selectedAllergies } = doc.data() || {}
 				const ageMonths = getAgeMonth(babyBirthDate)
 				setBabyInfo({
 					babyAge: ageMonths.toString(),
 					babyBirthDate: babyBirthDate,
 					babyName,
 					parentName,
-					gender: gender === 'MALE' ? 'זכר' : 'נקבה'
+					gender: gender === 'MALE' ? 'זכר' : 'נקבה',
+					selectedAllergies
 				})
 			});
 		}
@@ -74,6 +80,11 @@ export const ProfileTab = ({ route, navigation }: any) => {
 		return moment().diff(moment(babyBirthDate), 'months');
 	}
 
+	const getAllergyName = (id: string) => {
+		const allergy: any = Allergies?.filter((item: Allergy) => item?.id === id)
+		return allergy?.[0]?.name || EMPTY_STRING;
+	}
+
 	const onModalClose = () => {
 		setIsInfoChanged(true)
 		setIsUpdateBabyInfoModalOpen(false)
@@ -81,7 +92,7 @@ export const ProfileTab = ({ route, navigation }: any) => {
 
 	return (
 
-		<View style={[styles.profileTabScreen, {backgroundColor: babyInfo?.gender === 'נקבה' ? '#ffe4f3' : "#E9F8F9"}]}>
+		<View style={[styles.profileTabScreen, { backgroundColor: babyInfo?.gender === 'נקבה' ? '#ffe4f3' : "#E9F8F9" }]}>
 			<Image source={require('../../../assets/babyupLogoNew.png')} style={styles.image} />
 			<Text style={[GlobalStyles.titleTextStyleName, { color: babyInfo?.gender === 'נקבה' ? '#fb6f92' : "#6DA9E4", }]}>{babyInfo?.babyName}'s Mommy</Text>
 			<View style={styles.innerComponent}>
@@ -99,22 +110,32 @@ export const ProfileTab = ({ route, navigation }: any) => {
 			</View>
 			<View style={[styles.deatils, { backgroundColor: babyInfo?.gender === 'זכר' ? '#B9E0FF' : '#FFD6EC' }]}>
 				<View style={styles.innerDetails}>
-					<Text style={[styles.titleDetails,{color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7"}]}>שם</Text>
+					<Text style={[styles.titleDetails, { color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7" }]}>שם</Text>
 					<Text style={styles.textDetails}>{babyInfo?.babyName}</Text>
 				</View>
 				<View style={styles.innerDetails}>
-					<Text style={[styles.titleDetails,{color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7"}]}>הורה</Text>
+					<Text style={[styles.titleDetails, { color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7" }]}>הורה</Text>
 					<Text style={styles.textDetails}>{babyInfo?.parentName}</Text>
 				</View>
 				<View style={styles.innerDetails}>
-					<Text style={[styles.titleDetails,{color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7"}]}>גיל</Text>
+					<Text style={[styles.titleDetails, { color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7" }]}>גיל</Text>
 					<Text style={styles.textDetails}>{babyInfo?.babyAge} חודשים</Text>
 				</View>
 				<View style={styles.innerDetails}>
-					<Text style={[styles.titleDetails,{color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7"}]}>מין</Text>
+					<Text style={[styles.titleDetails, { color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7" }]}>מין</Text>
 					<Text style={styles.textDetails}>{babyInfo.gender}</Text>
 				</View>
+				<View style={styles.innerDetails}>
+					<Text style={[styles.titleDetails, { color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7" }]}>רגישויות </Text>
+					{babyInfo?.selectedAllergies?.length > 0 && babyInfo.selectedAllergies.map((allergy: string) => {
+						const name: string = getAllergyName(allergy)
+						return (
+							<Text style={styles.textDetails}>{name} </Text>
+						)
+					})}
+				</View>
 			</View>
+
 		</View>
 	)
 };
@@ -134,11 +155,10 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		justifyContent: 'center',
 		alignItems: "flex-end",
-		width: "74%",
-		flex: 0.3,
+		width: "75%",
 		gap: 10,
 		borderRadius: 8,
-		paddingVertical: 20
+		paddingVertical: 10
 	},
 	titleDetails: {
 		fontSize: 18,
@@ -151,11 +171,13 @@ const styles = StyleSheet.create({
 	innerDetails: {
 		flexDirection: "row-reverse",
 		marginHorizontal: 20,
-		gap: 10
+		gap: 10,
+		alignItems: 'center',
+		justifyContent: 'center'
 	},
 	profileTabScreen: {
 		flex: 1,
 		paddingTop: 35,
-		alignItems: "center",		
+		alignItems: "center",
 	},
 });

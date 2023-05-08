@@ -13,15 +13,13 @@ export default List;
 
 const styles = StyleSheet.create({
     listItem: {
-        borderRadius: 6,
-        paddingHorizontal: 4,
-        paddingVertical: 6,
-        marginVertical: 2,
-        marginHorizontal: 12,
-        backgroundColor: "#f3e7e4",
+        paddingVertical: 2,
+        marginVertical: 4,
+        marginHorizontal: 14,
     },
     itemContentText: {
-        color: GlobalStyles.colors.mealTextContent,
-        textAlign: "center",
+        // color: "#7F8487",
+        textAlign: "right",
+        fontSize:16
     }
 })

@@ -31,31 +31,29 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",   
         justifyContent:"center",
-        marginVertical: 15,
-        marginHorizontal:20,
+        marginVertical: 5,
         shadowColor: "#ff9ebb",
-        shadowOpacity: 0.2,
+        shadowOpacity: 0.3,
         shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 8,
+        shadowRadius: 0,
         overflow: Platform.OS === 'android' ? "hidden" : 'visible'
     },
     buttonCategory: {
-        flex: 1,
-        borderRadius: 8,
+        borderRadius: 0,
+        flex:1
     },
     buttonCategoryPressed: {
         opacity: 0.6,
     },
     innerContainer: {
         flex: 1,
-        paddingVertical: 14,
-        paddingHorizontal: 20,
-        width:200,
+        paddingVertical: 5,
+        width:180,
         flexDirection: 'row',
         justifyContent: "center",
-        borderRadius: 8,
+        borderRadius: 0,
         backgroundColor: GlobalStyles.colors.btnLightColor,
-        gap: 5
+        gap: 3
     },
     text: {
         fontSize: 20,
