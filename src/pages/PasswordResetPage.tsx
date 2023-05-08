@@ -1,11 +1,10 @@
 import React, { useState, FC } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, ViewStyle } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, Alert } from 'react-native';
 import { ROUTES_NAMES } from '../consts/Routes';
 import { GlobalStyles } from '../consts/styles';
-
-interface InputContainerStyle extends ViewStyle {
-	marginVertical?: number;
-}
+import { emailNotFound, resetPassword } from '../consts/AlertMessegesConsts';
+import { auth, sendPasswordResetEmail } from '../firebase';
+import { InputContainerStyle } from '../types';
 
 const PasswordResetPage: FC<{ navigation: any }> = ({ navigation }) => {
 	const [email, setEmail] = useState('');
@@ -13,8 +12,14 @@ const PasswordResetPage: FC<{ navigation: any }> = ({ navigation }) => {
 
 	const { LoginPage } = ROUTES_NAMES
 
-	const handlePasswordResetButton = () => {
-		// Handle password reset logic here
+	const handlePasswordResetButton = async () => {
+		try {
+			await sendPasswordResetEmail(auth, email)
+			Alert.alert(resetPassword)
+		} catch (e: any) {
+			const error = e?.message?.split('/')?.[1]?.slice(0, -2)
+			Alert.alert(error === 'user-not-found' ? emailNotFound : e?.message)
+		}
 	};
 
 	const handleEmailChange = (emailValue: any) => {
@@ -22,11 +27,6 @@ const PasswordResetPage: FC<{ navigation: any }> = ({ navigation }) => {
 		setEmail(emailValue);
 		setValidEmail(isEmailValid ? true : false)
 	};
-
-	const handleLogin = () => {
-		navigation.navigate(LoginPage);
-	};
-
 
 	return (
 		<View style={styles.container}>
@@ -49,9 +49,9 @@ const PasswordResetPage: FC<{ navigation: any }> = ({ navigation }) => {
 			)}
 
 			<TouchableOpacity style={GlobalStyles.buttonPinkStyle} onPress={handlePasswordResetButton}>
-				<Text style={GlobalStyles.buttonPinkTextStyle}>לחץ כאן לאיפוס הסיסמא</Text>
+				<Text style={GlobalStyles.buttonPinkTextStyle}>אפס סיסמא</Text>
 			</TouchableOpacity>
-			<Button color={GlobalStyles.colors.btnColor} title=" לעמוד ההתחברות" onPress={handleLogin} />
+			<Button color={GlobalStyles.colors.btnColor} title=" לעמוד ההתחברות" onPress={() => navigation.navigate(LoginPage)} />
 		</View>
 	);
 }

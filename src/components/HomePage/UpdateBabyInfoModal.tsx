@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet, ViewStyle, Button, Pressable, Alert,
 import { EMPTY_STRING } from '../../consts/GeneralConsts';
 import { babyNameIsShort, babyNotInTheRightAge, usernameIsShort } from '../../consts/AlertMessegesConsts';
 import { GlobalStyles } from '../../consts/styles';
-import { Gender } from '../../types';
+import { Gender, InputContainerStyle } from '../../types';
 import { Ionicons } from '@expo/vector-icons';
 import { doc, setDoc, db } from '../../firebase'
 import moment from 'moment';
@@ -12,10 +12,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomModal from '../CustomModal';
 import AllergyList from '../AllergyList';
 declare module 'react-native-datepicker';
-
-interface InputContainerStyle extends ViewStyle {
-	marginVertical?: number;
-}
 
 type Props = {
 	onClose: () => void;
@@ -67,12 +63,10 @@ export default function UpdateBabyInfoModal({ onClose }: Props) {
 					babyName,
 					selectedAllergies
 				}
-				console.log(updatedInfo)
 				const uid = await AsyncStorage.getItem('user')
 				const parsedUID = JSON.parse(uid || '')
 				const docRef = doc(db, "users", parsedUID);
 				await setDoc(docRef, updatedInfo);
-				console.log('success to add document')
 				onClose()
 			} catch (error) {
 				Alert.alert('Oops, try again later')

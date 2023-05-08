@@ -6,10 +6,7 @@ import { validateEmail } from '../utils';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { BackendError, incorrectEmail, passwordDidntLong, unmatchedPasswords, usernameIsShort } from '../consts/AlertMessegesConsts';
 import { ROUTES_NAMES } from '../consts/Routes';
-
-interface InputContainerStyle extends ViewStyle {
-	marginVertical?: number;
-}
+import { InputContainerStyle } from '../types';
 
 const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
 	const [email, setEmail] = useState(EMPTY_STRING);

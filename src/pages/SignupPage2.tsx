@@ -6,16 +6,12 @@ import { auth, createUserWithEmailAndPassword, db, doc as firebaseDoc, setDoc } 
 import DatePicker from 'react-native-datepicker';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { Ionicons } from '@expo/vector-icons';
-import { Gender } from '../types';
+import { Gender, InputContainerStyle } from '../types';
 import moment from 'moment';
 import AllergyList from '../components/AllergyList';
 import CustomModal from '../components/CustomModal';
 
 declare module 'react-native-datepicker';
-
-interface InputContainerStyle extends ViewStyle {
-	marginVertical?: number;
-}
 
 type Props = {
 	navigation?: any;
@@ -93,7 +89,6 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
 			}
 			const docRef = firebaseDoc(db, "users", uid);
 			await setDoc(docRef, docData);
-			console.log('success to add document')
 		} catch (e) {
 			Alert.alert("Error adding document")
 		}

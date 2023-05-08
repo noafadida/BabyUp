@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native'
 import { GlobalStyles } from '../../consts/styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -36,7 +36,7 @@ export const ProfileTab = ({ route, navigation }: any) => {
 	const [isUpdateBabyInfoModalOpen, setIsUpdateBabyInfoModalOpen] = useState<boolean>(false)
 	const [isInfoChanged, setIsInfoChanged] = useState(false);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const fetchUserInfo = async () => {
 			const user = await AsyncStorage.getItem('user')
 			const userInfo = JSON.parse(user || EMPTY_STRING)
