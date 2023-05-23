@@ -5,7 +5,7 @@ import { ROUTES_NAMES } from '../consts/Routes';
 import { GlobalStyles } from '../consts/styles';
 import { validateEmail } from '../utils';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
-import { BackendError, incorrectEmail, unfilledInput } from '../consts/AlertMessegesConsts';
+import { BackendError, incorrectEmail, loginError, unfilledInput } from '../consts/AlertMessegesConsts';
 import { auth, signInWithEmailAndPassword } from '../firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { InputContainerStyle } from '../types';
@@ -30,9 +30,8 @@ const LoginPage: FC<{ navigation: any }> = ({ navigation }) => {
 			} else {
 				Alert.alert(unfilledInput)
 			}
-		} catch (e) {
-			console.log(e)
-			Alert.alert(BackendError)
+		} catch (e: any) {
+			Alert.alert(loginError)
 		}
 	};
 

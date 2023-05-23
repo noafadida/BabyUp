@@ -30,8 +30,6 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
 
 	const [selectedAllergies, setSelectedAllergies] = useState<string[]>([]);
 
-	console.log(selectedAllergies)
-
 	const toggleAllergy = (allergyId: string) => {
 		if (selectedAllergies.includes(allergyId)) {
 			setSelectedAllergies(selectedAllergies?.filter((id) => id !== allergyId));
@@ -85,7 +83,8 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
 				babyBirthDate: birthdate,
 				babyName,
 				email,
-				selectedAllergies
+				selectedAllergies,
+				isAdmin: false
 			}
 			const docRef = firebaseDoc(db, "users", uid);
 			await setDoc(docRef, docData);

@@ -3,10 +3,10 @@ export class TipTitem {
     imageUrl: String;
     title: String;
     subTitle: String;
-    content: String;
+    content: Object[];
 
 
-    constructor(id: string, imageUrl: string, title: string, subTitle: string, content: string) {
+    constructor(id: string, imageUrl: string, title: string, subTitle: string, content: Object[]) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.title = title;

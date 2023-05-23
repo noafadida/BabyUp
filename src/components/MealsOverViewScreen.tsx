@@ -26,8 +26,8 @@ const MealsOverViewScreen: FC<{ route: any, navigation: any }> = ({ route, navig
     }, [catId, navigation])
 
     return (
-        catId === 'c4' ? <FilteredList navigation={navigation} items={diaplayMeals}/> :
-            <MealList navigation={navigation} items={diaplayMeals} />
+       <FilteredList navigation={navigation} items={diaplayMeals}/> 
+          
     )
 
 }

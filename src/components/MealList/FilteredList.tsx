@@ -15,7 +15,6 @@ const Filter = ({ label, value, onValueChange }: any) => {
     );
 };
 
-
 const FilteredList: FC<{ navigation: any, items: any, route?: any }> = ({ navigation }) => {
     const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false)
 

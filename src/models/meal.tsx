@@ -1,3 +1,5 @@
+import { Stars } from './stars';
+
 export class Meal {
     id: String;
     categoryIds: String[];
@@ -13,8 +15,9 @@ export class Meal {
     isNutsFree: boolean;
     isMilkFree: boolean;
     isEggsFree: boolean;
+    stars?: Stars;
 
-    constructor(id: string, categoryIds: string[], title: string, complexity: string, imageUrl: string, duration: number, ingredients: string[], steps: string[], isVegan: boolean, isVegetarian: boolean, isGlutenFree: boolean, isNutsFree: boolean, isMilkFree: boolean, isEggsFree: boolean) {
+    constructor(id: string, categoryIds: string[], title: string, complexity: string, imageUrl: string, duration: number, ingredients: string[], steps: string[], isVegan: boolean, isVegetarian: boolean, isGlutenFree: boolean, isNutsFree: boolean, isMilkFree: boolean, isEggsFree: boolean, stars?: Stars) {
         this.id = id;
         this.categoryIds = categoryIds;
         this.title = title;
@@ -29,6 +32,7 @@ export class Meal {
         this.isNutsFree = isNutsFree;
         this.isMilkFree = isMilkFree;
         this.isEggsFree = isEggsFree;
+        this.stars=stars
     }
 };
 

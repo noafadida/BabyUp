@@ -13,11 +13,8 @@ import { BackendError } from '../consts/AlertMessegesConsts';
 import { retrieveUserData } from '../utils';
 import { doc, db, setDoc, getDoc } from '../firebase'
 
-
-
 const MealDetailScreen: FC<{ route?: any, navigation?: any }> = ({ route, navigation }) => {
 	const favoriteMealIds: any = useSelector((state: any) => state.favoriteMeals.ids);
-	const [favoriteMeals, setFavoriteMeals] = useState<any>([])
 	const [starCount, setStarCount] = useState(0);
 	const dispatch = useDispatch();
 
@@ -29,20 +26,6 @@ const MealDetailScreen: FC<{ route?: any, navigation?: any }> = ({ route, naviga
 	const selectedMeal: any = MEALS.find((meal) => meal.id === mealId)
 	const isFavorite = favoriteMealIds.includes(mealId)
 
-	useEffect(() => {
-		const fetchFavoriteMeals = async () => {
-			const uid = await retrieveUserData()
-			if (uid) {
-				const docRef = doc(db, 'favorite', uid);
-				const getDocRef = await getDoc(docRef);
-				const getDocRefData = getDocRef.data()
-				const favoriteMealsData = Object.values(getDocRefData || {})
-				setFavoriteMeals(favoriteMealsData)
-			}
-		}
-		fetchFavoriteMeals()
-	}, [favoriteMealIds])
-
 	const changeFavoriteStatusHandler = async () => {
 		try {
 			dispatch(isFavorite ? removeFavorite({ id: mealId }) : addFavorite({ id: mealId }))
@@ -51,11 +34,13 @@ const MealDetailScreen: FC<{ route?: any, navigation?: any }> = ({ route, naviga
 				const docRef = doc(db, 'favorite', uid);
 				const getDocRef = await getDoc(docRef);
 				const getDocRefData = getDocRef.data()
-				const removeMeal = { ...getDocRefData }
-				delete removeMeal[mealId]
-				const docData = isFavorite ? removeMeal : { ...getDocRefData, [mealId]: mealId }
-				console.log('docData', docData)
-				await setDoc(docRef, docData);
+				let updateMealsData = { ...getDocRefData }
+				if (isFavorite) {
+					delete updateMealsData[mealId]
+				} else {
+					updateMealsData = { ...updateMealsData, [mealId]: mealId }
+				}
+				await setDoc(docRef, updateMealsData);
 			}
 		} catch (e) {
 			console.log(e)

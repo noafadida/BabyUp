@@ -14,6 +14,12 @@ import newsScreen from '../components/newsScreen';
 import TipsScreen from '../components/TipsScreen';
 import ArticleDetailsScreen from '../pages/ArticleDetailsScreen';
 import TipsDetailsScreen from '../pages/TipsDetailsScreen';
+import SuperFoodItemScreen from '../pages/SuperFoodItemScreen';
+import AddMealPage from '../pages/AddMealPage';
+import AddArticlePage from '../pages/AddArticlePage';
+import AddTipPage from '../pages/AddTipPage';
+import EditAboutUsPage from '../pages/EditAboutUsPage';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +35,7 @@ export default function StackNavigator() {
 		</View>
 	)
 
-	const { babyUp, login, resetPassword, signup, home, newsScreenName, TipsScreenName } = SCREEN_NAMES;
+	const { babyUp, login, resetPassword, signup, home, newsScreenName, TipsScreenName, SuperFoodItem, AddMeal, AddArticle , AddTip, EditAboutUs} = SCREEN_NAMES;
 
 	return (
 		<Stack.Navigator screenOptions={{
@@ -92,6 +98,31 @@ export default function StackNavigator() {
 				name="TipsDetailsScreen"
 				component={TipsDetailsScreen}
 			/>
+			<Stack.Screen
+				name="SuperFoodItemScreen"
+				component={SuperFoodItemScreen}
+			/>
+			<Stack.Screen
+				name="AddMealPage"
+				component={AddMealPage}
+				options={{ title: AddMeal }}
+			/>
+			<Stack.Screen
+				name="AddArticlePage"
+				component={AddArticlePage}
+				options={{ title: AddArticle }}
+			/>
+			<Stack.Screen
+				name="AddTipPage"
+				component={AddTipPage}
+				options={{ title: AddTip }}
+			/>
+			<Stack.Screen
+				name="EditAboutUsPage"
+				component={EditAboutUsPage}
+				options={{ title: EditAboutUs }}
+			/>
+
 
 		</Stack.Navigator>
 

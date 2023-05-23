@@ -3,14 +3,14 @@ import { View, Text, StyleSheet, Image } from 'react-native'
 import { GlobalStyles } from '../../consts/styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { EMPTY_STRING } from '../../consts/GeneralConsts';
-import { logoutHandler } from '../../utils';
+import { logoutHandler, retrieveUserData } from '../../utils';
 import { getDoc, doc, db, onSnapshot } from '../../firebase'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 import CustomModal from '../CustomModal';
 import UpdateBabyInfoModal from './UpdateBabyInfoModal';
 import { Allergies } from '../../consts';
-import { Allergy } from '../../types';
+import { Allergy, BabyInfo } from '../../types';
 
 const INITIAL_BABY_INFO_VALUE = {
 	babyAge: EMPTY_STRING,
@@ -19,14 +19,6 @@ const INITIAL_BABY_INFO_VALUE = {
 	parentName: EMPTY_STRING,
 	gender: EMPTY_STRING,
 	selectedAllergies: []
-}
-type BabyInfo = {
-	babyAge: string;
-	babyName: string;
-	babyBirthDate: string;
-	parentName: string;
-	gender: string;
-	selectedAllergies: string[]
 }
 
 export let babyGender = EMPTY_STRING
@@ -38,30 +30,11 @@ export const ProfileTab = ({ route, navigation }: any) => {
 
 	useLayoutEffect(() => {
 		const fetchUserInfo = async () => {
-			const user = await AsyncStorage.getItem('user')
-			const userInfo = JSON.parse(user || EMPTY_STRING)
-			const docRef = await getDoc(doc(db, "users", userInfo));
-			const docData: any = docRef.data()
-			const { babyName, babyBirthDate, parentName, gender, selectedAllergies } = docData || {};
-			const ageMonths = getAgeMonth(babyBirthDate)
-			setBabyInfo({
-				babyAge: ageMonths.toString(),
-				babyBirthDate: babyBirthDate,
-				babyName,
-				parentName,
-				gender: gender === 'MALE' ? 'זכר' : 'נקבה',
-				selectedAllergies
-			})
-		}
-		fetchUserInfo()
-	}, [])
-
-	useEffect(() => {
-		const fetchChangesFromDB = async () => {
-			const user = await AsyncStorage.getItem('user')
-			const userInfo = JSON.parse(user || EMPTY_STRING)
-			onSnapshot(doc(db, "users", userInfo), (doc) => {
-				const { babyBirthDate, babyName, parentName, gender, selectedAllergies } = doc.data() || {}
+			const user = await retrieveUserData()
+			if (user) {
+				const docRef = await getDoc(doc(db, "users", user));
+				const docData: any = docRef.data()
+				const { babyName, babyBirthDate, parentName, gender, selectedAllergies } = docData || {};
 				const ageMonths = getAgeMonth(babyBirthDate)
 				setBabyInfo({
 					babyAge: ageMonths.toString(),
@@ -71,7 +44,29 @@ export const ProfileTab = ({ route, navigation }: any) => {
 					gender: gender === 'MALE' ? 'זכר' : 'נקבה',
 					selectedAllergies
 				})
-			});
+			}
+		}
+		fetchUserInfo()
+	}, [])
+
+	useEffect(() => {
+		const fetchChangesFromDB = async () => {
+			const user = await retrieveUserData()
+			if (user) {
+				onSnapshot(doc(db, "users", user), (doc) => {
+					const { babyBirthDate, babyName, parentName, gender, selectedAllergies } = doc.data() || {}
+					const ageMonths = getAgeMonth(babyBirthDate)
+					setBabyInfo({
+						babyAge: ageMonths.toString(),
+						babyBirthDate: babyBirthDate,
+						babyName,
+						parentName,
+						gender: gender === 'MALE' ? 'זכר' : 'נקבה',
+						selectedAllergies
+					})
+				});
+			}
+			setIsInfoChanged(false)
 		}
 		fetchChangesFromDB()
 	}, [isInfoChanged])
@@ -130,7 +125,7 @@ export const ProfileTab = ({ route, navigation }: any) => {
 					{babyInfo?.selectedAllergies?.length > 0 && babyInfo.selectedAllergies.map((allergy: string) => {
 						const name: string = getAllergyName(allergy)
 						return (
-							<Text style={styles.textDetails}>{name} </Text>
+							<Text key={allergy} style={styles.textDetails}>{name} </Text>
 						)
 					})}
 				</View>

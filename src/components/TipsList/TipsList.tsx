@@ -8,7 +8,6 @@ const TipsList: FC<{ navigation: any, items: any, route?: any }> = ({ navigation
 
     const renderTipItem = (itemData: any) => {
         const item = itemData.item
-        console.log(item.imageUrl)
 
         const itemProps = {
             id: item.id,

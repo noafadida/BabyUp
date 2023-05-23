@@ -1,4 +1,4 @@
-import React, { FC, useLayoutEffect } from 'react';
+import React, { FC, useLayoutEffect, useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,12 +7,28 @@ import { TIcon } from '../../types';
 import { ProfileTab } from '../components/HomePage/ProfileTab';
 import { HomeTab } from '../components/HomePage/HomeTab';
 import { FavoritesTab } from '../components/HomePage/FavoriteTab';
+import { AdminTab } from '../components/HomePage/AdminTab';
+import { retrieveUserData } from '../utils';
+import { db, doc, getDoc } from '../firebase';
 
 const HomePage: FC<{ route: any, navigation: any, }> = ({ navigation, route }) => {
 	const Tab = createBottomTabNavigator();
-
-	const { FavoritesScreen, HomeScreen, ProfileScreen } = TAB_ROUTES_NAMES
+	const [isAdmin, setIsAdmin] = useState<boolean>(false)
+	console.log("isAdmin" + isAdmin)
+	const { FavoritesScreen, HomeScreen, ProfileScreen, AdminScreen } = TAB_ROUTES_NAMES
 	const name = route.params //NEED TO FIX
+
+	useEffect(() => {
+		const fetchUserInfo = async () => {
+			const user = await retrieveUserData()
+			if (user) {
+				const docRef = await getDoc(doc(db, "users", user));
+				const docData: any = docRef.data()
+				setIsAdmin(docData?.isAdmin);
+			}
+		}
+		fetchUserInfo()
+	}, [])
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -40,7 +56,10 @@ const HomePage: FC<{ route: any, navigation: any, }> = ({ navigation, route }) =
 							iconName = focused ? "person" : "person-outline";
 						} else if (route.name === FavoritesScreen) {
 							iconName = focused ? 'ios-heart' : 'ios-heart-outline'
+						} else if (route.name === AdminScreen) {
+							iconName = focused ? 'ios-settings-sharp' : 'ios-settings-outline'
 						}
+
 						return <Ionicons name={iconName as TIcon} size={size} color={color} />;
 					},
 					tabBarActiveTintColor: "#ff477e",
@@ -72,6 +91,12 @@ const HomePage: FC<{ route: any, navigation: any, }> = ({ navigation, route }) =
 					initialParams={{ name: FavoritesScreen }}
 					options={{ title: "המועדפים שלי" }}
 				/>
+				{isAdmin===true && <Tab.Screen
+					name={AdminScreen}
+					component={AdminTab}
+					initialParams={{ name: AdminScreen }}
+					options={{ title: " הרשאות מנהל" }}
+				/>}
 			</Tab.Navigator>
 		</View>
 	);
