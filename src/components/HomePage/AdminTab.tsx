@@ -126,10 +126,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     gridItem: {
-        shadowColor: "#ff9ebb",
-        shadowOpacity: 0.3,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 0,
+		//AMIT - THIS MAKING ALERT IN CONSOLE
+        //shadowColor: "#ff9ebb",
+        //shadowOpacity: 0.3,
+        //shadowOffset: { width: 0, height: 2 },
+        //shadowRadius: 0,
         overflow: Platform.OS === 'android' ? "hidden" : 'visible'
     },
     adminTabScreen: {

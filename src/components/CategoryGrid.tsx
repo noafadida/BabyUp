@@ -32,10 +32,11 @@ const styles = StyleSheet.create({
         alignItems: "center",   
         justifyContent:"center",
         marginVertical: 5,
-        shadowColor: "#ff9ebb",
-        shadowOpacity: 0.3,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 0,
+		//AMIT - THIS MAKING ALERT IN CONSOLE
+        //shadowColor: "#ff9ebb",
+        //shadowOpacity: 0.3,
+        //shadowOffset: { width: 0, height: 2 },
+        //shadowRadius: 0,
         overflow: Platform.OS === 'android' ? "hidden" : 'visible'
     },
     buttonCategory: {

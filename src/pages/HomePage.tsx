@@ -14,7 +14,6 @@ import { db, doc, getDoc } from '../firebase';
 const HomePage: FC<{ route: any, navigation: any, }> = ({ navigation, route }) => {
 	const Tab = createBottomTabNavigator();
 	const [isAdmin, setIsAdmin] = useState<boolean>(false)
-	console.log("isAdmin" + isAdmin)
 	const { FavoritesScreen, HomeScreen, ProfileScreen, AdminScreen } = TAB_ROUTES_NAMES
 	const name = route.params //NEED TO FIX
 

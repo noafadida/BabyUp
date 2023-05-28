@@ -89,6 +89,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
 			const docRef = firebaseDoc(db, "users", uid);
 			await setDoc(docRef, docData);
 		} catch (e) {
+			console.log(e)
 			Alert.alert("Error adding document")
 		}
 	}

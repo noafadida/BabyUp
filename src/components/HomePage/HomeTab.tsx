@@ -1,8 +1,8 @@
-import { View, FlatList, StyleSheet, TouchableOpacity, Text, Image } from 'react-native'
+import { View, FlatList, StyleSheet, TouchableOpacity, Text } from 'react-native'
 import { CATEGORIES, ARTICLES } from '../../../data';
-import CategoryGrid from "../CategoryGrid";
 import { ROUTES_NAMES } from '../../consts/Routes';
 import { GlobalStyles } from '../../consts/styles';
+import CategoryGrid from "../CategoryGrid";
 import Article from '../../models/article';
 import NewsItem from '../NewsList/NewsItem';
 
