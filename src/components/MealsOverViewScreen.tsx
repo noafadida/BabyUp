@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useLayoutEffect } from 'react';
+import React, { FC, useEffect, useLayoutEffect, useState } from 'react';
 import { MEALS, CATEGORIES } from '../../data';
 import MealList from './MealList/MealList';
 import { View, Text, Image, StyleSheet } from 'react-native';
@@ -6,8 +6,13 @@ import FilteredList from './MealList/FilteredList';
 import { getDoc, doc, db, collection, getDocs } from '../firebase'
 
 const MealsOverViewScreen: FC<{ route: any, navigation: any }> = ({ route, navigation }) => {
+	const [meals, setMeals] = useState<any[]>([])
+	const [diaplayMeals, setDiaplayMeals] = useState<any[]>([])
 	const catId = route.params.categoryId
-	const diaplayMeals = MEALS.filter((mealItem) => { return mealItem.categoryIds.indexOf(catId) >= 0 })
+
+	useEffect(() => {
+		setDiaplayMeals(catId === 'c4' ? meals : meals.filter((mealItem) => { return mealItem?.categoryIds?.indexOf(catId) >= 0 }))
+	}, [meals])
 
 	useEffect(() => {
 		const fetchMeals = async () => {
@@ -16,9 +21,9 @@ const MealsOverViewScreen: FC<{ route: any, navigation: any }> = ({ route, navig
 				const querySnapshot = await getDocs(collectionRef);
 				const mealsCollection: any[] = []
 				querySnapshot.forEach((doc) => {
-					mealsCollection.push(JSON.stringify(doc.data()))
+					mealsCollection.push(doc.data())
 				});
-				console.log(mealsCollection)
+				setMeals(mealsCollection)
 			} catch (e) {
 				console.log(e)
 			}
@@ -29,7 +34,6 @@ const MealsOverViewScreen: FC<{ route: any, navigation: any }> = ({ route, navig
 	useLayoutEffect(() => {
 		const categoryTitle = CATEGORIES.find((category) => category.id === catId)?.title
 		navigation.setOptions({
-			// title: categoryTitle,
 			headerTitle: () => (
 				<View style={styles.homeHeader}>
 					<Text style={styles.text}>{categoryTitle}</Text>
@@ -44,9 +48,7 @@ const MealsOverViewScreen: FC<{ route: any, navigation: any }> = ({ route, navig
 
 	return (
 		<FilteredList navigation={navigation} items={diaplayMeals} />
-
 	)
-
 }
 
 const styles = StyleSheet.create({
