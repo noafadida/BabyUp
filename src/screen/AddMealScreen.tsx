@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Image, Pressable, Alert } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Pressable, Alert } from 'react-native'
 import { GlobalStyles } from '../consts/styles';
-import { Ionicons } from '@expo/vector-icons';
 import { Allergies } from '../consts';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { Allergy } from '../types';
 import { useSelector } from 'react-redux';
 import { retrieveUserData } from '../utils';
 import { storage, uploadBytes, ref, doc, db, setDoc } from '../firebase';
-import { useCameraPermissions, PermissionStatus, launchCameraAsync, launchImageLibraryAsync } from 'expo-image-picker'
 import { CATEGORIES, COMPLEXITY, MINUTES } from '../consts/AddMealsPageConsts';
 import DropDown from '../components/DropDown';
 import CustomModal from '../components/CustomModal';
 import AllergyList from '../components/AllergyList';
+import ImagePicker from '../components/ImagePicker';
 
 const AddMealScreen = () => {
-	const [imgUri, setImgUri] = useState<Blob>();
 	const [title, setTitle] = useState(EMPTY_STRING);
 	const [ingredients, setIngredients] = useState(EMPTY_STRING);
 	const [steps, setSteps] = useState(EMPTY_STRING);
@@ -23,58 +21,7 @@ const AddMealScreen = () => {
 	const [selectedAllergies, setSelectedAllergies] = useState<string[]>([])
 	const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 
-	const { newMealLevelDropdown, newMealTimeDropdown } = useSelector((state: any) => state.general);
-
-	const [pickedImage, setPickedImage] = useState<string>(EMPTY_STRING);
-	const [cameraPermissionInformation, requestPermission] = useCameraPermissions();
-
-	const verifyPermission = async () => {
-		if (cameraPermissionInformation?.status === PermissionStatus.UNDETERMINED) {
-			const permissionResponse = await requestPermission();
-			return permissionResponse.granted
-		}
-		if (cameraPermissionInformation?.status === PermissionStatus.DENIED) {
-			return false
-		}
-		return true
-	}
-
-	const takeImageHandler = async () => {
-		const hasPermission = await verifyPermission();
-
-		if (!hasPermission) {
-			return
-		}
-		const { assets } = await launchCameraAsync({
-			allowsEditing: true,
-			aspect: [16, 9],
-			quality: 0.5
-		})
-		const imageUri = assets?.[0]?.uri;
-		imageUri && handleConvertImageToBlob(imageUri)
-	}
-
-	const pickImageHandler = async () => {
-		const result = await launchImageLibraryAsync({
-			allowsEditing: true,
-			aspect: [16, 9],
-			quality: 0.5
-		});
-
-		if (!result.canceled) {
-			const imageUri = result.assets?.[0]?.uri
-			imageUri && handleConvertImageToBlob(imageUri)
-		} else {
-			Alert.alert('You did not select any image.');
-		}
-	};
-
-	const handleConvertImageToBlob = async (imageUri: string) => {
-		const response = await fetch(imageUri)
-		const blob = await response.blob()
-		setImgUri(blob)
-		setPickedImage(imageUri)
-	}
+	const { newMealLevelDropdown, newMealTimeDropdown, imageBlob } = useSelector((state: any) => state.general);
 
 	const toggleAllergy = (allergyId: string) => {
 		if (selectedAllergies.includes(allergyId)) {
@@ -93,9 +40,9 @@ const AddMealScreen = () => {
 		try {
 			const id = new Date().getTime().toString()
 			const uid = await retrieveUserData()
-			if (imgUri) {
+			if (imageBlob) {
 				const storageRef = ref(storage, id);
-				await uploadBytes(storageRef, imgUri)
+				await uploadBytes(storageRef, imageBlob)
 			}
 			const data = {
 				id,
@@ -125,22 +72,7 @@ const AddMealScreen = () => {
 	return (
 		<ScrollView style={{ backgroundColor: GlobalStyles.colors.appBodyBackColor, }} >
 			<View style={styles.container}>
-				<TouchableOpacity onPress={pickImageHandler}>
-					<Ionicons name={"image"} style={styles.galleryButton} size={40} />
-					<View style={styles.imageContainer}>
-						{pickedImage ? (
-							<Image source={{ uri: pickedImage }} style={styles.image} />
-						) : (
-							<Text style={styles.choosePhotoText}>העלה תמונה </Text>
-						)}
-					</View>
-				</TouchableOpacity>
-
-				<TouchableOpacity onPress={takeImageHandler}>
-					<Ionicons name={"camera"} style={styles.cameraButton} size={40} />
-					<Text style={styles.takePhotoText}>צלם עכשיו </Text>
-				</TouchableOpacity>
-
+				<ImagePicker />
 				<TextInput
 					style={styles.nameInput}
 					placeholder="שם המתכון"

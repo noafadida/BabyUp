@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Image } from 'react-native'
 import { GlobalStyles } from '../consts/styles';
 import { Ionicons } from '@expo/vector-icons';
+import { EMPTY_STRING } from '../consts/GeneralConsts';
 import * as ImagePicker from 'expo-image-picker';
 
 const AddTipScreen = () => {
-    const [imgUri, setImgUri] = useState("");
-    const [tipName, setTipName] = useState("");
-    const [tipItemBody, setTipItemBody] = useState("");
+    const [imgUri, setImgUri] = useState(EMPTY_STRING);
+    const [tipName, setTipName] = useState(EMPTY_STRING);
+    const [tipItemBody, setTipItemBody] = useState(EMPTY_STRING);
 
     const handleChoosePhoto = async () => {
         try {

@@ -2,14 +2,14 @@ import React, { useState, FC, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity, ViewStyle, Pressable } from 'react-native';
 import { GlobalStyles } from '../consts/styles';
 import { auth, createUserWithEmailAndPassword, db, doc as firebaseDoc, setDoc } from '../firebase';
-import DatePicker from 'react-native-datepicker';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { Ionicons } from '@expo/vector-icons';
 import { Gender, InputContainerStyle } from '../types';
+import { ROUTES_NAMES } from '../consts/Routes';
+import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
 import AllergyList from '../components/AllergyList';
 import CustomModal from '../components/CustomModal';
-import { ROUTES_NAMES } from '../consts/Routes';
 
 declare module 'react-native-datepicker';
 
@@ -19,7 +19,7 @@ type Props = {
 }
 
 const SignupScreen2: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
-	const [babyName, setBabyName] = useState('');
+	const [babyName, setBabyName] = useState(EMPTY_STRING);
 	const [birthdate, setBirthdate] = useState<string>(EMPTY_STRING);
 	const [showDatePicker, setShowDatePicker] = useState(false);
 	const [isAllergyBabyModalOpen, setIsAllergyBabyModalOpen] = useState<boolean>(false)

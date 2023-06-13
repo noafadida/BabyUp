@@ -65,7 +65,7 @@ export default function UpdateBabyInfoModal({ onClose }: Props) {
 					selectedAllergies
 				}
 				const uid = await retrieveUserData()
-				const docRef = doc(db, "users", (uid || ''));
+				const docRef = doc(db, "users", (uid || EMPTY_STRING));
 				await setDoc(docRef, updatedInfo);
 				onClose()
 			} catch (error) {

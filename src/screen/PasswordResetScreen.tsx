@@ -5,9 +5,10 @@ import { emailNotFound, resetPassword } from '../consts/AlertMessegesConsts';
 import { auth, sendPasswordResetEmail } from '../firebase';
 import { InputContainerStyle } from '../types';
 import { ROUTES_NAMES } from '../consts/Routes';
+import { EMPTY_STRING } from '../consts/GeneralConsts';
 
 const PasswordResetScreen: FC<{ navigation: any }> = ({ navigation }) => {
-	const [email, setEmail] = useState('');
+	const [email, setEmail] = useState(EMPTY_STRING);
 	const [validEmail, setValidEmail] = useState(true);
 
 	const handlePasswordResetButton = async () => {

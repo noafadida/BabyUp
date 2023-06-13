@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Image } from 'react-native'
 import { GlobalStyles } from '../consts/styles';
 import { Ionicons } from '@expo/vector-icons';
+import { EMPTY_STRING } from '../consts/GeneralConsts';
 import * as ImagePicker from 'expo-image-picker';
 
 const AddArticleScreen = () => {
-    const [imgUri, setImgUri] = useState("");
-    const [articleTitle, setArticleTitle] = useState("");
-    const [articleContent, setArticleContent] = useState("");
+    const [imgUri, setImgUri] = useState(EMPTY_STRING);
+    const [articleTitle, setArticleTitle] = useState(EMPTY_STRING);
+    const [articleContent, setArticleContent] = useState(EMPTY_STRING);
 
     const handleChoosePhoto = async () => {
         try {
@@ -24,31 +25,6 @@ const AddArticleScreen = () => {
     };
 
    
-    // const handlePost = async () => {
-    //     if (imgUri) {
-    //         const url = await UserModel.uploadImage(imgUri);
-    //         const sender = await AsyncStorage.getItem("id");
-    //         const post: Post = {
-    //             message: description,
-    //             sender: String(sender),
-    //             avatarUrl: url,
-    //         };
-    //         try {
-    //             const res: any = await UserModel.addNewPost(post);
-    //             if (!res) {
-    //                 return;
-    //             }
-    //             Alert.alert("Great Post\n", `Description: ${description}`);
-    //         } catch (err) {
-    //             console.log("cant create post ");
-    //         }
-    //     } else {
-    //         Alert.alert("Cant creat post\n", `Photo is required`);
-    //     }
-    //     navigation.goBack();
-    // };
-
-
     return (
         <ScrollView style={{ backgroundColor: GlobalStyles.colors.appBodyBackColor, }} >
             <View style={styles.container}>

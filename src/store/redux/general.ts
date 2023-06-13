@@ -4,7 +4,10 @@ import { EMPTY_STRING } from '../../consts/GeneralConsts';
 const INITIAL_STATE = {
 	newMealTimeDropdown: EMPTY_STRING,
 	newMealLevelDropdown: EMPTY_STRING,
-	allMeals: {}
+	allMeals: {},
+	userInfo: {},
+	isBioChanged: false,
+	imageBlob: ''
 }
 
 const generalSlice = createSlice({
@@ -19,6 +22,15 @@ const generalSlice = createSlice({
 		},
 		setAllMeals: (state: any, action: any) => {
 			state.allMeals = action.payload.allMeals
+		},
+		setUserInfo: (state: any, action: any) => {
+			state.userInfo = action.payload.userInfo
+		},
+		setIsBioChanged: (state: any, action: any) => {
+			state.isBioChanged = action.payload.isBioChanged
+		},
+		setImageBlob: (state: any, action: any) => {
+			state.imageBlob = action.payload.imageBlob
 		}
 	}
 });
@@ -27,4 +39,7 @@ const generalSlice = createSlice({
 export const setNewMealTimeDropdown: any = generalSlice.actions.setNewMealTimeDropdown;
 export const setNewMealLevelDropdown: any = generalSlice.actions.setNewMealLevelDropdown;
 export const setAllMeals: any = generalSlice.actions.setAllMeals;
+export const setUserInfo: any = generalSlice.actions.setUserInfo;
+export const setIsBioChanged: any = generalSlice.actions.setIsBioChanged;
+export const setImageBlob: any = generalSlice.actions.setImageBlob;
 export default generalSlice.reducer;

@@ -5,12 +5,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { EMPTY_STRING } from '../../consts/GeneralConsts';
 import { logoutHandler, retrieveUserData } from '../../utils';
 import { getDoc, doc, db, onSnapshot } from '../../firebase'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Allergies } from '../../consts';
+import { Allergy, BabyInfo } from '../../types';
+import { useDispatch } from 'react-redux';
+import { setUserInfo } from '../../store/redux/general';
 import moment from 'moment';
 import CustomModal from '../CustomModal';
 import UpdateBabyInfoModal from './UpdateBabyInfoModal';
-import { Allergies } from '../../consts';
-import { Allergy, BabyInfo } from '../../types';
 
 const INITIAL_BABY_INFO_VALUE = {
 	babyAge: EMPTY_STRING,
@@ -27,6 +28,7 @@ export const ProfileTab = ({ route, navigation }: any) => {
 	const [babyInfo, setBabyInfo] = useState<BabyInfo>(INITIAL_BABY_INFO_VALUE)
 	const [isUpdateBabyInfoModalOpen, setIsUpdateBabyInfoModalOpen] = useState<boolean>(false)
 	const [isInfoChanged, setIsInfoChanged] = useState(false);
+	const dispatch = useDispatch()
 
 	useLayoutEffect(() => {
 		const fetchUserInfo = async () => {
@@ -44,6 +46,7 @@ export const ProfileTab = ({ route, navigation }: any) => {
 					gender: gender === 'MALE' ? 'זכר' : 'נקבה',
 					selectedAllergies
 				})
+				dispatch(setUserInfo({ userInfo: { parentName } }))
 			}
 		}
 		fetchUserInfo()

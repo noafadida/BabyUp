@@ -13,11 +13,6 @@ const MealsOverViewScreen: FC<{ route: any, navigation: any }> = ({ route, navig
 	const allMealsData = useSelector((state: any) => state.general.allMeals)
 
 	useEffect(() => {
-		const updatedMeals = catId === 'c4' ? allMealsData : allMealsData?.filter((mealItem: any) => mealItem?.categoryIds?.indexOf(catId) >= 0)
-		setDiaplayMeals(updatedMeals)
-	}, [allMealsData])
-
-	useEffect(() => {
 		const fetchMeals = async () => {
 			try {
 				const collectionRef = collection(db, "meals");
@@ -35,6 +30,13 @@ const MealsOverViewScreen: FC<{ route: any, navigation: any }> = ({ route, navig
 			fetchMeals()
 		}
 	}, [])
+
+	useEffect(() => {
+		if (allMealsData?.length > 0) {
+			const updatedMeals = catId === 'c4' ? allMealsData : allMealsData?.filter((mealItem: any) => mealItem?.categoryIds?.indexOf(catId) >= 0)
+			setDiaplayMeals(updatedMeals)
+		}
+	}, [allMealsData])
 
 	useLayoutEffect(() => {
 		const categoryTitle = CATEGORIES.find((category) => category.id === catId)?.title
