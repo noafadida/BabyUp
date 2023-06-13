@@ -2,11 +2,10 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { GlobalStyles } from '../consts/styles';
 import { SCREEN_NAMES } from '../consts/Routes';
 import { Ionicons } from '@expo/vector-icons'
-import HomePage from '../pages/HomePage';
-import AboutUsPage from '../pages/AboutUsPage';
-import CallUsPage from '../pages/CallUsPage';
-import QuestionsPage from '../pages/QuestionsPage';
-import LoginPage from '../pages/LoginPage';
+import HomeScreen from '../screen/HomeScreen';
+import AboutUsScreen from '../screen/AboutUsScreen';
+import CallUsScreen from '../screen/CallUsScreen';
+import QuestionsScreen from '../screen/QuestionsScreen';
 import 'react-native-gesture-handler';
 
 const Drawer = createDrawerNavigator();
@@ -28,7 +27,7 @@ export default function DrawerNavigator() {
 		>
 			<Drawer.Screen
 				name={home}
-				component={HomePage}
+				component={HomeScreen}
 				options={{
 					drawerLabel: "עמוד הבית",
 					drawerIcon: ({ color, size }) => (<Ionicons name='home' color={color} size={size} />)
@@ -36,36 +35,37 @@ export default function DrawerNavigator() {
 			/>
 			<Drawer.Screen
 				name={aboutus}
-				component={AboutUsPage}
+				component={AboutUsScreen}
 				options={{
-					drawerLabel: "קצת עלינו ",
+					drawerLabel: aboutus,
 					drawerIcon: ({ color, size }) => (<Ionicons name='heart' color={color} size={size} />)
 				}}
 			/>
 			<Drawer.Screen
 				name={callus}
-				component={CallUsPage}
+				component={CallUsScreen}
 				options={{
-					drawerLabel: " צור קשר ",
+					drawerLabel: callus,
 					drawerIcon: ({ color, size }) => (<Ionicons name='chatbubble-ellipses-outline' color={color} size={size} />)
 				}}
 			/>
 			<Drawer.Screen
 				name={qustions}
-				component={QuestionsPage}
+				component={QuestionsScreen}
 				options={{
-					drawerLabel: "שאלות נפוצות ",
+					drawerLabel: qustions,
 					drawerIcon: ({ color, size }) => (<Ionicons name='help-outline' color={color} size={size} />)
 				}}
 			/>
-			<Drawer.Screen
+			{/*<Drawer.Screen
 				name="התנתקות"
 				component={LoginPage}
 				options={{
 					drawerLabel: "התנתקות",
 					drawerIcon: ({ color, size }) => (<Ionicons name='exit-outline' color={color} size={size} />)
 				}}
-			/>
+			/>*/}
+			{/* TODO ADD LOGOUT FUNCTION */}
 		</Drawer.Navigator >
 
 	)

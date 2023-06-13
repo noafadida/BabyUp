@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Pressable, Platform, Button, } from 'react-native'
 import { GlobalStyles } from '../../consts/styles';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { retrieveUserData } from '../../utils';
 import { getDoc, doc, db } from '../../firebase'
 import { Ionicons } from '@expo/vector-icons'
+import { ROUTES_NAMES } from '../../consts/Routes';
 
 
 export const AdminTab = ({ route, navigation }: any) => {
     const [adminName, setAdminName] = useState("");
+	const { AddMealScreenName, AddArticleScreenName, AddTipScreenName, EditAboutUsScreenName } = ROUTES_NAMES;
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -24,19 +25,19 @@ export const AdminTab = ({ route, navigation }: any) => {
     }, [])
 
     const handleAddNewMeal = () => {
-        navigation.navigate("AddMealPage")
+		navigation.navigate(AddMealScreenName)
     }
 
     const handleAddNewArticle = () => {
-        navigation.navigate("AddArticlePage")
+		navigation.navigate(AddArticleScreenName)
     }
 
     const handleAddNewTTip = () => {
-        navigation.navigate("AddTipPage")
+		navigation.navigate(AddTipScreenName)
     }
 
     const handleEditAboutUS = () => {
-        navigation.navigate("EditAboutUsPage")
+		navigation.navigate(EditAboutUsScreenName)
     }
 
     return (

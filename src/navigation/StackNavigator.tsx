@@ -1,24 +1,24 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { GlobalStyles } from "../consts/styles";
 import { Image, StyleSheet, Text, View } from "react-native";
-import { SCREEN_NAMES } from "../consts/Routes";
-import StartPage from "../pages/StartPage";
-import LoginPage from "../pages/LoginPage";
-import SignupPage from "../pages/SignupPage";
-import SignupPage2 from "../pages/SignupPage2";
-import PasswordResetPage from "../pages/PasswordResetPage";
+import { SCREEN_NAMES, ROUTES_NAMES } from "../consts/Routes";
+import StartScreen from "../screen/StartScreen";
+import LoginScreen from "../screen/LoginScreen";
+import SignupScreen from "../screen/SignupScreen";
+import SignupScreen2 from "../screen/SignupScreen2";
+import PasswordResetScreen from "../screen/PasswordResetScreen";
 import MealsOverViewScreen from "../components/MealsOverViewScreen";
-import MealDetailScreen from "../pages/MealDetailScreen";
+import MealDetailScreen from "../screen/MealDetailScreen";
 import DrawerNavigator from "./DrawerNavigator";
 import newsScreen from '../components/newsScreen';
 import TipsScreen from '../components/TipsScreen';
-import ArticleDetailsScreen from '../pages/ArticleDetailsScreen';
-import TipsDetailsScreen from '../pages/TipsDetailsScreen';
-import SuperFoodItemScreen from '../pages/SuperFoodItemScreen';
-import AddMealPage from '../pages/AddMealPage';
-import AddArticlePage from '../pages/AddArticlePage';
-import AddTipPage from '../pages/AddTipPage';
-import EditAboutUsPage from '../pages/EditAboutUsPage';
+import ArticleDetailsScreen from '../screen/ArticleDetailsScreen';
+import TipsDetailsScreen from '../screen/TipsDetailsScreen';
+import SuperFoodItemScreen from '../screen/SuperFoodItemScreen';
+import AddMealScreen from '../screen/AddMealScreen';
+import AddArticleScreen from '../screen/AddArticleScreen';
+import AddTipScreen from '../screen/AddTipScreen';
+import EditAboutUsScreen from '../screen/EditAboutUsScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -35,91 +35,95 @@ export default function StackNavigator() {
 		</View>
 	)
 
-	const { babyUp, login, resetPassword, signup, home, newsScreenName, AddMeal, AddArticle , AddTip, EditAboutUs} = SCREEN_NAMES;
+	const { babyUp, login, resetPassword, signup, home, newsScreenTitle, AddMeal, AddArticle, AddTip, EditAboutUs } = SCREEN_NAMES;
 
+	const {
+		AddArticleScreenName, AddMealScreenName, AddTipScreenName, ArticleDetailsScreenName, EditAboutUsScreenName, HomeScreenName, LoginScreenName, MealDetailScreenName, MealsOverViewScreenName, PasswordResetScreenName, SignupScreen2Name, SignupScreenName, StartScreenName, SuperFoodItemScreenName, TipsDetailsScreenName, TipsScreenName, newsScreenName
+	} = ROUTES_NAMES;
+	
 	return (
 		<Stack.Navigator screenOptions={{
 			title: "Apply to all",
 			headerStyle: { backgroundColor: GlobalStyles.colors.headerBackColor }, headerTintColor: GlobalStyles.colors.headerTextColor,
 		}}>
 			<Stack.Screen
-				name="StartPage"
-				component={StartPage}
+				name={StartScreenName}
+				component={StartScreen}
 				options={{ headerTitle, title: babyUp }}
 
 			/>
 			<Stack.Screen
-				name="LoginPage"
-				component={LoginPage}
+				name={LoginScreenName}
+				component={LoginScreen}
 				options={{ headerTitle, title: login }}
 			/>
 			<Stack.Screen
-				name="SignupPage"
-				component={SignupPage}
+				name={SignupScreenName}
+				component={SignupScreen}
 				options={{ headerTitle, title: signup }}
 			/>
 			<Stack.Screen
-				name="HomePage"
+				name={HomeScreenName}
 				component={DrawerNavigator}
 				options={{ headerShown: false, headerTitle, title: home }}
 			/>
 			<Stack.Screen
-				name="SignupPage2"
-				component={SignupPage2}
+				name={SignupScreen2Name}
+				component={SignupScreen2}
 				options={{ headerTitle, title: signup }}
 			/>
 			<Stack.Screen
-				name="PasswordResetPage"
-				component={PasswordResetPage}
+				name={PasswordResetScreenName}
+				component={PasswordResetScreen}
 				options={{ headerTitle, title: resetPassword }}
 			/>
 			<Stack.Screen
-				name="MealsOverViewScreen"
+				name={MealsOverViewScreenName}
 				component={MealsOverViewScreen}
 			/>
 			<Stack.Screen
-				name="MealDetailScreen"
+				name={MealDetailScreenName}
 				component={MealDetailScreen}
 			/>
 			<Stack.Screen
-				name="newsScreen"
+				name={newsScreenName}
 				component={newsScreen}
-				options={{ title: newsScreenName }}
+				options={{ title: newsScreenTitle }}
 			/>
 			<Stack.Screen
-				name="ArticleDetailsScreen"
+				name={ArticleDetailsScreenName}
 				component={ArticleDetailsScreen}
 			/>
 			<Stack.Screen
-				name="TipsScreen"
+				name={TipsScreenName}
 				component={TipsScreen}
 			/>
 			<Stack.Screen
-				name="TipsDetailsScreen"
+				name={TipsDetailsScreenName}
 				component={TipsDetailsScreen}
 			/>
 			<Stack.Screen
-				name="SuperFoodItemScreen"
+				name={SuperFoodItemScreenName}
 				component={SuperFoodItemScreen}
 			/>
 			<Stack.Screen
-				name="AddMealPage"
-				component={AddMealPage}
+				name={AddMealScreenName}
+				component={AddMealScreen}
 				options={{ title: AddMeal }}
 			/>
 			<Stack.Screen
-				name="AddArticlePage"
-				component={AddArticlePage}
+				name={AddArticleScreenName}
+				component={AddArticleScreen}
 				options={{ title: AddArticle }}
 			/>
 			<Stack.Screen
-				name="AddTipPage"
-				component={AddTipPage}
+				name={AddTipScreenName}
+				component={AddTipScreen}
 				options={{ title: AddTip }}
 			/>
 			<Stack.Screen
-				name="EditAboutUsPage"
-				component={EditAboutUsPage}
+				name={EditAboutUsScreenName}
+				component={EditAboutUsScreen}
 				options={{ title: EditAboutUs }}
 			/>
 

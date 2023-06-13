@@ -4,14 +4,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { TAB_ROUTES_NAMES } from '../consts/Routes';
 import { TIcon } from '../../types';
-import { ProfileTab } from '../components/HomePage/ProfileTab';
-import { HomeTab } from '../components/HomePage/HomeTab';
-import { FavoritesTab } from '../components/HomePage/FavoriteTab';
-import { AdminTab } from '../components/HomePage/AdminTab';
+import { ProfileTab } from '../components/HomeScreen/ProfileTab';
+import { HomeTab } from '../components/HomeScreen/HomeTab';
+import { FavoritesTab } from '../components/HomeScreen/FavoriteTab';
+import { AdminTab } from '../components/HomeScreen/AdminTab';
 import { retrieveUserData } from '../utils';
 import { db, doc, getDoc } from '../firebase';
 
-const HomePage: FC<{ route: any, navigation: any, }> = ({ navigation, route }) => {
+const EditAboutUsScreen: FC<{ route: any, navigation: any, }> = ({ navigation, route }) => {
 	const Tab = createBottomTabNavigator();
 	const [isAdmin, setIsAdmin] = useState<boolean>(false)
 	const { FavoritesScreen, HomeScreen, ProfileScreen, AdminScreen } = TAB_ROUTES_NAMES
@@ -127,4 +127,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default HomePage;
+export default EditAboutUsScreen;

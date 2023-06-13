@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native'
 import { GlobalStyles } from '../consts/styles';
 
-const AboutUsPage = ({ duration, complexity, affordability, style, textStyle, }: any) => {
+const AboutUsScreen = ({ duration, complexity, affordability, style, textStyle, }: any) => {
 
     return (
         <View style={styles.container}>
@@ -26,7 +26,7 @@ const AboutUsPage = ({ duration, complexity, affordability, style, textStyle, }:
     )
 }
 
-export default AboutUsPage;
+export default AboutUsScreen;
 
 const styles = StyleSheet.create({
     container: {

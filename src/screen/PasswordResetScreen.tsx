@@ -1,16 +1,14 @@
 import React, { useState, FC } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, Alert } from 'react-native';
-import { ROUTES_NAMES } from '../consts/Routes';
 import { GlobalStyles } from '../consts/styles';
 import { emailNotFound, resetPassword } from '../consts/AlertMessegesConsts';
 import { auth, sendPasswordResetEmail } from '../firebase';
 import { InputContainerStyle } from '../types';
+import { ROUTES_NAMES } from '../consts/Routes';
 
-const PasswordResetPage: FC<{ navigation: any }> = ({ navigation }) => {
+const PasswordResetScreen: FC<{ navigation: any }> = ({ navigation }) => {
 	const [email, setEmail] = useState('');
 	const [validEmail, setValidEmail] = useState(true);
-
-	const { LoginPage } = ROUTES_NAMES
 
 	const handlePasswordResetButton = async () => {
 		try {
@@ -51,7 +49,7 @@ const PasswordResetPage: FC<{ navigation: any }> = ({ navigation }) => {
 			<TouchableOpacity style={GlobalStyles.buttonPinkStyle} onPress={handlePasswordResetButton}>
 				<Text style={GlobalStyles.buttonPinkTextStyle}>אפס סיסמא</Text>
 			</TouchableOpacity>
-			<Button color={GlobalStyles.colors.btnColor} title=" לעמוד ההתחברות" onPress={() => navigation.navigate(LoginPage)} />
+			<Button color={GlobalStyles.colors.btnColor} title=" לעמוד ההתחברות" onPress={() => navigation.navigate(ROUTES_NAMES.LoginScreenName)} />
 		</View>
 	);
 }
@@ -71,4 +69,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default PasswordResetPage;
+export default PasswordResetScreen;

@@ -7,7 +7,7 @@ import Article from '../../models/article';
 import NewsItem from '../NewsList/NewsItem';
 
 export const HomeTab = ({ navigation, route }: any) => {
-	const { MealsOverViewScreen, newsScreen, TipsScreen } = ROUTES_NAMES
+	const { TipsScreenName, newsScreenName, MealsOverViewScreenName } = ROUTES_NAMES;
 	const newArticle: Article[] = ARTICLES.filter((article) => article.id === 'a1')
 
 	const itemProps = {
@@ -20,7 +20,7 @@ export const HomeTab = ({ navigation, route }: any) => {
 
 	const renderCategoryItem = (itemData: any) => {
 		const pressHandler = () => (
-			navigation.navigate(MealsOverViewScreen, { categoryId: itemData.item.id })
+			navigation.navigate(MealsOverViewScreenName, { categoryId: itemData.item.id })
 		)
 		return (
 			<CategoryGrid
@@ -33,11 +33,11 @@ export const HomeTab = ({ navigation, route }: any) => {
 	}
 
 	const newsPressHandler = () => {
-		navigation.navigate(newsScreen)
+		navigation.navigate(newsScreenName)
 	}
 
 	const tipsPressHandler = () => {
-		navigation.navigate(TipsScreen)
+		navigation.navigate(TipsScreenName)
 	}
 
 	return (

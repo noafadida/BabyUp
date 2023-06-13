@@ -2,15 +2,15 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native'
 import { GlobalStyles } from '../consts/styles';
 
-const CallUsPage = ({ duration, complexity, affordability, style, textStyle }: any) => {
+const CallUsScreen = ({ duration, complexity, affordability, style, textStyle }: any) => {
     return (
         <View style={styles.container}>
-            <Text>CallUsPage</Text>
+            <Text>CallUsScreen</Text>
         </View>
     )
 }
 
-export default CallUsPage;
+export default CallUsScreen;
 
 const styles = StyleSheet.create({
     container: {

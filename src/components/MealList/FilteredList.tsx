@@ -4,7 +4,6 @@ import { GlobalStyles } from '../../consts/styles';
 import CustomModal from '../CustomModal';
 import MealList from './MealList';
 
-
 const Filter = ({ label, value, onValueChange }: any) => {
 	return (
 		<View style={{ flexDirection: 'row', padding: 10, justifyContent: "flex-end" }}>
@@ -27,10 +26,6 @@ const FilteredList: FC<{ navigation: any, items: any, route?: any }> = ({ naviga
 		const { isGlutenFree, isNutsFree, isMilkFree, isEggsFree } = filterOptions;
 		return (!isGlutenFree || item?.allergies?.includes('1')) && (!isNutsFree || item?.allergies?.includes('2')) && (!isMilkFree || item?.allergies?.includes('3')) && (!isEggsFree || item?.allergies?.includes('4'));
 	});
-
-	const onModalClose = () => {
-		setIsFilterModalOpen(false)
-	}
 
 	const handleFilterBtn = () => {
 		return (
@@ -75,7 +70,7 @@ const FilteredList: FC<{ navigation: any, items: any, route?: any }> = ({ naviga
 						}))
 					}
 				/>
-				<Pressable onPress={onModalClose} style={{ alignItems: "center", marginBottom: 5 }}>
+				<Pressable onPress={() => setIsFilterModalOpen(false)} style={{ alignItems: "center", marginBottom: 5 }}>
 					<Text style={[GlobalStyles.buttonLightTextStyle,]}>שמור </Text>
 				</Pressable>
 			</View>
@@ -83,7 +78,10 @@ const FilteredList: FC<{ navigation: any, items: any, route?: any }> = ({ naviga
 	}
 	return (
 		<View style={styles.container}>
-			<TouchableOpacity onPress={() => setIsFilterModalOpen(true)} style={[GlobalStyles.buttonLightPinkStyle, { alignSelf: "flex-end", marginTop: 0, marginBottom: 3, paddingVertical: 3, paddingHorizontal: 12, marginRight: 10, }]}>
+			<TouchableOpacity
+				onPress={() => setIsFilterModalOpen(true)}
+				style={[GlobalStyles.buttonLightPinkStyle, { alignSelf: "flex-end", marginTop: 0, marginBottom: 3, paddingVertical: 3, paddingHorizontal: 12, marginRight: 10, }]}
+			>
 				<Text style={{ fontSize: 16, color: "white" }}>סינון </Text>
 			</TouchableOpacity>
 			{isFilterModalOpen && (

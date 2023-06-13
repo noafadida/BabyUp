@@ -4,10 +4,10 @@ import { GlobalStyles } from '../consts/styles';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
-const AddArticlePage = () => {
+const AddTipScreen = () => {
     const [imgUri, setImgUri] = useState("");
-    const [articleTitle, setArticleTitle] = useState("");
-    const [articleContent, setArticleContent] = useState("");
+    const [tipName, setTipName] = useState("");
+    const [tipItemBody, setTipItemBody] = useState("");
 
     const handleChoosePhoto = async () => {
         try {
@@ -18,12 +18,12 @@ const AddArticlePage = () => {
 
             }
         } catch (err) {
-            console.log("open camera error", err);
+            console.log("open camera error");
         }
         console.log(imgUri)
     };
 
-   
+
     // const handlePost = async () => {
     //     if (imgUri) {
     //         const url = await UserModel.uploadImage(imgUri);
@@ -53,7 +53,7 @@ const AddArticlePage = () => {
         <ScrollView style={{ backgroundColor: GlobalStyles.colors.appBodyBackColor, }} >
             <View style={styles.container}>
                 <TouchableOpacity onPress={handleChoosePhoto}>
-                    <Ionicons name={"image"} style={styles.galleryButton} size={40} />
+                    <Ionicons name={"image"} style={styles.galleryButton} size={50} />
                     <View style={styles.imageContainer}>
                         {imgUri && (
                             <Image source={{ uri: imgUri }} style={styles.image} />
@@ -66,14 +66,14 @@ const AddArticlePage = () => {
                 <TextInput
                     style={styles.nameInput}
                     placeholder="כותרת"
-                    value={articleTitle}
-                    onChangeText={setArticleTitle}
+                    value={tipName}
+                    onChangeText={setTipName}
                 />
                 <TextInput
                     style={styles.descriptionInput}
                     placeholder="הכנס תוכן"
-                    value={articleContent}
-                    onChangeText={setArticleContent}
+                    value={tipItemBody}
+                    onChangeText={setTipItemBody}
                 />
 
                 <TouchableOpacity style={[GlobalStyles.buttonLightStyle, { marginBottom: 30 }]}>
@@ -84,7 +84,7 @@ const AddArticlePage = () => {
     );
 };
 
-export default AddArticlePage;
+export default AddTipScreen;
 
 const styles = StyleSheet.create({
     container: {
@@ -97,10 +97,10 @@ const styles = StyleSheet.create({
     imageContainer: {
         margin: 10,
         width: "40%",
-        borderWidth:1,
+        aspectRatio: 1,
+        borderWidth: 1,
         borderColor: "#ccc",
         color: "#B7B7B7",
-        aspectRatio: 1,
         borderRadius: 10,
         overflow: "hidden",
         marginBottom: 30,
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     galleryButton: {
         position: "absolute",
         flexDirection: "row",
-        margin:65,
+        margin: 65,
         color: "#FF8DC7",
     },
     choosePhotoText: {
@@ -123,10 +123,10 @@ const styles = StyleSheet.create({
         color: "#ccc",
     },
     descriptionInput: {
-        borderWidth:1,
+        borderRadius: 10,
+        borderWidth: 1,
         borderColor: "#ccc",
         color: "#B7B7B7",
-        borderRadius: 10,
         padding: 10,
         width: "95%",
         minHeight: 100,
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
         textAlign: "right",
     },
     nameInput: {
-        borderWidth:1,
+        borderWidth: 1,
         borderColor: "#ccc",
         color: "#B7B7B7",
         borderRadius: 10,
@@ -146,8 +146,5 @@ const styles = StyleSheet.create({
         textAlignVertical: "top",
         textAlign: "right",
 
-    },
-    TextInput: {
-        color: "white",
     },
 })

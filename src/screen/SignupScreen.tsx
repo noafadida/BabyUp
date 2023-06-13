@@ -1,14 +1,14 @@
 import React, { useState, FC, useEffect } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Alert, ViewStyle } from 'react-native';
+import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { GlobalStyles } from '../consts/styles';
 import { validateEmail } from '../utils';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
-import { BackendError, incorrectEmail, passwordDidntLong, unmatchedPasswords, usernameIsShort } from '../consts/AlertMessegesConsts';
-import { ROUTES_NAMES } from '../consts/Routes';
 import { InputContainerStyle } from '../types';
+import { ROUTES_NAMES } from '../consts/Routes';
+import { BackendError, incorrectEmail, passwordDidntLong, unmatchedPasswords, usernameIsShort } from '../consts/AlertMessegesConsts';
 
-const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
+const SignupScreen: FC<{ navigation: any }> = ({ navigation }) => {
 	const [email, setEmail] = useState(EMPTY_STRING);
 	const [username, setUsername] = useState(EMPTY_STRING);
 	const [password, setPassword] = useState(EMPTY_STRING);
@@ -17,8 +17,6 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const [isValid, setIsValid] = useState(false);
-
-	const { SignupPage2 } = ROUTES_NAMES;
 
 	useEffect(() => {
 		const isValidEmail = validateEmail(email);
@@ -42,7 +40,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation }) => {
 	const handleSignup = async () => {
 		try {
 			if (isValid) {
-				navigation.navigate(SignupPage2, { email, password, username })
+				navigation.navigate(ROUTES_NAMES.SignupScreen2Name, { email, password, username })
 			} else {
 				Alert.alert('נסה שנית')
 			}
@@ -123,4 +121,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default SignupPage;
+export default SignupScreen;

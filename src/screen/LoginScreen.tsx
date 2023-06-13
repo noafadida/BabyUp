@@ -1,21 +1,21 @@
 import React, { useState, FC } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, ViewStyle, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { ROUTES_NAMES } from '../consts/Routes';
 import { GlobalStyles } from '../consts/styles';
 import { validateEmail } from '../utils';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
-import { BackendError, incorrectEmail, loginError, unfilledInput } from '../consts/AlertMessegesConsts';
+import { incorrectEmail, loginError, unfilledInput } from '../consts/AlertMessegesConsts';
 import { auth, signInWithEmailAndPassword } from '../firebase';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { InputContainerStyle } from '../types';
+import { ROUTES_NAMES } from '../consts/Routes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const LoginPage: FC<{ navigation: any }> = ({ navigation }) => {
+const LoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
 	const [email, setEmail] = useState(EMPTY_STRING);
 	const [password, setPassword] = useState(EMPTY_STRING);
 	const [showPassword, setShowPassword] = useState(false);
 
-	const { HomePage, PasswordResetPage, SignupPage } = ROUTES_NAMES
+	const { HomeScreenName, PasswordResetScreenName, SignupScreenName } = ROUTES_NAMES
 
 	const handleLogin = async () => {
 		try {
@@ -26,7 +26,7 @@ const LoginPage: FC<{ navigation: any }> = ({ navigation }) => {
 				}
 				const { user } = await signInWithEmailAndPassword(auth, email, password)
 				await AsyncStorage.setItem('user', JSON.stringify(user?.uid));
-				navigation.navigate(HomePage);
+				navigation.navigate(HomeScreenName);
 			} else {
 				Alert.alert(unfilledInput)
 			}
@@ -36,11 +36,11 @@ const LoginPage: FC<{ navigation: any }> = ({ navigation }) => {
 	};
 
 	const handleSignUp = () => {
-		navigation.navigate(SignupPage);
+		navigation.navigate(SignupScreenName);
 	};
 
 	const handlePasswordReset = () => {
-		navigation.navigate(PasswordResetPage);
+		navigation.navigate(PasswordResetScreenName);
 	};
 
 	return (
@@ -94,4 +94,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default LoginPage;
+export default LoginScreen;

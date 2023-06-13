@@ -2,7 +2,7 @@ import React, { FC, useEffect, useLayoutEffect, useState } from 'react';
 import { CATEGORIES } from '../../data';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { db, collection, getDocs } from '../firebase'
-import { allMeals } from '../store/redux/general';
+import { setAllMeals } from '../store/redux/general';
 import { useDispatch, useSelector } from 'react-redux';
 import FilteredList from './MealList/FilteredList';
 
@@ -13,7 +13,8 @@ const MealsOverViewScreen: FC<{ route: any, navigation: any }> = ({ route, navig
 	const allMealsData = useSelector((state: any) => state.general.allMeals)
 
 	useEffect(() => {
-		setDiaplayMeals(catId === 'c4' ? allMealsData : allMealsData.filter((mealItem: any) => { return mealItem?.categoryIds?.indexOf(catId) >= 0 }))
+		const updatedMeals = catId === 'c4' ? allMealsData : allMealsData?.filter((mealItem: any) => mealItem?.categoryIds?.indexOf(catId) >= 0)
+		setDiaplayMeals(updatedMeals)
 	}, [allMealsData])
 
 	useEffect(() => {
@@ -25,12 +26,12 @@ const MealsOverViewScreen: FC<{ route: any, navigation: any }> = ({ route, navig
 				querySnapshot.forEach((doc) => {
 					mealsCollection.push(doc.data())
 				});
-				dispatch(allMeals({ allMeals: mealsCollection }))
+				dispatch(setAllMeals({ allMeals: mealsCollection }))
 			} catch (e) {
 				console.log(e)
 			}
 		}
-		if (allMealsData?.length === 0) {
+		if (allMealsData?.length === 0 || Object.keys(allMealsData || {})?.length === 0) {
 			fetchMeals()
 		}
 	}, [])

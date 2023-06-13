@@ -1,6 +1,5 @@
 import React, { useState, FC, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity, ViewStyle, Pressable } from 'react-native';
-import { ROUTES_NAMES } from '../consts/Routes';
 import { GlobalStyles } from '../consts/styles';
 import { auth, createUserWithEmailAndPassword, db, doc as firebaseDoc, setDoc } from '../firebase';
 import DatePicker from 'react-native-datepicker';
@@ -10,6 +9,7 @@ import { Gender, InputContainerStyle } from '../types';
 import moment from 'moment';
 import AllergyList from '../components/AllergyList';
 import CustomModal from '../components/CustomModal';
+import { ROUTES_NAMES } from '../consts/Routes';
 
 declare module 'react-native-datepicker';
 
@@ -18,7 +18,7 @@ type Props = {
 	route?: any;
 }
 
-const SignupPage: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
+const SignupScreen2: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
 	const [babyName, setBabyName] = useState('');
 	const [birthdate, setBirthdate] = useState<string>(EMPTY_STRING);
 	const [showDatePicker, setShowDatePicker] = useState(false);
@@ -37,8 +37,6 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
 			setSelectedAllergies([...selectedAllergies, allergyId]);
 		}
 	};
-
-	const { LoginPage } = ROUTES_NAMES
 
 	useEffect(() => {
 		if (birthdate !== EMPTY_STRING) {
@@ -65,7 +63,7 @@ const SignupPage: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
 				if (auth?.currentUser) {
 					saveUserInfo(auth?.currentUser?.uid)
 				}
-				navigation.navigate(LoginPage)
+				navigation.navigate(ROUTES_NAMES.LoginScreenName)
 			} else {
 				Alert.alert("שגיאה", "יש לנסות שוב ולמלא את הפרטים כנדרש")
 			}
@@ -221,4 +219,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default SignupPage;
+export default SignupScreen2;

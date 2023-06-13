@@ -14,7 +14,7 @@ import DropDown from '../components/DropDown';
 import CustomModal from '../components/CustomModal';
 import AllergyList from '../components/AllergyList';
 
-const AddMealPage = () => {
+const AddMealScreen = () => {
 	const [imgUri, setImgUri] = useState<Blob>();
 	const [title, setTitle] = useState(EMPTY_STRING);
 	const [ingredients, setIngredients] = useState(EMPTY_STRING);
@@ -211,7 +211,7 @@ const AddMealPage = () => {
 	);
 };
 
-export default AddMealPage;
+export default AddMealScreen;
 
 const styles = StyleSheet.create({
 	container: {

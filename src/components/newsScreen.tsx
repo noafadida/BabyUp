@@ -12,7 +12,7 @@ const NewsScreen = ({ navigation }: any) => {
         navigation.setOptions({
             headerTitle: () => (
                 <View style={styles.homeHeader}>
-                    <Text style={styles.text}>{SCREEN_NAMES.newsScreenName}</Text>
+					<Text style={styles.text}>{SCREEN_NAMES.newsScreenTitle}</Text>
                     <Image
                         source={require('../../assets/babyupLogoNew.png')}
                         style={styles.image}

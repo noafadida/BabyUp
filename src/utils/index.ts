@@ -1,8 +1,8 @@
-import { ROUTES_NAMES } from "../consts/Routes";
 import { auth, db, doc, getDoc, setDoc, signOut } from "../firebase";
 import { setFavoriteMeals } from "../store/redux/favorites";
 import { Alert } from "react-native";
 import { BackendError } from "../consts/AlertMessegesConsts";
+import { ROUTES_NAMES } from "../consts/Routes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const retrieveUserData = async () => {
@@ -25,7 +25,7 @@ export const logoutHandler = async (navigation: any) => {
   try {
     await signOut(auth);
     await AsyncStorage.removeItem("user");
-    navigation.navigate(ROUTES_NAMES.LoginPage);
+	  navigation.navigate(ROUTES_NAMES.LoginScreenName);
   } catch (e) {
     console.log(e);
   }

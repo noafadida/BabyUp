@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native'
 import { GlobalStyles } from '../consts/styles';
 
-const EditAboutUsPage = ({ duration, complexity, affordability, style, textStyle }: any) => {
+const EditAboutUsScreen = ({ duration, complexity, affordability, style, textStyle }: any) => {
 
     const [bio, setBio] = useState(""); // put the current bio as a default value
 
@@ -18,7 +18,7 @@ const EditAboutUsPage = ({ duration, complexity, affordability, style, textStyle
     )
 }
 
-export default EditAboutUsPage;
+export default EditAboutUsScreen;
 
 const styles = StyleSheet.create({
     container: {

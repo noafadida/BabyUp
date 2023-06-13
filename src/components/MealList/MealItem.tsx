@@ -11,7 +11,7 @@ const MealItem: FC<{ navigation: any, item: any }> = ({ item, navigation }: any)
 	const { id, title, duration, complexity } = item || {}
 
 	const selectMealItemHandler = () => {
-		navigation.navigate(ROUTES_NAMES.MealDetailScreen, {
+		navigation.navigate(ROUTES_NAMES.MealDetailScreenName, {
 			mealId: id,
 			item: { ...item, imageBlob }
 		})

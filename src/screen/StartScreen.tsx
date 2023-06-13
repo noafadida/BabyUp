@@ -1,17 +1,17 @@
 import React, { FC } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Button, Image } from 'react-native';
-import { ROUTES_NAMES } from '../consts/Routes';
 import { GlobalStyles } from '../consts/styles';
+import { ROUTES_NAMES } from '../consts/Routes';
 
-const StartPage: FC<{ navigation: any }> = ({ navigation }) => {
-    const { LoginPage, SignupPage } = ROUTES_NAMES
+const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
+	const { LoginScreenName, SignupScreenName } = ROUTES_NAMES
 
     const handleLogin = () => {
-        navigation.navigate(LoginPage);
+		navigation.navigate(LoginScreenName);
     };
 
     const handleSignup = () => {
-        navigation.navigate(SignupPage);
+		navigation.navigate(SignupScreenName);
     };
 
 
@@ -43,4 +43,4 @@ const styles = StyleSheet.create({
     },
 
 });
-export default StartPage;
+export default StartScreen;

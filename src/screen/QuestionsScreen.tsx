@@ -2,15 +2,15 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native'
 import { GlobalStyles } from '../consts/styles';
 
-const QuestionsPage = ({ duration, complexity, affordability, style, textStyle }: any) => {
+const QuestionsScreen = ({ duration, complexity, affordability, style, textStyle }: any) => {
     return (
         <View style={styles.container}>
-            <Text>QuestionsPage</Text>
+            <Text>QuestionsScreen</Text>
         </View>
     )
 }
 
-export default QuestionsPage;
+export default QuestionsScreen;
 
 const styles = StyleSheet.create({
     container: {
