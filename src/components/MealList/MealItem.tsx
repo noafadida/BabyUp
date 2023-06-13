@@ -1,22 +1,24 @@
 import { View, Text, Pressable, StyleSheet, Image, Platform } from 'react-native'
-import React, { FC, useEffect, useState } from 'react';
-import MealDetails from '../MealDetails';
+import { FC, useEffect, useState } from 'react';
 import { GlobalStyles } from '../../consts/styles';
 import { EMPTY_STRING } from '../../consts/GeneralConsts';
 import { getDownloadURL, ref, storage } from '../../firebase'
+import { ROUTES_NAMES } from '../../consts/Routes';
+import MealDetails from '../MealDetails';
+
 const MealItem: FC<{ navigation: any, item: any }> = ({ item, navigation }: any) => {
 	const [imageBlob, setImageBlob] = useState<string>(EMPTY_STRING);
 	const { id, title, duration, complexity } = item || {}
 
 	const selectMealItemHandler = () => {
-		navigation.navigate("MealDetailScreen", {
+		navigation.navigate(ROUTES_NAMES.MealDetailScreen, {
 			mealId: id,
-			item: {...item, imageBlob}
+			item: { ...item, imageBlob }
 		})
 	};
 
 	useEffect(() => {
-		const fetchProfilePicture = async () => {
+		const fetchMealImage = async () => {
 			try {
 				const url = await getDownloadURL(ref(storage, id))
 				setImageBlob(url)
@@ -24,7 +26,7 @@ const MealItem: FC<{ navigation: any, item: any }> = ({ item, navigation }: any)
 				return EMPTY_STRING;
 			}
 		}
-		fetchProfilePicture()
+		fetchMealImage()
 	}, [])
 
 	return (

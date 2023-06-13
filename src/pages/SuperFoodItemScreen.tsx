@@ -2,9 +2,6 @@ import React, { FC, useEffect, useLayoutEffect, useState } from 'react';
 import { View, StyleSheet, Text, Image, ScrollView, Alert } from 'react-native';
 import { GlobalStyles } from '../consts/styles';
 
-
-
-
 const SuperFoodItemScreen: FC<{ route?: any, navigation?: any }> = ({ route, navigation }) => {
     const foodId = route.params.id
 console.log('SCREEN')

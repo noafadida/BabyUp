@@ -1,9 +1,8 @@
 import React, { FC, useState } from 'react';
-import { View, Text, FlatList, Switch, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
-import { MEALS } from '../../../data';
-import MealItem from './MealItem';
+import { View, Text, Switch, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
 import { GlobalStyles } from '../../consts/styles';
 import CustomModal from '../CustomModal';
+import MealList from './MealList';
 
 
 const Filter = ({ label, value, onValueChange }: any) => {
@@ -25,16 +24,9 @@ const FilteredList: FC<{ navigation: any, items: any, route?: any }> = ({ naviga
 	});
 
 	const filteredData = (items).filter((item: any) => {
-		//console.log(item?.allergies?.includes('1'))
 		const { isGlutenFree, isNutsFree, isMilkFree, isEggsFree } = filterOptions;
-		console.log('filterOptions', filterOptions)
 		return (!isGlutenFree || item?.allergies?.includes('1')) && (!isNutsFree || item?.allergies?.includes('2')) && (!isMilkFree || item?.allergies?.includes('3')) && (!isEggsFree || item?.allergies?.includes('4'));
 	});
-
-	const renderFilteredlItem = (itemData: any) => {
-		const item = itemData.item
-		return <MealItem navigation={navigation} item={item} />
-	}
 
 	const onModalClose = () => {
 		setIsFilterModalOpen(false)
@@ -99,11 +91,7 @@ const FilteredList: FC<{ navigation: any, items: any, route?: any }> = ({ naviga
 					{handleFilterBtn()}
 				</CustomModal>
 			)}
-			<FlatList
-				data={filteredData}
-				keyExtractor={(item): any => item.id}
-				renderItem={renderFilteredlItem}
-			/>
+			<MealList items={filteredData} navigation={navigation} />
 		</View>
 	);
 };

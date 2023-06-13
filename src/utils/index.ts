@@ -1,5 +1,8 @@
 import { ROUTES_NAMES } from "../consts/Routes";
-import { auth, signOut } from "../firebase";
+import { auth, db, doc, getDoc, setDoc, signOut } from "../firebase";
+import { setFavoriteMeals } from "../store/redux/favorites";
+import { Alert } from "react-native";
+import { BackendError } from "../consts/AlertMessegesConsts";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const retrieveUserData = async () => {
@@ -27,3 +30,20 @@ export const logoutHandler = async (navigation: any) => {
     console.log(e);
   }
 };
+
+export const fetchFavoriteMeals = async (dispatch: any) => {
+	try {
+		const uid = await retrieveUserData()
+		if (uid) {
+			const docRef = doc(db, 'favorite', uid);
+			const getDocRef = await getDoc(docRef);
+			const getDocRefData = getDocRef.data()
+			const updateMealsData = { ...getDocRefData }
+			dispatch(setFavoriteMeals({ meals: updateMealsData }))
+			await setDoc(docRef, updateMealsData);
+		}
+	} catch (e) {
+		console.log(e)
+		Alert.alert(BackendError)
+	}
+}

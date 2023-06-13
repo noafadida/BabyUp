@@ -12,8 +12,6 @@ const TipsDetailsScreen: FC<{ route?: any, navigation?: any }> = ({ route, navig
 
     const renderItem = (itemData: any) => {
         const item = itemData.item
-        console.log(item.itemData)
-
         const itemProps = {
             id: item.id,
             title: item.title,

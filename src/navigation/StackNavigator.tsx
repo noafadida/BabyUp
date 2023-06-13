@@ -35,7 +35,7 @@ export default function StackNavigator() {
 		</View>
 	)
 
-	const { babyUp, login, resetPassword, signup, home, newsScreenName, TipsScreenName, SuperFoodItem, AddMeal, AddArticle , AddTip, EditAboutUs} = SCREEN_NAMES;
+	const { babyUp, login, resetPassword, signup, home, newsScreenName, AddMeal, AddArticle , AddTip, EditAboutUs} = SCREEN_NAMES;
 
 	return (
 		<Stack.Navigator screenOptions={{

@@ -1,45 +1,46 @@
 import React, { FC, useLayoutEffect, useState } from 'react';
 import { View, StyleSheet, Text, Image, ScrollView, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
-import { addFavorite, removeFavorite } from '../store/redux/favorites';
+import { setFavoriteMeals } from '../store/redux/favorites';
 import { GlobalStyles } from '../consts/styles';
 import { Ionicons } from '@expo/vector-icons';
 import { BackendError } from '../consts/AlertMessegesConsts';
 import { retrieveUserData } from '../utils';
-import { doc, db, setDoc, getDoc } from '../firebase'
+import { doc, db, setDoc } from '../firebase'
 import Subtitle from '../components/MealDetails/Subtitle';
 import List from '../components/MealDetails/List';
 import IconButton from '../components/IconButton';
 import StarRating from 'react-native-star-rating';
 
 const MealDetailScreen: FC<{ route?: any, navigation?: any }> = ({ route, navigation }) => {
-	const favoriteMealIds: any = useSelector((state: any) => state.favoriteMeals.ids);
+	const { mealId, item: selectedMeal } = route.params;
+	
+	const favoriteMealIds: any = useSelector((state: any) => state.favoriteMeals.mealsIds);
+	const favoriteMeals: any = useSelector((state: any) => state.favoriteMeals.meals);
 	const [starCount, setStarCount] = useState(0);
+	const [isFavorite, setIsFavorite] = useState(favoriteMealIds.includes(mealId));
 	const dispatch = useDispatch();
 
 	const onStarRatingPress = (rating: any) => {
 		setStarCount(rating);
 	};
 
-	const { mealId, item: selectedMeal } = route.params;
-	console.log(selectedMeal.allergies)
-	const isFavorite = favoriteMealIds.includes(mealId)
-
 	const changeFavoriteStatusHandler = async () => {
 		try {
-			dispatch(isFavorite ? removeFavorite({ id: mealId }) : addFavorite({ id: mealId }))
 			const uid = await retrieveUserData()
 			if (uid) {
 				const docRef = doc(db, 'favorite', uid);
-				const getDocRef = await getDoc(docRef);
-				const getDocRefData = getDocRef.data()
-				let updateMealsData = { ...getDocRefData }
+				console.log('2', isFavorite)
+				let updatedFavoriteMeals = { ...favoriteMeals }
 				if (isFavorite) {
-					delete updateMealsData[mealId]
+					delete updatedFavoriteMeals[mealId]
+					setIsFavorite(false)
 				} else {
-					updateMealsData = { ...updateMealsData, [mealId]: mealId }
+					setIsFavorite(true)
+					updatedFavoriteMeals = { ...updatedFavoriteMeals, [mealId]: selectedMeal } // TODO check maybe to save only the ID and fetch them later in favorite tab
 				}
-				await setDoc(docRef, updateMealsData);
+				dispatch(setFavoriteMeals({ meals: updatedFavoriteMeals }))
+				await setDoc(docRef, updatedFavoriteMeals);
 			}
 		} catch (e) {
 			console.log(e)
@@ -48,18 +49,19 @@ const MealDetailScreen: FC<{ route?: any, navigation?: any }> = ({ route, naviga
 	}
 
 	useLayoutEffect(() => {
+		const isMealFavorite = favoriteMealIds.includes(mealId)
 		navigation.setOptions({
 			title: selectedMeal?.title,
 			headerRight: () => {
 				return (
 					<IconButton
-						icon={isFavorite ? 'heart' : 'heart-outline'}
+						icon={isMealFavorite ? 'heart' : 'heart-outline'}
 						color="white"
 						onPress={changeFavoriteStatusHandler}
 					/>)
 			}
 		})
-	}, [selectedMeal, navigation, changeFavoriteStatusHandler])
+	}, [selectedMeal, favoriteMealIds, mealId])
 
 	return (
 		<ScrollView style={styles.container}>
@@ -69,32 +71,32 @@ const MealDetailScreen: FC<{ route?: any, navigation?: any }> = ({ route, naviga
 				<Text style={{ color: "#AAAAAA" }}>{selectedMeal?.duration} דקות </Text>
 			</View>
 			<View style={styles.allregyMealsContainer}>
-			<View style={styles.allregyMeals}>
-				<View style={styles.allregyMeal}>
-					<Text style={styles.allergyName}>
-						גלוטן
-					</Text>
-					{selectedMeal.allergies?.includes('1') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
+				<View style={styles.allregyMeals}>
+					<View style={styles.allregyMeal}>
+						<Text style={styles.allergyName}>
+							גלוטן
+						</Text>
+						{selectedMeal.allergies?.includes('1') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
+					</View>
+					<View style={styles.allregyMeal}>
+						<Text style={styles.allergyName}>
+							חלב
+						</Text>
+						{selectedMeal.allergies?.includes('3') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
+					</View>
+					<View style={styles.allregyMeal}>
+						<Text style={styles.allergyName}>
+							אגוזים
+						</Text>
+						{selectedMeal.allergies?.includes('2') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
+					</View>
+					<View style={styles.allregyMeal}>
+						<Text style={styles.allergyName}>
+							ביצים
+						</Text>
+						{selectedMeal.allergies?.includes('4') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
+					</View>
 				</View>
-				<View style={styles.allregyMeal}>
-					<Text style={styles.allergyName}>
-						חלב
-					</Text>
-					{selectedMeal.allergies?.includes('3') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
-				</View>
-				<View style={styles.allregyMeal}>
-					<Text style={styles.allergyName}>
-						אגוזים
-					</Text>
-					{selectedMeal.allergies?.includes('2') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
-				</View>
-				<View style={styles.allregyMeal}>
-					<Text style={styles.allergyName}>
-						ביצים
-					</Text>
-					{selectedMeal.allergies?.includes('4') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
-				</View>
-			</View>
 			</View>
 
 			<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

@@ -18,7 +18,7 @@ const AddArticlePage = () => {
 
             }
         } catch (err) {
-            console.log("open camera error");
+            console.log("open camera error", err);
         }
         console.log(imgUri)
     };
