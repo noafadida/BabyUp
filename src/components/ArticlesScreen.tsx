@@ -1,12 +1,14 @@
-import React, { useLayoutEffect } from 'react';
-import { View, Text, StyleSheet, Image, Pressable, Platform } from 'react-native'
+import { useLayoutEffect, useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, Platform } from 'react-native'
 import { GlobalStyles } from '../consts/styles';
 import { SCREEN_NAMES } from '../consts/Routes'
 import { ARTICLES } from '../../data';
-import NewsList from './NewsList/NewsList';
+import { collection, db, getDocs } from '../firebase'
+import { Collections } from '../consts/firebaseConsts';
+import ArticleList from './Articles/ArticleList';
 
-const NewsScreen = ({ navigation }: any) => {
-    const displayArticle = ARTICLES.filter((articleItem) => { return articleItem })
+const ArticlesScreen = ({ navigation }: any) => {
+	const [articlesData, setArticlesData] = useState<any[]>([])
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -20,13 +22,31 @@ const NewsScreen = ({ navigation }: any) => {
                 </View>
             )
         })
-    }, [navigation])
+    }, [])
+
+	useEffect(() => {
+		const fetchTipsHandler = async () => {
+			try {
+				const collectionRef = collection(db, Collections.article);
+				const querySnapshot = await getDocs(collectionRef);
+				const articlesCollection: any[] = []
+				querySnapshot.forEach((doc) => {
+					articlesCollection.push(doc.data())
+				});
+				setArticlesData([...ARTICLES, ...articlesCollection])
+			} catch (e) {
+				console.log(e)
+			}
+		}
+		fetchTipsHandler()
+	}, [])
+
     return (
-        <NewsList navigation={navigation} items={displayArticle} />
+		<ArticleList items={articlesData} />
     )
 }
 
-export default NewsScreen;
+export default ArticlesScreen;
 
 const styles = StyleSheet.create({
     container: {

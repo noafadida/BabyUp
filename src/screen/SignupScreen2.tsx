@@ -1,11 +1,12 @@
-import React, { useState, FC, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity, ViewStyle, Pressable } from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity, Pressable } from 'react-native';
 import { GlobalStyles } from '../consts/styles';
 import { auth, createUserWithEmailAndPassword, db, doc as firebaseDoc, setDoc } from '../firebase';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { Ionicons } from '@expo/vector-icons';
 import { Gender, InputContainerStyle } from '../types';
 import { ROUTES_NAMES } from '../consts/Routes';
+import { Collections } from '../consts/firebaseConsts';
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
 import AllergyList from '../components/AllergyList';
@@ -14,11 +15,10 @@ import CustomModal from '../components/CustomModal';
 declare module 'react-native-datepicker';
 
 type Props = {
-	navigation?: any;
-	route?: any;
+	navigation: any;
+	route: any;
 }
-
-const SignupScreen2: FC<{ navigation: any }> = ({ navigation, route }: Props) => {
+const SignupScreen2 = ({ navigation, route }: Props) => {
 	const [babyName, setBabyName] = useState(EMPTY_STRING);
 	const [birthdate, setBirthdate] = useState<string>(EMPTY_STRING);
 	const [showDatePicker, setShowDatePicker] = useState(false);
@@ -84,7 +84,7 @@ const SignupScreen2: FC<{ navigation: any }> = ({ navigation, route }: Props) =>
 				selectedAllergies,
 				isAdmin: false
 			}
-			const docRef = firebaseDoc(db, "users", uid);
+			const docRef = firebaseDoc(db, Collections.users, uid);
 			await setDoc(docRef, docData);
 		} catch (e) {
 			console.log(e)

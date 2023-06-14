@@ -1,4 +1,4 @@
-import React, { FC, useLayoutEffect, useState, useEffect } from 'react';
+import { useLayoutEffect, useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
@@ -6,22 +6,28 @@ import { TAB_ROUTES_NAMES } from '../consts/Routes';
 import { TIcon } from '../../types';
 import { ProfileTab } from '../components/HomeScreen/ProfileTab';
 import { HomeTab } from '../components/HomeScreen/HomeTab';
-import { FavoritesTab } from '../components/HomeScreen/FavoriteTab';
 import { AdminTab } from '../components/HomeScreen/AdminTab';
 import { retrieveUserData } from '../utils';
 import { db, doc, getDoc } from '../firebase';
+import { Collections } from '../consts/firebaseConsts';
+import FavoritesTab from '../components/HomeScreen/FavoriteTab';
 
-const EditAboutUsScreen: FC<{ route: any, navigation: any, }> = ({ navigation, route }) => {
+type Props = {
+	route: any;
+	navigation: any;
+}
+
+const EditAboutUsScreen = ({ route, navigation }: Props) => {
 	const Tab = createBottomTabNavigator();
 	const [isAdmin, setIsAdmin] = useState<boolean>(false)
 	const { FavoritesScreen, HomeScreen, ProfileScreen, AdminScreen } = TAB_ROUTES_NAMES
-	const name = route.params //NEED TO FIX
+	const name = route.params // TODO NEED TO FIX
 
 	useEffect(() => {
 		const fetchUserInfo = async () => {
 			const user = await retrieveUserData()
 			if (user) {
-				const docRef = await getDoc(doc(db, "users", user));
+				const docRef = await getDoc(doc(db, Collections.users, user));
 				const docData: any = docRef.data()
 				setIsAdmin(docData?.isAdmin);
 			}
@@ -90,7 +96,7 @@ const EditAboutUsScreen: FC<{ route: any, navigation: any, }> = ({ navigation, r
 					initialParams={{ name: FavoritesScreen }}
 					options={{ title: "המועדפים שלי" }}
 				/>
-				{isAdmin===true && <Tab.Screen
+				{isAdmin === true && <Tab.Screen
 					name={AdminScreen}
 					component={AdminTab}
 					initialParams={{ name: AdminScreen }}

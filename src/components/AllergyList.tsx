@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
 import { Allergies } from '../consts';
 import { GlobalStyles } from '../consts/styles';

@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { GlobalStyles } from '../consts/styles';
@@ -10,7 +10,11 @@ import { InputContainerStyle } from '../types';
 import { ROUTES_NAMES } from '../consts/Routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const LoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
+type Props = {
+	navigation: any;
+}
+
+const LoginScreen = ({ navigation }: Props) => {
 	const [email, setEmail] = useState(EMPTY_STRING);
 	const [password, setPassword] = useState(EMPTY_STRING);
 	const [showPassword, setShowPassword] = useState(false);

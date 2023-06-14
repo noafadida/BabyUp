@@ -1,14 +1,15 @@
 import { View, StyleSheet, FlatList } from 'react-native';
 import { GlobalStyles } from '../../consts/styles';
-import TipsItem from './TipsItem';
+import ArticleItem from './ArticleItem';
 
 type Props = {
-	items: any[];
+	items: any;
 }
 
-const TipsList = ({ items }: Props) => {
-	const renderTipItem = (itemData: any) => {
-		return <TipsItem item={itemData.item} />
+const ArticleList = ({ items }: Props) => {
+	const renderArticlelItem = (itemData: any) => {
+		const item = itemData.item
+		return <ArticleItem item={item} />
 	}
 
 	return (
@@ -16,12 +17,12 @@ const TipsList = ({ items }: Props) => {
 			<FlatList
 				data={items}
 				keyExtractor={(item): any => item.id}
-				renderItem={renderTipItem}
+				renderItem={renderArticlelItem}
 			/>
 		</View>
 	)
 }
-export default TipsList
+export default ArticleList
 
 const styles = StyleSheet.create({
 	container: {

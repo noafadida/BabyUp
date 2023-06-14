@@ -1,12 +1,18 @@
-import React, { FC, useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { CATEGORIES } from '../../data';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { db, collection, getDocs } from '../firebase'
 import { setAllMeals } from '../store/redux/general';
 import { useDispatch, useSelector } from 'react-redux';
+import { Collections } from '../consts/firebaseConsts';
 import FilteredList from './MealList/FilteredList';
 
-const MealsOverViewScreen: FC<{ route: any, navigation: any }> = ({ route, navigation }) => {
+type Props = {
+	route: any;
+	navigation: any;
+}
+
+const MealsOverViewScreen = ({ route, navigation }: Props) => {
 	const [diaplayMeals, setDiaplayMeals] = useState<any[]>([])
 	const catId = route.params.categoryId
 	const dispatch = useDispatch()
@@ -15,7 +21,7 @@ const MealsOverViewScreen: FC<{ route: any, navigation: any }> = ({ route, navig
 	useEffect(() => {
 		const fetchMeals = async () => {
 			try {
-				const collectionRef = collection(db, "meals");
+				const collectionRef = collection(db, Collections.meals);
 				const querySnapshot = await getDocs(collectionRef);
 				const mealsCollection: any[] = []
 				querySnapshot.forEach((doc) => {

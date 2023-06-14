@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, Pressable, StyleSheet, Platform } from 'react-native'
 import { GlobalStyles } from '../consts/styles';
 import { Ionicons } from '@expo/vector-icons'
@@ -32,11 +31,6 @@ const styles = StyleSheet.create({
         alignItems: "center",   
         justifyContent:"center",
         marginVertical: 5,
-		//AMIT - THIS MAKING ALERT IN CONSOLE
-        //shadowColor: "#ff9ebb",
-        //shadowOpacity: 0.3,
-        //shadowOffset: { width: 0, height: 2 },
-        //shadowRadius: 0,
         overflow: Platform.OS === 'android' ? "hidden" : 'visible'
     },
     buttonCategory: {

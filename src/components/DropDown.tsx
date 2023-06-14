@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { GlobalStyles } from '../consts/styles';
 import { useDispatch } from 'react-redux';
@@ -69,9 +69,6 @@ export default DropDown;
 
 const styles = StyleSheet.create({
 	picker: {
-		// backgroundColor: "red",
-		// color: "red",
-
 	}
 });
 

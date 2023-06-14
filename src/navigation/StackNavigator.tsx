@@ -10,7 +10,7 @@ import PasswordResetScreen from "../screen/PasswordResetScreen";
 import MealsOverViewScreen from "../components/MealsOverViewScreen";
 import MealDetailScreen from "../screen/MealDetailScreen";
 import DrawerNavigator from "./DrawerNavigator";
-import newsScreen from '../components/newsScreen';
+import ArticlesScreen from '../components/ArticlesScreen';
 import TipsScreen from '../components/TipsScreen';
 import ArticleDetailsScreen from '../screen/ArticleDetailsScreen';
 import TipsDetailsScreen from '../screen/TipsDetailsScreen';
@@ -87,7 +87,7 @@ export default function StackNavigator() {
 			/>
 			<Stack.Screen
 				name={newsScreenName}
-				component={newsScreen}
+				component={ArticlesScreen}
 				options={{ title: newsScreenTitle }}
 			/>
 			<Stack.Screen

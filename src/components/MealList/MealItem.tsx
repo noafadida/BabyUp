@@ -1,20 +1,26 @@
 import { View, Text, Pressable, StyleSheet, Image, Platform } from 'react-native'
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GlobalStyles } from '../../consts/styles';
 import { EMPTY_STRING } from '../../consts/GeneralConsts';
 import { getDownloadURL, ref, storage } from '../../firebase'
 import { ROUTES_NAMES } from '../../consts/Routes';
+import { useNavigation } from '@react-navigation/native';
 import MealDetails from '../MealDetails';
 
-const MealItem: FC<{ navigation: any, item: any }> = ({ item, navigation }: any) => {
+type Props = {
+	item: any;
+}
+
+const MealItem = ({ item }: Props) => {
+	const navigation = useNavigation()
 	const [imageBlob, setImageBlob] = useState<string>(EMPTY_STRING);
 	const { id, title, duration, complexity } = item || {}
 
 	const selectMealItemHandler = () => {
-		navigation.navigate(ROUTES_NAMES.MealDetailScreenName, {
+		navigation.navigate(ROUTES_NAMES.MealDetailScreenName as never, {
 			mealId: id,
 			item: { ...item, imageBlob }
-		})
+		} as never)
 	};
 
 	useEffect(() => {

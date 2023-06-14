@@ -1,11 +1,15 @@
-import { FC, useEffect } from 'react'
+import { useEffect } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
 import { GlobalStyles } from '../../consts/styles';
 import { fetchFavoriteMeals } from '../../utils';
 import MealList from '../MealList/MealList';
 
-export const FavoritesTab: FC<{ navigation: any, route: any }> = ({ navigation, route }: any) => {
+type Props = {
+	navigation: any;
+}
+
+const FavoritesTab = ({ navigation }: Props) => {
 	const favoriteMeals: any = useSelector((state: any) => state.favoriteMeals.mealsValues);
 	const dispatch = useDispatch()
 
@@ -22,11 +26,13 @@ export const FavoritesTab: FC<{ navigation: any, route: any }> = ({ navigation, 
 					<Text style={styles.text}>You have no favorite meals yet.</Text>
 				</View>
 			) : (
-				<MealList items={favoriteMeals} navigation={navigation} />
+				<MealList items={favoriteMeals} />
 			)}
 		</>
 	)
 }
+
+export default FavoritesTab;
 
 const styles = StyleSheet.create({
 	rootContainer: {

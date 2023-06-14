@@ -1,25 +1,27 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { View, StyleSheet, TextInput, Text, Alert } from 'react-native'
 import { GlobalStyles } from '../consts/styles';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { db, doc, setDoc } from '../firebase'
 import { BackendError } from '../consts/AlertMessegesConsts';
-import { aboutUsDefaultValue } from '../consts/aboutUsConsts';
+import { aboutUsBottomDefaultValue, aboutUsTopDefaultValue } from '../consts/aboutUsConsts';
 import { setIsBioChanged } from '../store/redux/general';
 import { useDispatch } from 'react-redux';
+import { Collections } from '../consts/firebaseConsts';
 
 const EditAboutUsScreen = () => {
-	const [topBio, setTopBio] = useState(EMPTY_STRING); // put the current bio as a default value
-	const [bottomBio, setBottomBio] = useState(EMPTY_STRING); // put the current bio as a default value
+	const [topBio, setTopBio] = useState(EMPTY_STRING); // TODO put the current bio as a default value
+	const [bottomBio, setBottomBio] = useState(EMPTY_STRING); // TODO  put the current bio as a default value
 	const dispatch = useDispatch()
-
 	const saveBioToDB = async (toDefault: boolean) => {
 		try {
-			const top = toDefault ? `${aboutUsDefaultValue.one} ${aboutUsDefaultValue.two} ${aboutUsDefaultValue.three} ${aboutUsDefaultValue.four}` : topBio
-			const bottom = toDefault ? aboutUsDefaultValue.five : bottomBio
-			const docRef = doc(db, "bio", 'description');
-			await setDoc(docRef, { top, bottom }, { merge: true });
+			const bioValue = {
+				top: toDefault ? aboutUsTopDefaultValue : topBio,
+				bottom: toDefault ? aboutUsBottomDefaultValue : bottomBio
+			}
+			const docRef = doc(db, Collections.bio, Collections.description);
+			await setDoc(docRef, bioValue, { merge: true });
 			dispatch(setIsBioChanged({ isBioChanged: true }))
 			Alert.alert('המידע נשמר בהצלחה!')
 		} catch (error) {

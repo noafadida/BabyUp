@@ -1,4 +1,4 @@
-import React, { useState, FC, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { GlobalStyles } from '../consts/styles';
@@ -8,7 +8,11 @@ import { InputContainerStyle } from '../types';
 import { ROUTES_NAMES } from '../consts/Routes';
 import { BackendError, incorrectEmail, passwordDidntLong, unmatchedPasswords, usernameIsShort } from '../consts/AlertMessegesConsts';
 
-const SignupScreen: FC<{ navigation: any }> = ({ navigation }) => {
+type Props = {
+	navigation: any;
+}
+
+const SignupScreen = ({ navigation }: Props) => {
 	const [email, setEmail] = useState(EMPTY_STRING);
 	const [username, setUsername] = useState(EMPTY_STRING);
 	const [password, setPassword] = useState(EMPTY_STRING);

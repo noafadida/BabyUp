@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 14,
     },
     itemContentText: {
-        // color: "#7F8487",
         textAlign: "right",
         fontSize:16
     }

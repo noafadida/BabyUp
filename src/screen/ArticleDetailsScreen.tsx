@@ -1,50 +1,55 @@
-import React, { FC, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { StyleSheet, Text, Image, ScrollView } from 'react-native';
 import { ARTICLES, } from '../../data';
 import { GlobalStyles } from '../consts/styles';
 
-const ArticleDetailsScreen: FC<{ route?: any, navigation?: any }> = ({ route, navigation }) => {
+type Props = {
+	route: any;
+	navigation: any;
+}
 
-    const itemId = route.params.id
-    const selectedArticle: any = ARTICLES.find((article) => article.id === itemId)
+const ArticleDetailsScreen = ({ route, navigation }: Props) => {
+	const itemId = route.params.id
+	const selectedArticle: any = ARTICLES.find((article) => article.id === itemId)
 
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            title: selectedArticle.title,
-        })
-    }, [selectedArticle, navigation])
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			title: selectedArticle.title,
+		})
+	}, [])
 
-    return (
-        <ScrollView style={styles.container}>
-            <Image source={{ uri: selectedArticle.imageUrl }} style={styles.image} />
-            <Text style={styles.subTitle}>{selectedArticle.subTitle}</Text>
-            <Text style={styles.content}>{selectedArticle.content}</Text>
-        </ScrollView >
-    )
+
+	return (
+		<ScrollView style={styles.container}>
+			<Image source={{ uri: selectedArticle.imageUrl }} style={styles.image} />
+			<Text style={styles.subTitle}>{selectedArticle.subTitle}</Text>
+			<Text style={styles.content}>{selectedArticle.content}</Text>
+		</ScrollView >
+	)
 }
 
 export default ArticleDetailsScreen;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 5,
-        backgroundColor: GlobalStyles.colors.mealsBackColor,
-    },
-    image: {
-        width: "100%",
-        height: 280,
-    },
-    subTitle: {
-        fontSize: 18,
-        textAlign: "center",
-        fontWeight: "500",
-        margin: 20,
-        color:GlobalStyles.colors.btnColor
-    },
-    content: {
-        textAlign: "right",
-        fontSize: 16, 
-        margin:15
-    }
+	container: {
+		flex: 1,
+		padding: 5,
+		backgroundColor: GlobalStyles.colors.mealsBackColor,
+	},
+	image: {
+		width: "100%",
+		height: 280,
+	},
+	subTitle: {
+		fontSize: 18,
+		textAlign: "center",
+		fontWeight: "500",
+		margin: 20,
+		color: GlobalStyles.colors.btnColor
+	},
+	content: {
+		textAlign: "right",
+		fontSize: 16,
+		margin: 15
+	}
 })

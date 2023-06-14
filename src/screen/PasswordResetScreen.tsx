@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, Alert } from 'react-native';
 import { GlobalStyles } from '../consts/styles';
 import { emailNotFound, resetPassword } from '../consts/AlertMessegesConsts';
@@ -7,7 +7,11 @@ import { InputContainerStyle } from '../types';
 import { ROUTES_NAMES } from '../consts/Routes';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 
-const PasswordResetScreen: FC<{ navigation: any }> = ({ navigation }) => {
+type Props = {
+	navigation: any;
+}
+
+const PasswordResetScreen = ({ navigation }: Props) => {
 	const [email, setEmail] = useState(EMPTY_STRING);
 	const [validEmail, setValidEmail] = useState(true);
 

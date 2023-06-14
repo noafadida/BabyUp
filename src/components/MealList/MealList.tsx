@@ -1,11 +1,15 @@
-import React, { FC, useEffect } from 'react';
+import { useEffect } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { GlobalStyles } from '../../consts/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFavoriteMeals } from '../../utils';
 import MealItem from './MealItem';
 
-const MealList: FC<{ navigation: any, items: any }> = ({ navigation, items }) => {
+type Props = {
+	items: any;
+}
+
+const MealList = ({ items }: Props) => {
 	const favoriteMealIds: any = useSelector((state: any) => state.favoriteMeals.mealsIds);
 	const dispatch = useDispatch()
 
@@ -17,7 +21,7 @@ const MealList: FC<{ navigation: any, items: any }> = ({ navigation, items }) =>
 
 	const renderMealItem = (itemData: any) => {
 		const item = itemData.item
-		return <MealItem navigation={navigation} item={item} />
+		return <MealItem item={item} />
 	}
 
 	return (

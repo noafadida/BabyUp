@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, ViewStyle, Button, Pressable, Alert, TouchableOpacity } from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, Text, TextInput, StyleSheet, Button, Pressable, Alert, TouchableOpacity } from 'react-native';
 import { EMPTY_STRING } from '../../consts/GeneralConsts';
 import { babyNameIsShort, babyNotInTheRightAge, usernameIsShort } from '../../consts/AlertMessegesConsts';
 import { GlobalStyles } from '../../consts/styles';
 import { Gender, InputContainerStyle } from '../../types';
 import { Ionicons } from '@expo/vector-icons';
 import { doc, setDoc, db } from '../../firebase'
+import { retrieveUserData } from '../../utils';
+import { Collections } from '../../consts/firebaseConsts';
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomModal from '../CustomModal';
 import AllergyList from '../AllergyList';
-import { retrieveUserData } from '../../utils';
 declare module 'react-native-datepicker';
 
 type Props = {
@@ -65,7 +65,7 @@ export default function UpdateBabyInfoModal({ onClose }: Props) {
 					selectedAllergies
 				}
 				const uid = await retrieveUserData()
-				const docRef = doc(db, "users", (uid || EMPTY_STRING));
+				const docRef = doc(db, Collections.users, (uid || EMPTY_STRING));
 				await setDoc(docRef, updatedInfo);
 				onClose()
 			} catch (error) {

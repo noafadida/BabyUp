@@ -72,9 +72,7 @@ export const AdminTab = ({ route, navigation }: any) => {
 						android_ripple={{
 							color: "#ccc"
 						}}
-						style={({ pressed }) => [
-							styles.buttonCategory,
-							pressed ? styles.buttonCategoryPressed : null]}
+						style={({ pressed }) => pressed ? styles.buttonCategoryPressed : null}
 						onPress={() => navigateToScreen(EditAboutUsScreenName)}
 					>
 						<View style={[styles.innerContainer]}>
@@ -99,11 +97,6 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 	},
 	gridItem: {
-		//AMIT - THIS MAKING ALERT IN CONSOLE
-		//shadowColor: "#ff9ebb",
-		//shadowOpacity: 0.3,
-		//shadowOffset: { width: 0, height: 2 },
-		//shadowRadius: 0,
 		overflow: Platform.OS === 'android' ? "hidden" : 'visible'
 	},
 	adminTabScreen: {
@@ -113,7 +106,6 @@ const styles = StyleSheet.create({
 		backgroundColor: GlobalStyles.colors.appBodyBackColor,
 	},
 	buttonCategory: {
-		// flex: 1
 	},
 	buttonCategoryPressed: {
 		opacity: 0.6,

@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, Modal, TouchableOpacity } from 'react-native'
 
 type Props = {

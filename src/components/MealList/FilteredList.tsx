@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import { useState } from 'react';
 import { View, Text, Switch, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
 import { GlobalStyles } from '../../consts/styles';
 import CustomModal from '../CustomModal';
@@ -13,7 +13,12 @@ const Filter = ({ label, value, onValueChange }: any) => {
 	);
 };
 
-const FilteredList: FC<{ navigation: any, items: any, route?: any }> = ({ navigation, items }) => {
+type Props = {
+	navigation: any;
+	items: any;
+}
+
+const FilteredList = ({ navigation, items }: Props) => {
 	const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false)
 	const [filterOptions, setFilterOptions] = useState({
 		isGlutenFree: false,
@@ -89,7 +94,7 @@ const FilteredList: FC<{ navigation: any, items: any, route?: any }> = ({ naviga
 					{handleFilterBtn()}
 				</CustomModal>
 			)}
-			<MealList items={filteredData} navigation={navigation} />
+			<MealList items={filteredData} />
 		</View>
 	);
 };

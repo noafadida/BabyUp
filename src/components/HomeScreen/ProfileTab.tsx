@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native'
 import { GlobalStyles } from '../../consts/styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -9,6 +9,7 @@ import { Allergies } from '../../consts';
 import { Allergy, BabyInfo } from '../../types';
 import { useDispatch } from 'react-redux';
 import { setUserInfo } from '../../store/redux/general';
+import { Collections } from '../../consts/firebaseConsts';
 import moment from 'moment';
 import CustomModal from '../CustomModal';
 import UpdateBabyInfoModal from './UpdateBabyInfoModal';
@@ -24,9 +25,9 @@ const INITIAL_BABY_INFO_VALUE = {
 
 export let babyGender = EMPTY_STRING
 
-export const ProfileTab = ({ route, navigation }: any) => {
+export const ProfileTab = ({ navigation }: any) => {
 	const [babyInfo, setBabyInfo] = useState<BabyInfo>(INITIAL_BABY_INFO_VALUE)
-	const [isUpdateBabyInfoModalOpen, setIsUpdateBabyInfoModalOpen] = useState<boolean>(false)
+	const [isUpdateBabyInfoModalOpen, setIsUpdateBabyInfoModalOpen] = useState<boolean>(false) // TODO  need to update only 1 elemnt and not all of them (merge)
 	const [isInfoChanged, setIsInfoChanged] = useState(false);
 	const dispatch = useDispatch()
 
@@ -34,7 +35,7 @@ export const ProfileTab = ({ route, navigation }: any) => {
 		const fetchUserInfo = async () => {
 			const user = await retrieveUserData()
 			if (user) {
-				const docRef = await getDoc(doc(db, "users", user));
+				const docRef = await getDoc(doc(db, Collections.users, user));
 				const docData: any = docRef.data()
 				const { babyName, babyBirthDate, parentName, gender, selectedAllergies } = docData || {};
 				const ageMonths = getAgeMonth(babyBirthDate)
@@ -56,7 +57,7 @@ export const ProfileTab = ({ route, navigation }: any) => {
 		const fetchChangesFromDB = async () => {
 			const user = await retrieveUserData()
 			if (user) {
-				onSnapshot(doc(db, "users", user), (doc) => {
+				onSnapshot(doc(db, Collections.users, user), (doc) => {
 					const { babyBirthDate, babyName, parentName, gender, selectedAllergies } = doc.data() || {}
 					const ageMonths = getAgeMonth(babyBirthDate)
 					setBabyInfo({

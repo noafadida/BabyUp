@@ -1,16 +1,36 @@
-import { FC } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, Pressable, StyleSheet, Image, Platform } from 'react-native'
 import { GlobalStyles } from '../../consts/styles';
 import { ROUTES_NAMES } from '../../consts/Routes';
+import { useNavigation } from '@react-navigation/native';
+import { EMPTY_STRING } from '../../consts/GeneralConsts';
+import { getDownloadURL, ref, storage } from '../../firebase';
 
-const NewsItem: FC<{ navigation: any }> = ({ id, title, imageUrl, navigation }: any) => {
+type Props = {
+	item: any
+}
+
+const ArticleItem = ({ item }: Props) => {
+	const navigation = useNavigation()
+	const [imageBlob, setImageBlob] = useState(EMPTY_STRING)
 	const { ArticleDetailsScreenName } = ROUTES_NAMES;
+	const { id, imageUrl, title, content, subTitle } = item || {};
 
 	const selectArticleItemHandler = () => {
-		navigation.navigate(ArticleDetailsScreenName, {
-			id: id
-		})
+		navigation.navigate(ArticleDetailsScreenName as never, { id: id || '' } as never)
 	};
+
+	useEffect(() => {
+		const fetchMealImage = async () => {
+			try {
+				const url = await getDownloadURL(ref(storage, id))
+				setImageBlob(url)
+			} catch (e) {
+				return EMPTY_STRING;
+			}
+		}
+		fetchMealImage()
+	}, [])
 
 	return (
 		<View style={styles.item}>
@@ -21,7 +41,7 @@ const NewsItem: FC<{ navigation: any }> = ({ id, title, imageUrl, navigation }: 
 			>
 				<View style={styles.innerContainer}>
 					<View>
-						<Image source={{ uri: imageUrl }} style={styles.image} />
+						{(imageUrl || imageBlob) && <Image source={{ uri: imageUrl || imageBlob }} style={styles.image} />}
 						<Text style={styles.title}>{title}</Text>
 					</View>
 				</View>
@@ -29,7 +49,7 @@ const NewsItem: FC<{ navigation: any }> = ({ id, title, imageUrl, navigation }: 
 		</View >
 	)
 }
-export default NewsItem
+export default ArticleItem
 
 const styles = StyleSheet.create({
 	item: {

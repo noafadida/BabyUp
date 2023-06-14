@@ -1,50 +1,58 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Image } from 'react-native'
+import { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native'
 import { GlobalStyles } from '../consts/styles';
-import { Ionicons } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
-import * as ImagePicker from 'expo-image-picker';
+import { db, doc, ref, setDoc, storage, uploadBytes } from '../firebase';
+import { Collections } from '../consts/firebaseConsts';
+import { BackendError } from '../consts/AlertMessegesConsts';
+import ImagePicker from '../components/ImagePicker';
 
 const AddArticleScreen = () => {
-    const [imgUri, setImgUri] = useState(EMPTY_STRING);
     const [articleTitle, setArticleTitle] = useState(EMPTY_STRING);
+	const [articleSubTitle, setArticleSubTitle] = useState(EMPTY_STRING);
     const [articleContent, setArticleContent] = useState(EMPTY_STRING);
 
-    const handleChoosePhoto = async () => {
-        try {
-            const res = await ImagePicker.launchImageLibraryAsync();
-            if (!res.canceled && res.assets.length > 0) {
-                const uri = res.assets[0].uri;
-                setImgUri(uri);
+	const { imageBlob } = useSelector((state: any) => state.general);
 
-            }
-        } catch (err) {
-            console.log("open camera error", err);
-        }
-        console.log(imgUri)
-    };
+	const handleAddArticle = async () => {
+		try {
+			const id = new Date().getTime().toString()
+			if (imageBlob) {
+				const storageRef = ref(storage, id);
+				await uploadBytes(storageRef, imageBlob)
+			}
+			const data = {
+				id,
+				title: articleTitle,
+				subTitle: articleSubTitle,
+				content: articleContent
+			}
+			const docRef = doc(db, Collections.article, articleTitle);
+			await setDoc(docRef, data);
+			Alert.alert('הוספת כתבה חדש!')
+		} catch (error) {
+			Alert.alert(BackendError)
+			console.log('error', error)
+		}
+	}
 
-   
     return (
         <ScrollView style={{ backgroundColor: GlobalStyles.colors.appBodyBackColor, }} >
             <View style={styles.container}>
-                <TouchableOpacity onPress={handleChoosePhoto}>
-                    <Ionicons name={"image"} style={styles.galleryButton} size={40} />
-                    <View style={styles.imageContainer}>
-                        {imgUri && (
-                            <Image source={{ uri: imgUri }} style={styles.image} />
-                        )}
-                        {!imgUri && (
-                            <Text style={styles.choosePhotoText}>העלה תמונה </Text>
-                        )}
-                    </View>
-                </TouchableOpacity>
+                <ImagePicker isShowTakeImage={false} />
                 <TextInput
                     style={styles.nameInput}
                     placeholder="כותרת"
                     value={articleTitle}
                     onChangeText={setArticleTitle}
                 />
+				<TextInput
+					style={styles.nameInput}
+					placeholder="כותרת משנית"
+					value={articleSubTitle}
+					onChangeText={setArticleSubTitle}
+				/>
                 <TextInput
                     style={styles.descriptionInput}
                     placeholder="הכנס תוכן"
@@ -52,7 +60,7 @@ const AddArticleScreen = () => {
                     onChangeText={setArticleContent}
                 />
 
-                <TouchableOpacity style={[GlobalStyles.buttonLightStyle, { marginBottom: 30 }]}>
+				<TouchableOpacity onPress={handleAddArticle} style={[GlobalStyles.buttonLightStyle, { marginBottom: 30 }]}>
                     <Text style={[GlobalStyles.buttonPinkTextStyle, { color: '#FF8DC7', }]}>הוספה</Text>
                 </TouchableOpacity>
             </View>

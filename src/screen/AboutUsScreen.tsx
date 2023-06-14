@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native'
 import { GlobalStyles } from '../consts/styles';
 import { db, doc, getDoc } from '../firebase';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsBioChanged } from '../store/redux/general';
+import { Collections } from '../consts/firebaseConsts';
 
 const AboutUsScreen = () => {
 	const [bio, setBio] = useState<{ top: string, bottom: string }>({ top: EMPTY_STRING, bottom: EMPTY_STRING })
@@ -13,7 +14,7 @@ const AboutUsScreen = () => {
 
 	useEffect(() => {
 		const fetchBioData = async () => {
-			const docRef = await getDoc(doc(db, "bio", 'description'));
+			const docRef = await getDoc(doc(db, Collections.bio, Collections.description));
 			const docData: any = docRef.data()
 			setBio(docData)
 			dispatch(setIsBioChanged({ isBioChanged: false }))

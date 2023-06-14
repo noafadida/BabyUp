@@ -1,4 +1,3 @@
-
 export const GlobalStyles = {
 	colors: {
 		headerBackColor: "#ff85a1",

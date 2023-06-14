@@ -1,4 +1,4 @@
-import React, { FC, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { View, StyleSheet, Text, Image, ScrollView, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
 import { setFavoriteMeals } from '../store/redux/favorites';
@@ -7,12 +7,18 @@ import { Ionicons } from '@expo/vector-icons';
 import { BackendError } from '../consts/AlertMessegesConsts';
 import { retrieveUserData } from '../utils';
 import { doc, db, setDoc } from '../firebase'
+import { Collections } from '../consts/firebaseConsts';
 import Subtitle from '../components/MealDetails/Subtitle';
 import List from '../components/MealDetails/List';
 import IconButton from '../components/IconButton';
 import StarRating from 'react-native-star-rating';
 
-const MealDetailScreen: FC<{ route?: any, navigation?: any }> = ({ route, navigation }) => {
+type Props = {
+	route: any;
+	navigation: any;
+}
+
+const MealDetailScreen = ({ route, navigation }: Props) => {
 	const { mealId, item: selectedMeal } = route.params;
 	
 	const favoriteMealIds: any = useSelector((state: any) => state.favoriteMeals.mealsIds);
@@ -29,8 +35,7 @@ const MealDetailScreen: FC<{ route?: any, navigation?: any }> = ({ route, naviga
 		try {
 			const uid = await retrieveUserData()
 			if (uid) {
-				const docRef = doc(db, 'favorite', uid);
-				console.log('2', isFavorite)
+				const docRef = doc(db, Collections.favorite, uid);
 				let updatedFavoriteMeals = { ...favoriteMeals }
 				if (isFavorite) {
 					delete updatedFavoriteMeals[mealId]

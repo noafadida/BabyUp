@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Pressable, Alert } from 'react-native'
+import { storage, uploadBytes, ref, doc, db, setDoc } from '../firebase';
+import { CATEGORIES, COMPLEXITY, MINUTES } from '../consts/AddMealsPageConsts';
 import { GlobalStyles } from '../consts/styles';
 import { Allergies } from '../consts';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { Allergy } from '../types';
 import { useSelector } from 'react-redux';
-import { retrieveUserData } from '../utils';
-import { storage, uploadBytes, ref, doc, db, setDoc } from '../firebase';
-import { CATEGORIES, COMPLEXITY, MINUTES } from '../consts/AddMealsPageConsts';
+import { Collections } from '../consts/firebaseConsts';
+import { BackendError } from '../consts/AlertMessegesConsts';
 import DropDown from '../components/DropDown';
 import CustomModal from '../components/CustomModal';
 import AllergyList from '../components/AllergyList';
@@ -39,7 +40,6 @@ const AddMealScreen = () => {
 	const handleAddMeal = async () => {
 		try {
 			const id = new Date().getTime().toString()
-			const uid = await retrieveUserData()
 			if (imageBlob) {
 				const storageRef = ref(storage, id);
 				await uploadBytes(storageRef, imageBlob)
@@ -54,12 +54,11 @@ const AddMealScreen = () => {
 				complexity: newMealLevelDropdown,
 				categoryIds: selectedCategories
 			}
-			if (uid) {
-				const docRef = doc(db, "meals", title);
-				await setDoc(docRef, data);
-				Alert.alert('הוספת מתכון חדש!')
-			}
+			const docRef = doc(db, Collections.meals, title);
+			await setDoc(docRef, data);
+			Alert.alert('הוספת מתכון חדש!')
 		} catch (error) {
+			Alert.alert(BackendError)
 			console.log('error', error)
 		}
 	}

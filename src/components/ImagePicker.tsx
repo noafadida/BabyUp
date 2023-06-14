@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useCameraPermissions, PermissionStatus, launchCameraAsync, launchImageLibraryAsync } from 'expo-image-picker'
 import { EMPTY_STRING } from '../consts/GeneralConsts';
@@ -6,7 +6,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { setImageBlob } from '../store/redux/general';
 import { useDispatch } from 'react-redux';
 
-const ImagePicker = () => {
+type Props = {
+	isShowTakeImage?: boolean;
+}
+
+const ImagePicker = ({ isShowTakeImage = true }: Props) => {
 	const [pickedImage, setPickedImage] = useState<string>(EMPTY_STRING);
 	const [cameraPermissionInformation, requestPermission] = useCameraPermissions();
 
@@ -56,7 +60,7 @@ const ImagePicker = () => {
 	const handleConvertImageToBlob = async (imageUri: string) => {
 		const response = await fetch(imageUri)
 		const blob = await response.blob()
-		dispatch(setImageBlob({ imageBlob: blob}))
+		dispatch(setImageBlob({ imageBlob: blob }))
 		setPickedImage(imageUri)
 	}
 
@@ -73,10 +77,10 @@ const ImagePicker = () => {
 				</View>
 			</TouchableOpacity>
 
-			<TouchableOpacity onPress={takeImageHandler}>
+			{isShowTakeImage && <TouchableOpacity onPress={takeImageHandler}>
 				<Ionicons name={"camera"} style={styles.cameraButton} size={40} />
 				<Text style={styles.takePhotoText}>צלם עכשיו </Text>
-			</TouchableOpacity>
+			</TouchableOpacity>}
 		</View>
 	)
 }

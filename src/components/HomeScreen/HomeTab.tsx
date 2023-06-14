@@ -4,7 +4,7 @@ import { ROUTES_NAMES } from '../../consts/Routes';
 import { GlobalStyles } from '../../consts/styles';
 import CategoryGrid from "../CategoryGrid";
 import Article from '../../models/article';
-import NewsItem from '../NewsList/NewsItem';
+import NewsItem from '../Articles/ArticleItem';
 
 export const HomeTab = ({ navigation, route }: any) => {
 	const { TipsScreenName, newsScreenName, MealsOverViewScreenName } = ROUTES_NAMES;
