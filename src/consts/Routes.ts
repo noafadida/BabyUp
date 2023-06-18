@@ -26,27 +26,6 @@ export const TAB_ROUTES_NAMES = {
   AdminScreen: "AdminScreen",
 };
 
-//export const ROUTES_NAMES = {
-//  HomeScreen: "HomeScreen",
-//  SignupPage: "SignupPage",
-//  PasswordResetPage: "PasswordResetPage",
-//  LoginPage: "LoginPage",
-//  SignupPage2: "SignupPage2",
-//  MealsOverViewScreen: "MealsOverViewScreen",
-//  MealDetailScreen: "MealDetailScreen",
-//  AboutUsPage: "AboutUsPage",
-//  CallUsPage: "CallUsPage",
-//  QuestionsPage: "QuestionsPage",
-//  newsScreen: "newsScreen",
-//  ArticleDetailsScreen: "ArticleDetailsScreen",
-//  TipsScreen: "TipsScreen",
-//  SuperFoodItemScreen: "SuperFoodItemScreen",
-//  AddMealPage: "AddMealPage",
-//  AddArticlePage: "AddArticlePage",
-//  AddTipPage: "AddTipPage",
-//  EditAboutUsPage:"EditAboutUsPage"
-//};
-
 export const ROUTES_NAMES = {
 	StartScreenName: 'StartScreen',
 	LoginScreenName: 'LoginScreen',
@@ -56,7 +35,7 @@ export const ROUTES_NAMES = {
 	PasswordResetScreenName: 'PasswordResetScreen',
 	MealsOverViewScreenName: 'MealsOverViewScreen',
 	MealDetailScreenName: 'MealDetailScreen',
-	newsScreenName: 'newsScreen',
+	articleScreenName: 'articleScreen',
 	ArticleDetailsScreenName: 'ArticleDetailsScreen',
 	TipsScreenName: 'TipsScreen',
 	TipsDetailsScreenName: 'TipsDetailsScreen',

@@ -38,7 +38,7 @@ export default function StackNavigator() {
 	const { babyUp, login, resetPassword, signup, home, newsScreenTitle, AddMeal, AddArticle, AddTip, EditAboutUs } = SCREEN_NAMES;
 
 	const {
-		AddArticleScreenName, AddMealScreenName, AddTipScreenName, ArticleDetailsScreenName, EditAboutUsScreenName, HomeScreenName, LoginScreenName, MealDetailScreenName, MealsOverViewScreenName, PasswordResetScreenName, SignupScreen2Name, SignupScreenName, StartScreenName, SuperFoodItemScreenName, TipsDetailsScreenName, TipsScreenName, newsScreenName
+		AddArticleScreenName, AddMealScreenName, AddTipScreenName, ArticleDetailsScreenName, EditAboutUsScreenName, HomeScreenName, LoginScreenName, MealDetailScreenName, MealsOverViewScreenName, PasswordResetScreenName, SignupScreen2Name, SignupScreenName, StartScreenName, SuperFoodItemScreenName, TipsDetailsScreenName, TipsScreenName, articleScreenName
 	} = ROUTES_NAMES;
 	
 	return (
@@ -86,7 +86,7 @@ export default function StackNavigator() {
 				component={MealDetailScreen}
 			/>
 			<Stack.Screen
-				name={newsScreenName}
+				name={articleScreenName}
 				component={ArticlesScreen}
 				options={{ title: newsScreenTitle }}
 			/>

@@ -1,6 +1,5 @@
 import { useLayoutEffect } from 'react';
 import { StyleSheet, Text, Image, ScrollView } from 'react-native';
-import { ARTICLES, } from '../../data';
 import { GlobalStyles } from '../consts/styles';
 
 type Props = {
@@ -9,21 +8,19 @@ type Props = {
 }
 
 const ArticleDetailsScreen = ({ route, navigation }: Props) => {
-	const itemId = route.params.id
-	const selectedArticle: any = ARTICLES.find((article) => article.id === itemId)
+	const { title, imageUrl, content, subTitle } = route.params.article || {};
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: selectedArticle.title,
+			title: title,
 		})
 	}, [])
 
-
 	return (
 		<ScrollView style={styles.container}>
-			<Image source={{ uri: selectedArticle.imageUrl }} style={styles.image} />
-			<Text style={styles.subTitle}>{selectedArticle.subTitle}</Text>
-			<Text style={styles.content}>{selectedArticle.content}</Text>
+			<Image source={{ uri: imageUrl }} style={styles.image} />
+			<Text style={styles.subTitle}>{subTitle}</Text>
+			<Text style={styles.content}>{content}</Text>
 		</ScrollView >
 	)
 }
@@ -34,7 +31,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		padding: 5,
-		backgroundColor: GlobalStyles.colors.mealsBackColor,
+		backgroundColor: GlobalStyles.colors.mealsBackColor
 	},
 	image: {
 		width: "100%",

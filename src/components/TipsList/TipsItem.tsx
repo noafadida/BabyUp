@@ -19,14 +19,16 @@ const TipsItem = ({ item }: Props) => {
 	useEffect(() => {
 		const fetchMealImage = async () => {
 			try {
-				const url = await getDownloadURL(ref(storage, id))
-				setImageBlob(url)
+				if (id) {
+					const url = await getDownloadURL(ref(storage, id))
+					setImageBlob(url)
+				}
 			} catch (e) {
 				return EMPTY_STRING;
 			}
 		}
 		fetchMealImage()
-	}, [])
+	}, [id])
 
 	const selectArticleItemHandler = () => {
 		const updatedItem = {

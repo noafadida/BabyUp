@@ -7,30 +7,33 @@ import { EMPTY_STRING } from '../../consts/GeneralConsts';
 import { getDownloadURL, ref, storage } from '../../firebase';
 
 type Props = {
-	item: any
+	article: any
 }
 
-const ArticleItem = ({ item }: Props) => {
+const ArticleItem = ({ article }: Props) => {
 	const navigation = useNavigation()
 	const [imageBlob, setImageBlob] = useState(EMPTY_STRING)
 	const { ArticleDetailsScreenName } = ROUTES_NAMES;
-	const { id, imageUrl, title, content, subTitle } = item || {};
+	const { id, imageUrl, title, content, subTitle } = article || {};
 
 	const selectArticleItemHandler = () => {
-		navigation.navigate(ArticleDetailsScreenName as never, { id: id || '' } as never)
+		navigation.navigate(ArticleDetailsScreenName as never, { article: { id, imageUrl: imageUrl || imageBlob, title, content, subTitle } } as never)
 	};
 
 	useEffect(() => {
-		const fetchMealImage = async () => {
+		const fetchArticleImage = async () => {
 			try {
-				const url = await getDownloadURL(ref(storage, id))
-				setImageBlob(url)
+				if (id) {
+					const url = await getDownloadURL(ref(storage, id))
+					setImageBlob(url)
+				}
 			} catch (e) {
+				console.log(e)
 				return EMPTY_STRING;
 			}
 		}
-		fetchMealImage()
-	}, [])
+		fetchArticleImage()
+	}, [id])
 
 	return (
 		<View style={styles.item}>

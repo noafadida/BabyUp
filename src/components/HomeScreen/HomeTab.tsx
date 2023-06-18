@@ -1,22 +1,34 @@
-import { View, FlatList, StyleSheet, TouchableOpacity, Text } from 'react-native'
+import { useState, useEffect } from 'react'
+import { View, FlatList, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { collection, db, getDocs } from '../../firebase';
 import { CATEGORIES, ARTICLES } from '../../../data';
 import { ROUTES_NAMES } from '../../consts/Routes';
 import { GlobalStyles } from '../../consts/styles';
 import CategoryGrid from "../CategoryGrid";
 import Article from '../../models/article';
-import NewsItem from '../Articles/ArticleItem';
+import ArticleItem from '../Articles/ArticleItem';
+import { Collections } from '../../consts/firebaseConsts';
 
 export const HomeTab = ({ navigation, route }: any) => {
-	const { TipsScreenName, newsScreenName, MealsOverViewScreenName } = ROUTES_NAMES;
-	const newArticle: Article[] = ARTICLES.filter((article) => article.id === 'a1')
+	const [articlesData, setArticlesData] = useState<any[]>([])
+	const { TipsScreenName, articleScreenName, MealsOverViewScreenName } = ROUTES_NAMES;
 
-	const itemProps = {
-		id: newArticle[0].id,
-		imageUrl: newArticle[0].imageUrl,
-		title: newArticle[0].title,
-		subTitle: newArticle[0].subTitle,
-		content: newArticle[0].content
-	}
+	useEffect(() => {
+		const fetchArticlesHandler = async () => {
+			try {
+				const collectionRef = collection(db, Collections.article);
+				const querySnapshot = await getDocs(collectionRef);
+				const articlesCollection: any[] = []
+				querySnapshot.forEach((doc) => {
+					articlesCollection.push(doc.data())
+				});
+				setArticlesData([...ARTICLES, ...articlesCollection])
+			} catch (e) {
+				console.log(e)
+			}
+		}
+		fetchArticlesHandler()
+	}, [])
 
 	const renderCategoryItem = (itemData: any) => {
 		const pressHandler = () => (
@@ -32,14 +44,6 @@ export const HomeTab = ({ navigation, route }: any) => {
 		)
 	}
 
-	const newsPressHandler = () => {
-		navigation.navigate(newsScreenName)
-	}
-
-	const tipsPressHandler = () => {
-		navigation.navigate(TipsScreenName)
-	}
-
 	return (
 		<View style={styles.screen} >
 			<View style={styles.categories} >
@@ -51,13 +55,13 @@ export const HomeTab = ({ navigation, route }: any) => {
 				/>
 			</View>
 			<View style={styles.newsItem}>
-				<NewsItem navigation={navigation} {...itemProps} />
+				<ArticleItem article={articlesData?.[articlesData?.length - 1]} />
 			</View>
 			<View style={styles.innerComponent}>
-				<TouchableOpacity style={GlobalStyles.buttonLightPinkStyle} onPress={tipsPressHandler}>
+				<TouchableOpacity style={GlobalStyles.buttonLightPinkStyle} onPress={() => navigation.navigate(TipsScreenName)}>
 					<Text style={GlobalStyles.buttonPinkTextStyle}> הטיפים שלנו</Text>
 				</TouchableOpacity>
-				<TouchableOpacity style={GlobalStyles.buttonLightStyle} onPress={newsPressHandler}>
+				<TouchableOpacity style={GlobalStyles.buttonLightStyle} onPress={() => navigation.navigate(articleScreenName, { articles: articlesData })}>
 					<Text style={GlobalStyles.buttonLightTextStyle}>כתבות חדשות</Text>
 				</TouchableOpacity>
 			</View>

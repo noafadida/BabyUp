@@ -3,19 +3,19 @@ import { GlobalStyles } from '../../consts/styles';
 import ArticleItem from './ArticleItem';
 
 type Props = {
-	items: any;
+	articles: any;
 }
 
-const ArticleList = ({ items }: Props) => {
+const ArticleList = ({ articles }: Props) => {
 	const renderArticlelItem = (itemData: any) => {
-		const item = itemData.item
-		return <ArticleItem item={item} />
+		const article = itemData.item
+		return <ArticleItem article={article} />
 	}
 
 	return (
 		<View style={styles.container}>
 			<FlatList
-				data={items}
+				data={articles}
 				keyExtractor={(item): any => item.id}
 				renderItem={renderArticlelItem}
 			/>
