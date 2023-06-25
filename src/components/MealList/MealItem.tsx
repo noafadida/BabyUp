@@ -14,7 +14,7 @@ type Props = {
 const MealItem = ({ item }: Props) => {
 	const navigation = useNavigation()
 	const [imageBlob, setImageBlob] = useState<string>(EMPTY_STRING);
-	const { id, title, duration, complexity } = item || {}
+	const { id, title, duration, complexity, imageUrl } = item || {}
 
 	const selectMealItemHandler = () => {
 		navigation.navigate(ROUTES_NAMES.MealDetailScreenName as never, {
@@ -27,6 +27,10 @@ const MealItem = ({ item }: Props) => {
 		const fetchMealImage = async () => {
 			try {
 				if (id) {
+					if (imageUrl) {
+						setImageBlob(imageUrl)
+						return;
+					}
 					const url = await getDownloadURL(ref(storage, id))
 					setImageBlob(url)
 				}

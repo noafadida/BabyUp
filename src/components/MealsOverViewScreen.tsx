@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
-import { CATEGORIES } from '../../data';
+import { CATEGORIES, MEALS } from '../../data';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { db, collection, getDocs } from '../firebase'
 import { setAllMeals } from '../store/redux/general';
@@ -27,7 +27,7 @@ const MealsOverViewScreen = ({ route, navigation }: Props) => {
 				querySnapshot.forEach((doc) => {
 					mealsCollection.push(doc.data())
 				});
-				dispatch(setAllMeals({ allMeals: mealsCollection }))
+				dispatch(setAllMeals({ allMeals: [...MEALS, ...mealsCollection] }))
 			} catch (e) {
 				console.log(e)
 			}
