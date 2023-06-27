@@ -3,6 +3,7 @@ import { GlobalStyles } from '../../consts/styles';
 import { Ionicons } from '@expo/vector-icons'
 import { ROUTES_NAMES } from '../../consts/Routes';
 import { useSelector } from 'react-redux';
+import * as MailComposer from 'expo-mail-composer';
 
 export const AdminTab = ({ route, navigation }: any) => {
 	const { AddMealScreenName, AddArticleScreenName, AddTipScreenName, EditAboutUsScreenName } = ROUTES_NAMES;
@@ -11,6 +12,12 @@ export const AdminTab = ({ route, navigation }: any) => {
 	const navigateToScreen = (screenName: string) => {
 		navigation.navigate(screenName)
 	}
+
+	const handleEmail = () => {
+		MailComposer.composeAsync({
+			recipients: ["babyupteam@gmail.com"]
+		})
+	};
 
 	return (
 		<View style={styles.adminTabScreen}>
@@ -82,7 +89,7 @@ export const AdminTab = ({ route, navigation }: any) => {
 					</Pressable>
 				</View >
 			</View>
-			<Button title='לחץ/י על מנת לדווח על בעיה' color={GlobalStyles.colors.btnColor}></Button>
+			<Button onPress={handleEmail} title='לחץ/י על מנת לדווח על בעיה' color={GlobalStyles.colors.btnColor}></Button>
 		</View>
 
 	)
