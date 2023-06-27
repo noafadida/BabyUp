@@ -57,15 +57,6 @@ export default function DrawerNavigator() {
 					drawerIcon: ({ color, size }) => (<Ionicons name='help-outline' color={color} size={size} />)
 				}}
 			/>
-			{/*<Drawer.Screen
-				name="התנתקות"
-				component={LoginPage}
-				options={{
-					drawerLabel: "התנתקות",
-					drawerIcon: ({ color, size }) => (<Ionicons name='exit-outline' color={color} size={size} />)
-				}}
-			/>*/}
-			{/* TODO ADD LOGOUT FUNCTION */}
 		</Drawer.Navigator >
 
 	)

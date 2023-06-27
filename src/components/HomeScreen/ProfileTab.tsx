@@ -27,7 +27,7 @@ export let babyGender = EMPTY_STRING
 
 export const ProfileTab = ({ navigation }: any) => {
 	const [babyInfo, setBabyInfo] = useState<BabyInfo>(INITIAL_BABY_INFO_VALUE)
-	const [isUpdateBabyInfoModalOpen, setIsUpdateBabyInfoModalOpen] = useState<boolean>(false) // TODO  need to update only 1 elemnt and not all of them (merge)
+	const [isUpdateBabyInfoModalOpen, setIsUpdateBabyInfoModalOpen] = useState<boolean>(false)
 	const [isInfoChanged, setIsInfoChanged] = useState(false);
 	const dispatch = useDispatch()
 
@@ -103,7 +103,7 @@ export const ProfileTab = ({ navigation }: any) => {
 				</TouchableOpacity>
 				{isUpdateBabyInfoModalOpen && (
 					<CustomModal onClose={() => setIsUpdateBabyInfoModalOpen(false)} visible={isUpdateBabyInfoModalOpen} animationType='fade' transparent>
-						<UpdateBabyInfoModal onClose={onModalClose} />
+						<UpdateBabyInfoModal babyInfo={babyInfo} onClose={onModalClose} />
 					</CustomModal>
 				)}
 			</View>
@@ -126,12 +126,15 @@ export const ProfileTab = ({ navigation }: any) => {
 				</View>
 				<View style={styles.innerDetails}>
 					<Text style={[styles.titleDetails, { color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7" }]}>רגישויות </Text>
-					{babyInfo?.selectedAllergies?.length > 0 && babyInfo.selectedAllergies.map((allergy: string) => {
-						const name: string = getAllergyName(allergy)
-						return (
-							<Text key={allergy} style={styles.textDetails}>{name} </Text>
-						)
-					})}
+					{babyInfo?.selectedAllergies?.length > 0 ? (
+						babyInfo.selectedAllergies.map((allergy: string) => {
+							const name: string = getAllergyName(allergy)
+							return (
+								<Text key={allergy} style={styles.textDetails}>{name} </Text>
+							)
+						})) : (
+						<Text style={styles.textDetails}>אין</Text>
+					)}
 				</View>
 			</View>
 

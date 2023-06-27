@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const INITAL_STATE = {
-	ids: [],
 	meals: {},
 	mealsValues: [],
 	mealsIds: []
@@ -16,12 +15,6 @@ const favoritesSlice = createSlice({
 			state.meals = meals
 			state.mealsValues = Object.values(meals)
 			state.mealsIds = Object.keys(meals)
-		},
-		addFavorite: (state: any, action: any) => {
-			state.ids.push(action.payload.id)
-		},
-		removeFavorite: (state: any, action: any) => {
-			state.ids.splice(state.ids.indexOf(action.payload.id), 1)
 		}
 	}
 });

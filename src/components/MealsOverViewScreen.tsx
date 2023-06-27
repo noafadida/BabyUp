@@ -27,7 +27,9 @@ const MealsOverViewScreen = ({ route, navigation }: Props) => {
 				querySnapshot.forEach((doc) => {
 					mealsCollection.push(doc.data())
 				});
-				dispatch(setAllMeals({ allMeals: [...MEALS, ...mealsCollection] }))
+				const editedMeals: any[] = [];
+				MEALS.forEach((meal: any) => editedMeals.push(JSON.parse(JSON.stringify(meal))))
+				dispatch(setAllMeals({ allMeals: [...editedMeals, ...mealsCollection] }))
 			} catch (e) {
 				console.log(e)
 			}

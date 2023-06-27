@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState, useEffect } from 'react';
 import { View, StyleSheet, Text, Image, ScrollView, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
 import { setFavoriteMeals } from '../store/redux/favorites';
@@ -20,16 +20,22 @@ type Props = {
 
 const MealDetailScreen = ({ route, navigation }: Props) => {
 	const { mealId, item: selectedMeal } = route.params;
-	
+	const { title, steps, ingredients, allergies, duration, imageBlob } = selectedMeal || {};
+
 	const favoriteMealIds: any = useSelector((state: any) => state.favoriteMeals.mealsIds);
 	const favoriteMeals: any = useSelector((state: any) => state.favoriteMeals.meals);
 	const [starCount, setStarCount] = useState(0);
-	const [isFavorite, setIsFavorite] = useState(favoriteMealIds.includes(mealId));
+	const [isFavorite, setIsFavorite] = useState(false);
 	const dispatch = useDispatch();
+	console.log(isFavorite)
 
 	const onStarRatingPress = (rating: any) => {
 		setStarCount(rating);
 	};
+
+	useEffect(() => {
+		setIsFavorite(favoriteMealIds?.includes(mealId))
+	}, [favoriteMeals])
 
 	const changeFavoriteStatusHandler = async () => {
 		try {
@@ -39,10 +45,8 @@ const MealDetailScreen = ({ route, navigation }: Props) => {
 				let updatedFavoriteMeals = { ...favoriteMeals }
 				if (isFavorite) {
 					delete updatedFavoriteMeals[mealId]
-					setIsFavorite(false)
 				} else {
-					setIsFavorite(true)
-					updatedFavoriteMeals = { ...updatedFavoriteMeals, [mealId]: selectedMeal } // TODO check maybe to save only the ID and fetch them later in favorite tab
+					updatedFavoriteMeals = { ...updatedFavoriteMeals, [mealId]: selectedMeal }
 				}
 				dispatch(setFavoriteMeals({ meals: updatedFavoriteMeals }))
 				await setDoc(docRef, updatedFavoriteMeals);
@@ -56,7 +60,7 @@ const MealDetailScreen = ({ route, navigation }: Props) => {
 	useLayoutEffect(() => {
 		const isMealFavorite = favoriteMealIds.includes(mealId)
 		navigation.setOptions({
-			title: selectedMeal?.title,
+			title,
 			headerRight: () => {
 				return (
 					<IconButton
@@ -66,14 +70,14 @@ const MealDetailScreen = ({ route, navigation }: Props) => {
 					/>)
 			}
 		})
-	}, [selectedMeal, favoriteMealIds, mealId])
+	}, [mealId, isFavorite])
 
 	return (
 		<ScrollView style={styles.container}>
-			<Image source={selectedMeal?.imageBlob ? { uri: selectedMeal?.imageBlob } : require('../../assets/no-image.png')} style={styles.image} />
+			<Image source={imageBlob ? { uri: imageBlob } : require('../../assets/no-image.png')} style={styles.image} />
 			<View style={styles.time}>
 				<Ionicons name='time-outline' size={22} color={GlobalStyles.colors.btnColor} />
-				<Text style={{ color: "#AAAAAA" }}>{selectedMeal?.duration} דקות </Text>
+				<Text style={{ color: "#AAAAAA" }}>{duration} דקות </Text>
 			</View>
 			<View style={styles.allregyMealsContainer}>
 				<View style={styles.allregyMeals}>
@@ -81,25 +85,25 @@ const MealDetailScreen = ({ route, navigation }: Props) => {
 						<Text style={styles.allergyName}>
 							גלוטן
 						</Text>
-						{selectedMeal.allergies?.includes('1') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
+						{allergies?.includes('1') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
 					</View>
 					<View style={styles.allregyMeal}>
 						<Text style={styles.allergyName}>
 							חלב
 						</Text>
-						{selectedMeal.allergies?.includes('3') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
+						{allergies?.includes('3') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
 					</View>
 					<View style={styles.allregyMeal}>
 						<Text style={styles.allergyName}>
 							אגוזים
 						</Text>
-						{selectedMeal.allergies?.includes('2') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
+						{allergies?.includes('2') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
 					</View>
 					<View style={styles.allregyMeal}>
 						<Text style={styles.allergyName}>
 							ביצים
 						</Text>
-						{selectedMeal.allergies?.includes('4') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
+						{allergies?.includes('4') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
 					</View>
 				</View>
 			</View>
@@ -121,9 +125,9 @@ const MealDetailScreen = ({ route, navigation }: Props) => {
 			<View style={styles.listOuterContainer}>
 				<View style={styles.listContainer}>
 					<Subtitle>מצרכים</Subtitle>
-					<List data={selectedMeal?.ingredients?.split(',') || []} />
+					<List data={typeof (ingredients) === 'string' ? ingredients?.split(',') : ingredients} />
 					<Subtitle>שלבים</Subtitle>
-					<List data={selectedMeal?.steps?.split(',') || []} />
+					<List data={typeof (steps) === 'string' ? steps?.split(',') : steps} />
 				</View>
 			</View>
 		</ScrollView >

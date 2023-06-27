@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { BackendError, incorrectEmail, passwordDidntLong, unmatchedPasswords, usernameIsShort } from '../consts/AlertMessegesConsts';
+import { fetchSignInMethodsForEmail, auth } from '../firebase'
 import { MaterialIcons } from '@expo/vector-icons';
 import { GlobalStyles } from '../consts/styles';
 import { validateEmail } from '../utils';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { InputContainerStyle } from '../types';
 import { ROUTES_NAMES } from '../consts/Routes';
-import { BackendError, incorrectEmail, passwordDidntLong, unmatchedPasswords, usernameIsShort } from '../consts/AlertMessegesConsts';
 
 type Props = {
 	navigation: any;
@@ -44,7 +45,12 @@ const SignupScreen = ({ navigation }: Props) => {
 	const handleSignup = async () => {
 		try {
 			if (isValid) {
-				navigation.navigate(ROUTES_NAMES.SignupScreen2Name, { email, password, username })
+				const methods = await fetchSignInMethodsForEmail(auth, email);
+				if (methods?.length === 0) {
+					navigation.navigate(ROUTES_NAMES.SignupScreen2Name, { email, password, username })
+				} else {
+					Alert.alert('כתובת המייל שהזנת קיימת במערכת')
+				}
 			} else {
 				Alert.alert('נסה שנית')
 			}

@@ -21,7 +21,6 @@ const EditAboutUsScreen = ({ route, navigation }: Props) => {
 	const Tab = createBottomTabNavigator();
 	const [isAdmin, setIsAdmin] = useState<boolean>(false)
 	const { FavoritesScreen, HomeScreen, ProfileScreen, AdminScreen } = TAB_ROUTES_NAMES
-	const name = route.params // TODO NEED TO FIX
 
 	useEffect(() => {
 		const fetchUserInfo = async () => {
@@ -47,7 +46,7 @@ const EditAboutUsScreen = ({ route, navigation }: Props) => {
 				</View>
 			)
 		});
-	}, [name, route]);
+	}, []);
 
 	return (
 		<View style={styles.container}>

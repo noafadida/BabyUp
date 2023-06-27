@@ -16,9 +16,10 @@ declare module 'react-native-datepicker';
 
 type Props = {
 	onClose: () => void;
+	babyInfo: any;
 }
 
-export default function UpdateBabyInfoModal({ onClose }: Props) {
+export default function UpdateBabyInfoModal({ onClose, babyInfo }: Props) {
 	const [username, setUsername] = useState(EMPTY_STRING);
 	const [errorMessage, setErrorMessage] = useState(EMPTY_STRING);
 	const [babyName, setBabyName] = useState(EMPTY_STRING);
@@ -26,9 +27,9 @@ export default function UpdateBabyInfoModal({ onClose }: Props) {
 	const [showDatePicker, setShowDatePicker] = useState(false);
 	const [isDateValid, setIsDateValid] = useState(true);
 	const [isAllergyBabyModalOpen, setIsAllergyBabyModalOpen] = useState<boolean>(false)
-	const [selectedAllergies, setSelectedAllergies] = useState<string[]>([])
-	const [Gender, setGender] = useState<Gender>('FEMALE');
-
+	const [isAllergyBabyModalSaved, setIsAllergyBabyModalSaved] = useState<boolean>(false)
+	const [selectedAllergies, setSelectedAllergies] = useState<string[]>(babyInfo?.selectedAllergies || [])
+	const [Gender, setGender] = useState<Gender>(babyInfo?.gender === 'זכר' ? 'MALE' : 'FEMALE');
 
 	useEffect(() => {
 		const isDidntValidUsername = !!username && username?.length < 3;
@@ -55,28 +56,41 @@ export default function UpdateBabyInfoModal({ onClose }: Props) {
 	}, [birthdate])
 
 	const updateUserInfoHandler = async () => {
-		if (!!username && !!Gender && !!birthdate && !!babyName && !!selectedAllergies) {
-			try {
-				const updatedInfo = {
-					parentName: username,
-					gender: Gender,
-					babyBirthDate: birthdate,
-					babyName,
-					selectedAllergies
-				}
-				const uid = await retrieveUserData()
-				const docRef = doc(db, Collections.users, (uid || EMPTY_STRING));
-				await setDoc(docRef, updatedInfo);
-				onClose()
-			} catch (error) {
-				Alert.alert('אופס, נסה שוב מאוחר יותר')
+		try {
+			if (!!errorMessage) {
+				Alert.alert(babyNotInTheRightAge)
+				return
 			}
-		} else {
+			const updatedInfo: any = {
+				parentName: username,
+				gender: Gender,
+				babyBirthDate: birthdate,
+				babyName,
+				selectedAllergies: isAllergyBabyModalSaved ? selectedAllergies : ""
+			}
+			Object.keys(updatedInfo || {}).forEach((key: string) => {
+				if (updatedInfo[key] === "") {
+					delete updatedInfo[key]
+				}
+			})
+			const uid = await retrieveUserData()
+			if (uid) {
+				const docRef = doc(db, Collections.users, uid);
+				await setDoc(docRef, updatedInfo, { merge: true });
+			}
+			onClose()
+		} catch (error) {
 			Alert.alert('אופס, נסה שוב מאוחר יותר')
-			console.log('ERROR', errorMessage)
 		}
 	}
+
+	const onModalSave = () => {
+		setIsAllergyBabyModalSaved(true)
+		setIsAllergyBabyModalOpen(false)
+	}
+
 	const onModalClose = () => {
+		setIsAllergyBabyModalSaved(false)
 		setIsAllergyBabyModalOpen(false)
 	}
 
@@ -97,7 +111,7 @@ export default function UpdateBabyInfoModal({ onClose }: Props) {
 			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
 				<TextInput
 					style={[GlobalStyles.inputStyle, { borderColor: 'white', textAlign: 'right' }]}
-					placeholder="שם משתמש"
+					placeholder={babyInfo.parentName}
 					value={username}
 					onChangeText={setUsername}
 				/>
@@ -105,7 +119,7 @@ export default function UpdateBabyInfoModal({ onClose }: Props) {
 			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
 				<TextInput
 					style={[GlobalStyles.inputStyle, { borderColor: 'white', textAlign: 'right' }]}
-					placeholder="שם התינוק/ת"
+					placeholder={babyInfo.babyName}
 					value={babyName}
 					onChangeText={setBabyName}
 
@@ -115,7 +129,7 @@ export default function UpdateBabyInfoModal({ onClose }: Props) {
 			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
 				<TextInput
 					style={[GlobalStyles.inputStyle, { borderColor: 'white', textAlign: 'right' }]}
-					placeholder="תאריך לידה של התינוק/ת"
+					placeholder={babyInfo.babyBirthDate}
 					value={birthdate}
 					onTouchStart={() => {
 						setShowDatePicker(true);
@@ -145,7 +159,12 @@ export default function UpdateBabyInfoModal({ onClose }: Props) {
 			</TouchableOpacity>
 			{isAllergyBabyModalOpen && (
 				<CustomModal onClose={() => setIsAllergyBabyModalOpen(false)} visible={isAllergyBabyModalOpen} animationType='fade' transparent>
-					<AllergyList onClose={onModalClose} toggleAllergy={toggleAllergy} selectedAllergies={selectedAllergies} />
+					<AllergyList
+						onSave={onModalSave}
+						onClose={onModalClose}
+						toggleAllergy={toggleAllergy}
+						selectedAllergies={selectedAllergies}
+					/>
 				</CustomModal>
 			)}
 

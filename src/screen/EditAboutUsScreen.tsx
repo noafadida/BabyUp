@@ -14,6 +14,7 @@ const EditAboutUsScreen = () => {
 	const [topBio, setTopBio] = useState(EMPTY_STRING); // TODO put the current bio as a default value
 	const [bottomBio, setBottomBio] = useState(EMPTY_STRING); // TODO  put the current bio as a default value
 	const dispatch = useDispatch()
+	
 	const saveBioToDB = async (toDefault: boolean) => {
 		try {
 			const bioValue = {
@@ -44,12 +45,16 @@ const EditAboutUsScreen = () => {
 				value={bottomBio}
 				onChangeText={setBottomBio}
 			/>
-			<TouchableOpacity style={{ backgroundColor: 'aliceblue', padding: 20, borderRadius: 10 }} onPress={() => saveBioToDB(false)}>
-				<Text>שמור</Text>
-			</TouchableOpacity>
-			<TouchableOpacity style={{ backgroundColor: 'aliceblue', padding: 20, borderRadius: 10 }} onPress={() => saveBioToDB(true)}>
-				<Text>החזר למקור</Text>
-			</TouchableOpacity>
+
+			<View style={{flexDirection:'row' }} >
+				<TouchableOpacity onPress={() => saveBioToDB(false)} style={[GlobalStyles.buttonLightStyle, { marginHorizontal:10}]}>
+					<Text style={[GlobalStyles.buttonPinkTextStyle, { color: '#FF8DC7' }]}>שמור</Text>
+				</TouchableOpacity>
+				<TouchableOpacity onPress={() => saveBioToDB(true)} style={GlobalStyles.buttonLightStyle}>
+					<Text style={[GlobalStyles.buttonPinkTextStyle, { color: '#FF8DC7' }]}>החזר למקור</Text>
+				</TouchableOpacity>
+			</View>
+
 		</View>
 	)
 }

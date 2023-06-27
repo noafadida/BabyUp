@@ -1,14 +1,14 @@
 import { initializeApp } from 'firebase/app';
 import {
 	getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendEmailVerification,
-	signOut, sendPasswordResetEmail
+	signOut, sendPasswordResetEmail, fetchSignInMethodsForEmail
 } from "firebase/auth";
 import { getFirestore, collection, getDocs, setDoc, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const firebaseConfig = {
-	apiKey: "AIzaSyCmqgj97fze-ExeYaJVZ3keGhf9QGkDKs4",
+	apiKey: "AIzaSyCmqgj97fze-ExeYaJVZ3keGhf9QGkDKs4", // TODO MAKE PRIVATE
 	authDomain: "baby-up-project.firebaseapp.com",
 	projectId: "baby-up-project",
 	storageBucket: "baby-up-project.appspot.com",
@@ -32,7 +32,7 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 export {
-	app, auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, signOut, sendPasswordResetEmail,
+	app, auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, signOut, sendPasswordResetEmail, fetchSignInMethodsForEmail ,
 	db, collection, getDocs, setDoc, doc, getDoc, onSnapshot,
 	storage, ref, uploadBytes, getDownloadURL
 }
