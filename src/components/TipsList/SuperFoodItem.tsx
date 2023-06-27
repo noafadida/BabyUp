@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
 		marginHorizontal: 15,
 		overflow: Platform.OS === 'android' ? "hidden" : 'visible',
 		borderRadius: 20,
-
 	},
 	innerContainer: {
 		overflow: 'hidden',

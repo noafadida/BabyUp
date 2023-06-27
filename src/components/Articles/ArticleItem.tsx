@@ -21,18 +21,18 @@ const ArticleItem = ({ article }: Props) => {
 	};
 
 	useEffect(() => {
-		const fetchArticleImage = async () => {
-			try {
-				if (id) {
+		if (id && id !== 'a1' && id !== 'a2' && id !== 'a3') {
+			const fetchArticleImage = async () => {
+				try {
 					const url = await getDownloadURL(ref(storage, id))
 					setImageBlob(url)
+				} catch (e) {
+					console.log(e)
+					return EMPTY_STRING;
 				}
-			} catch (e) {
-				console.log(e)
-				return EMPTY_STRING;
 			}
+			fetchArticleImage()
 		}
-		fetchArticleImage()
 	}, [id])
 
 	return (

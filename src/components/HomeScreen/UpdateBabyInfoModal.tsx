@@ -69,9 +69,10 @@ export default function UpdateBabyInfoModal({ onClose }: Props) {
 				await setDoc(docRef, updatedInfo);
 				onClose()
 			} catch (error) {
-				Alert.alert('Oops, try again later')
+				Alert.alert('אופס, נסה שוב מאוחר יותר')
 			}
 		} else {
+			Alert.alert('אופס, נסה שוב מאוחר יותר')
 			console.log('ERROR', errorMessage)
 		}
 	}

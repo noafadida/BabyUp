@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, ImageBackground } from 'react-native'
 import { GlobalStyles } from '../consts/styles';
 import { db, doc, getDoc } from '../firebase';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
@@ -25,11 +25,13 @@ const AboutUsScreen = () => {
 	// TODO need to update the default bio to flat link by /n or something
 	return (
 		<View style={styles.container}>
+			<ImageBackground source={require('../../assets/pinkBack.jpeg')} resizeMode="cover" style={styles.image}>
 			<Text style={styles.text}>{bio?.top}</Text>
 			<View style={styles.bottomContainer}>
 				<Text style={styles.textDown}>{bio?.bottom}</Text>
 			</View>
-		</View>
+		</ImageBackground>
+		</View >
 	)
 	//return (
 	//    <View style={styles.container}>
@@ -57,28 +59,32 @@ export default AboutUsScreen;
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: GlobalStyles.colors.appBodyBackColor,
-		alignItems: 'center',
-		paddingHorizontal: 30,
-		paddingVertical: 40
+		flex: 1
 	},
 	text: {
 		textAlign: "center",
 		marginBottom: 10,
 		fontSize: 16,
-		color: "#FF597B"
+		color: "white",
+		padding: 5,
 	},
 	textDown: {
 		textAlign: "center",
 		fontSize: 16,
-		color: GlobalStyles.colors.appBodyBackColor,
+		color: "white",
+		fontWeight:"bold"
 
 	},
 	bottomContainer: {
-		marginTop: 30,
+		marginTop: 20,
 		padding: 8,
 		borderRadius: 10,
-		backgroundColor: "#FF597B",
-	}
+	},
+	image: {
+		flex: 1,
+		justifyContent: 'flex-start',
+		alignItems: 'center',
+		paddingHorizontal: 20,
+		paddingVertical: 40
+	},
 })

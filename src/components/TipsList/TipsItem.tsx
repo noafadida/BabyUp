@@ -65,6 +65,10 @@ const styles = StyleSheet.create({
 		marginVertical: 12,
 		marginHorizontal: 15,
 		backgroundColor: 'white',
+		shadowColor: "#ceb5a7",
+		shadowOpacity: 0.3,
+		shadowOffset: { width: 0, height: 2 },
+		shadowRadius: 1,
 		overflow: Platform.OS === 'android' ? "hidden" : 'visible'
 	},
 	innerContainer: {
