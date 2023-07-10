@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet, Button, Pressable, Alert, TouchableO
 import { EMPTY_STRING } from '../../consts/GeneralConsts';
 import { babyNameIsShort, babyNotInTheRightAge, usernameIsShort } from '../../consts/AlertMessegesConsts';
 import { GlobalStyles } from '../../consts/styles';
-import { Gender, InputContainerStyle } from '../../types';
+import { Gender } from '../../types';
 import { Ionicons } from '@expo/vector-icons';
 import { doc, setDoc, db } from '../../firebase'
 import { retrieveUserData } from '../../utils';
@@ -12,6 +12,8 @@ import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
 import CustomModal from '../CustomModal';
 import AllergyList from '../AllergyList';
+import { useDispatch } from 'react-redux';
+import { setIsBabyInfoHasChanged } from '../../store/general';
 declare module 'react-native-datepicker';
 
 type Props = {
@@ -28,8 +30,10 @@ export default function UpdateBabyInfoModal({ onClose, babyInfo }: Props) {
 	const [isDateValid, setIsDateValid] = useState(true);
 	const [isAllergyBabyModalOpen, setIsAllergyBabyModalOpen] = useState<boolean>(false)
 	const [isAllergyBabyModalSaved, setIsAllergyBabyModalSaved] = useState<boolean>(false)
-	const [selectedAllergies, setSelectedAllergies] = useState<string[]>(babyInfo?.selectedAllergies || [])
+	const [selectedAllergies, setSelectedAllergies] = useState<boolean[]>(babyInfo?.selectedAllergies || [])
 	const [Gender, setGender] = useState<Gender>(babyInfo?.gender === 'זכר' ? 'MALE' : 'FEMALE');
+
+	const dispatch = useDispatch()
 
 	useEffect(() => {
 		const isDidntValidUsername = !!username && username?.length < 3;
@@ -66,7 +70,7 @@ export default function UpdateBabyInfoModal({ onClose, babyInfo }: Props) {
 				gender: Gender,
 				babyBirthDate: birthdate,
 				babyName,
-				selectedAllergies: isAllergyBabyModalSaved ? selectedAllergies : ""
+				selectedAllergies: isAllergyBabyModalSaved ? selectedAllergies : EMPTY_STRING
 			}
 			Object.keys(updatedInfo || {}).forEach((key: string) => {
 				if (updatedInfo[key] === "") {
@@ -77,6 +81,7 @@ export default function UpdateBabyInfoModal({ onClose, babyInfo }: Props) {
 			if (uid) {
 				const docRef = doc(db, Collections.users, uid);
 				await setDoc(docRef, updatedInfo, { merge: true });
+				dispatch(setIsBabyInfoHasChanged({ isBabyInfoHasChanged: true }))
 			}
 			onClose()
 		} catch (error) {
@@ -94,12 +99,10 @@ export default function UpdateBabyInfoModal({ onClose, babyInfo }: Props) {
 		setIsAllergyBabyModalOpen(false)
 	}
 
-	const toggleAllergy = (allergyId: string) => {
-		if (selectedAllergies.includes(allergyId)) {
-			setSelectedAllergies(selectedAllergies?.filter((id) => id !== allergyId));
-		} else {
-			setSelectedAllergies([...selectedAllergies, allergyId]);
-		}
+	const toggleAllergy = (allergyId: number) => {
+		const updatedState = [...selectedAllergies]
+		updatedState[allergyId] = !updatedState[allergyId]
+		setSelectedAllergies(updatedState)
 	};
 
 	return (
@@ -108,7 +111,7 @@ export default function UpdateBabyInfoModal({ onClose, babyInfo }: Props) {
 				<Text style={[GlobalStyles.titleTextStyle, { color: '#B7C4CF' }]}>עריכת פרופיל</Text>
 			</View>
 
-			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
+			<View style={GlobalStyles.inputContainerStyle as any}>
 				<TextInput
 					style={[GlobalStyles.inputStyle, { borderColor: 'white', textAlign: 'right' }]}
 					placeholder={babyInfo.parentName}
@@ -116,7 +119,7 @@ export default function UpdateBabyInfoModal({ onClose, babyInfo }: Props) {
 					onChangeText={setUsername}
 				/>
 			</View>
-			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
+			<View style={GlobalStyles.inputContainerStyle as any}>
 				<TextInput
 					style={[GlobalStyles.inputStyle, { borderColor: 'white', textAlign: 'right' }]}
 					placeholder={babyInfo.babyName}
@@ -126,7 +129,7 @@ export default function UpdateBabyInfoModal({ onClose, babyInfo }: Props) {
 				/>
 			</View>
 
-			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
+			<View style={GlobalStyles.inputContainerStyle as any}>
 				<TextInput
 					style={[GlobalStyles.inputStyle, { borderColor: 'white', textAlign: 'right' }]}
 					placeholder={babyInfo.babyBirthDate}
@@ -139,7 +142,7 @@ export default function UpdateBabyInfoModal({ onClose, babyInfo }: Props) {
 			<Text style={styles.birthText}>הכנס את תאריך הלידה של התינוק/ת</Text>
 
 			{showDatePicker && (
-				<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
+				<View style={GlobalStyles.inputContainerStyle as any}>
 					<DatePicker
 						style={styles.inputDate}
 						date={birthdate}

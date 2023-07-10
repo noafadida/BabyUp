@@ -1,5 +1,5 @@
 import { auth, db, doc, getDoc, setDoc, signOut } from "../firebase";
-import { setFavoriteMeals } from "../store/redux/favorites";
+import { setFavoriteMeals } from "../store/favorites";
 import { Alert } from "react-native";
 import { BackendError } from "../consts/AlertMessegesConsts";
 import { ROUTES_NAMES } from "../consts/Routes";

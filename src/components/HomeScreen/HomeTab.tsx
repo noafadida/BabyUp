@@ -4,10 +4,9 @@ import { collection, db, getDocs } from '../../firebase';
 import { CATEGORIES, ARTICLES } from '../../../data';
 import { ROUTES_NAMES } from '../../consts/Routes';
 import { GlobalStyles } from '../../consts/styles';
-import CategoryGrid from "../CategoryGrid";
-import Article from '../../models/article';
-import ArticleItem from '../Articles/ArticleItem';
 import { Collections } from '../../consts/firebaseConsts';
+import CategoryGrid from "../CategoryGrid";
+import ArticleItem from '../Articles/ArticleItem';
 
 export const HomeTab = ({ navigation, route }: any) => {
 	const [articlesData, setArticlesData] = useState<any[]>([])

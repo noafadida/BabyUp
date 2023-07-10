@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider } from 'react-redux';
-import { store } from './src/store/redux/store';
 import { useFonts } from 'expo-font';
+import { store } from "./src/store";
 import Fonts from './assets/fonts/fonts';
 import StackNavigator from "./src/navigation/StackNavigator";
 

@@ -3,7 +3,6 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Button, Alert } fr
 import { GlobalStyles } from '../consts/styles';
 import { emailNotFound, resetPassword } from '../consts/AlertMessegesConsts';
 import { auth, sendPasswordResetEmail } from '../firebase';
-import { InputContainerStyle } from '../types';
 import { ROUTES_NAMES } from '../consts/Routes';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 
@@ -36,7 +35,7 @@ const PasswordResetScreen = ({ navigation }: Props) => {
 			<View style={styles.head}>
 				<Text style={GlobalStyles.titleTextStyle}>איפוס סיסמא</Text>
 			</View>
-			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
+			<View style={GlobalStyles.inputContainerStyle as any}>
 				<TextInput
 					style={GlobalStyles.inputStyle}
 					placeholder="אימייל"

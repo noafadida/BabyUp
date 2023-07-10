@@ -5,11 +5,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { EMPTY_STRING } from '../../consts/GeneralConsts';
 import { logoutHandler, retrieveUserData } from '../../utils';
 import { getDoc, doc, db, onSnapshot } from '../../firebase'
-import { Allergies } from '../../consts';
-import { Allergy, BabyInfo } from '../../types';
-import { useDispatch } from 'react-redux';
-import { setUserInfo } from '../../store/redux/general';
+import { UPDATED_Allergies } from '../../consts';
+import { BabyInfo } from '../../types';
+import { useDispatch, useSelector } from 'react-redux';
 import { Collections } from '../../consts/firebaseConsts';
+import { setUserInfo } from '../../store/general';
 import moment from 'moment';
 import CustomModal from '../CustomModal';
 import UpdateBabyInfoModal from './UpdateBabyInfoModal';
@@ -29,6 +29,8 @@ export const ProfileTab = ({ navigation }: any) => {
 	const [babyInfo, setBabyInfo] = useState<BabyInfo>(INITIAL_BABY_INFO_VALUE)
 	const [isUpdateBabyInfoModalOpen, setIsUpdateBabyInfoModalOpen] = useState<boolean>(false)
 	const [isInfoChanged, setIsInfoChanged] = useState(false);
+
+	const isBabyInfoHasChanged = useSelector((state: any) => state.general.isBabyInfoHasChanged)
 	const dispatch = useDispatch()
 
 	useLayoutEffect(() => {
@@ -47,11 +49,11 @@ export const ProfileTab = ({ navigation }: any) => {
 					gender: gender === 'MALE' ? 'זכר' : 'נקבה',
 					selectedAllergies
 				})
-				dispatch(setUserInfo({ userInfo: { parentName } }))
+				dispatch(setUserInfo({ userInfo: { parentName, selectedAllergies } }))
 			}
 		}
 		fetchUserInfo()
-	}, [])
+	}, [isBabyInfoHasChanged])
 
 	useEffect(() => {
 		const fetchChangesFromDB = async () => {
@@ -79,18 +81,12 @@ export const ProfileTab = ({ navigation }: any) => {
 		return moment().diff(moment(babyBirthDate), 'months');
 	}
 
-	const getAllergyName = (id: string) => {
-		const allergy: any = Allergies?.filter((item: Allergy) => item?.id === id)
-		return allergy?.[0]?.name || EMPTY_STRING;
-	}
-
 	const onModalClose = () => {
 		setIsInfoChanged(true)
 		setIsUpdateBabyInfoModalOpen(false)
 	}
 
 	return (
-
 		<View style={[styles.profileTabScreen, { backgroundColor: babyInfo?.gender === 'נקבה' ? '#ffe4f3' : "#E9F8F9" }]}>
 			<Image source={require('../../../assets/babyupLogoNew.png')} style={styles.image} />
 			<Text style={[GlobalStyles.titleTextStyleName, { color: babyInfo?.gender === 'נקבה' ? '#fb6f92' : "#6DA9E4", }]}>{babyInfo?.babyName}'s Mommy</Text>
@@ -127,10 +123,12 @@ export const ProfileTab = ({ navigation }: any) => {
 				<View style={styles.innerDetails}>
 					<Text style={[styles.titleDetails, { color: babyInfo?.gender === 'זכר' ? '#6DA9E4' : "#FF8DC7" }]}>רגישויות </Text>
 					{babyInfo?.selectedAllergies?.length > 0 ? (
-						babyInfo.selectedAllergies.map((allergy: string) => {
-							const name: string = getAllergyName(allergy)
+						babyInfo.selectedAllergies.map((allergy: boolean, index: number) => {
+							const allergyData = UPDATED_Allergies?.[index] || {}
 							return (
-								<Text key={allergy} style={styles.textDetails}>{name} </Text>
+								<>
+									{allergy && <Text key={allergyData.id} style={styles.textDetails}>{allergyData.name}</Text>}
+								</>
 							)
 						})) : (
 						<Text style={styles.textDetails}>אין</Text>

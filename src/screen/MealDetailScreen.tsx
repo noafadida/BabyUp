@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState, useEffect } from 'react';
 import { View, StyleSheet, Text, Image, ScrollView, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
-import { setFavoriteMeals } from '../store/redux/favorites';
+import { setFavoriteMeals } from '../store/favorites';
 import { GlobalStyles } from '../consts/styles';
 import { Ionicons } from '@expo/vector-icons';
 import { BackendError } from '../consts/AlertMessegesConsts';
@@ -12,6 +12,7 @@ import Subtitle from '../components/MealDetails/Subtitle';
 import List from '../components/MealDetails/List';
 import IconButton from '../components/IconButton';
 import StarRating from 'react-native-star-rating';
+import { UPDATED_Allergies } from '../consts';
 
 type Props = {
 	route: any;
@@ -27,9 +28,8 @@ const MealDetailScreen = ({ route, navigation }: Props) => {
 	const [starCount, setStarCount] = useState(0);
 	const [isFavorite, setIsFavorite] = useState(false);
 	const dispatch = useDispatch();
-	console.log(isFavorite)
 
-	const onStarRatingPress = (rating: any) => {
+	const onStarRatingPress = (rating: number) => {
 		setStarCount(rating);
 	};
 
@@ -81,30 +81,15 @@ const MealDetailScreen = ({ route, navigation }: Props) => {
 			</View>
 			<View style={styles.allregyMealsContainer}>
 				<View style={styles.allregyMeals}>
-					<View style={styles.allregyMeal}>
-						<Text style={styles.allergyName}>
-							גלוטן
-						</Text>
-						{allergies?.includes('1') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
-					</View>
-					<View style={styles.allregyMeal}>
-						<Text style={styles.allergyName}>
-							חלב
-						</Text>
-						{allergies?.includes('3') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
-					</View>
-					<View style={styles.allregyMeal}>
-						<Text style={styles.allergyName}>
-							אגוזים
-						</Text>
-						{allergies?.includes('2') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
-					</View>
-					<View style={styles.allregyMeal}>
-						<Text style={styles.allergyName}>
-							ביצים
-						</Text>
-						{allergies?.includes('4') ? <Ionicons name="close" size={18} color="white" /> : <Ionicons name="checkmark" size={18} color="white" />}
-					</View>
+					{UPDATED_Allergies?.map((allergy: any) => {
+						const { name, id } = allergy || {};
+						return (
+							<View key={id} style={styles.allregyMeal}>
+								<Text style={styles.allergyName}>{name}</Text>
+								<Ionicons name={allergies?.[id] ? 'close' : 'checkmark'} size={18} color="white" />
+							</View>
+						)
+					})}
 				</View>
 			</View>
 

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { EMPTY_STRING } from '../../consts/GeneralConsts';
+import { EMPTY_STRING } from '../consts/GeneralConsts';
 
 const INITIAL_STATE = {
 	newMealTimeDropdown: EMPTY_STRING,
@@ -7,7 +7,8 @@ const INITIAL_STATE = {
 	allMeals: {},
 	userInfo: {},
 	isBioChanged: false,
-	imageBlob: ''
+	imageBlob: '',
+	isBabyInfoHasChanged: false
 }
 
 const generalSlice = createSlice({
@@ -31,7 +32,10 @@ const generalSlice = createSlice({
 		},
 		setImageBlob: (state: any, action: any) => {
 			state.imageBlob = action.payload.imageBlob
-		}
+		},
+		setIsBabyInfoHasChanged: (state: any, action: any) => {
+			state.isBabyInfoHasChanged = action.payload.isBabyInfoHasChanged
+		},
 	}
 });
 
@@ -42,4 +46,5 @@ export const setAllMeals: any = generalSlice.actions.setAllMeals;
 export const setUserInfo: any = generalSlice.actions.setUserInfo;
 export const setIsBioChanged: any = generalSlice.actions.setIsBioChanged;
 export const setImageBlob: any = generalSlice.actions.setImageBlob;
+export const setIsBabyInfoHasChanged: any = generalSlice.actions.setIsBabyInfoHasChanged;
 export default generalSlice.reducer;

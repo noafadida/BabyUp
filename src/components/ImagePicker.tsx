@@ -3,8 +3,8 @@ import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-na
 import { useCameraPermissions, PermissionStatus, launchCameraAsync, launchImageLibraryAsync } from 'expo-image-picker'
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { Ionicons } from '@expo/vector-icons';
-import { setImageBlob } from '../store/redux/general';
 import { useDispatch } from 'react-redux';
+import { setImageBlob } from '../store/general';
 
 type Props = {
 	isShowTakeImage?: boolean;

@@ -4,7 +4,7 @@ import { GlobalStyles } from '../consts/styles';
 import { auth, createUserWithEmailAndPassword, db, doc as firebaseDoc, setDoc } from '../firebase';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { Ionicons } from '@expo/vector-icons';
-import { Gender, InputContainerStyle } from '../types';
+import { Gender } from '../types';
 import { ROUTES_NAMES } from '../consts/Routes';
 import { Collections } from '../consts/firebaseConsts';
 import DatePicker from 'react-native-datepicker';
@@ -102,7 +102,7 @@ const SignupScreen2 = ({ navigation, route }: Props) => {
 				<Text style={GlobalStyles.titleTextStyle}>יצירת משתמש חדש</Text>
 			</View>
 
-			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
+			<View style={GlobalStyles.inputContainerStyle as any}>
 				<TextInput
 					style={GlobalStyles.inputStyle}
 					placeholder="שם התינוק/ת"
@@ -112,7 +112,7 @@ const SignupScreen2 = ({ navigation, route }: Props) => {
 				/>
 			</View>
 
-			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
+			<View style={GlobalStyles.inputContainerStyle as any}>
 				<TextInput
 					style={GlobalStyles.inputStyle}
 					placeholder="תאריך לידה של התינוק/ת"
@@ -125,7 +125,7 @@ const SignupScreen2 = ({ navigation, route }: Props) => {
 			<Text style={styles.birthText}>הכנס את תאריך הלידה של התינוק/ת</Text>
 
 			{showDatePicker && (
-				<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
+				<View style={GlobalStyles.inputContainerStyle as any}>
 					<DatePicker
 						style={styles.inputDate}
 						date={birthdate}

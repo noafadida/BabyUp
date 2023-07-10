@@ -2,9 +2,9 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 import { CATEGORIES, MEALS } from '../../data';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { db, collection, getDocs } from '../firebase'
-import { setAllMeals } from '../store/redux/general';
 import { useDispatch, useSelector } from 'react-redux';
 import { Collections } from '../consts/firebaseConsts';
+import { setAllMeals } from '../store/general';
 import FilteredList from './MealList/FilteredList';
 
 type Props = {
@@ -17,6 +17,7 @@ const MealsOverViewScreen = ({ route, navigation }: Props) => {
 	const catId = route.params.categoryId
 	const dispatch = useDispatch()
 	const allMealsData = useSelector((state: any) => state.general.allMeals)
+	const userInfo = useSelector((state: any) => state.general.userInfo)
 
 	useEffect(() => {
 		const fetchMeals = async () => {
@@ -62,7 +63,9 @@ const MealsOverViewScreen = ({ route, navigation }: Props) => {
 	}, [catId, navigation])
 
 	return (
-		<FilteredList navigation={navigation} items={diaplayMeals} />
+		<>
+			{diaplayMeals?.length > 0 && <FilteredList items={diaplayMeals} userAllergies={userInfo?.selectedAllergies} />}
+		</>
 	)
 }
 

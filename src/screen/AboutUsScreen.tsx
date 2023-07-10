@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, ImageBackground } from 'react-native'
 import { db, doc, getDoc } from '../firebase';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsBioChanged } from '../store/redux/general';
 import { Collections } from '../consts/firebaseConsts';
+import { setIsBioChanged } from '../store/general';
 
 const AboutUsScreen = () => {
 	const [bio, setBio] = useState<{ top: string, bottom: string }>({ top: EMPTY_STRING, bottom: EMPTY_STRING })

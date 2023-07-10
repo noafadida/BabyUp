@@ -32,7 +32,7 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 export {
-	app, auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, signOut, sendPasswordResetEmail, fetchSignInMethodsForEmail ,
+	app, auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, signOut, sendPasswordResetEmail, fetchSignInMethodsForEmail,
 	db, collection, getDocs, setDoc, doc, getDoc, onSnapshot,
 	storage, ref, uploadBytes, getDownloadURL
 }

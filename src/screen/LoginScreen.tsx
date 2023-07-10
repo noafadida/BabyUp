@@ -6,7 +6,6 @@ import { validateEmail } from '../utils';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
 import { incorrectEmail, loginError, unfilledInput } from '../consts/AlertMessegesConsts';
 import { auth, signInWithEmailAndPassword } from '../firebase';
-import { InputContainerStyle } from '../types';
 import { ROUTES_NAMES } from '../consts/Routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -52,7 +51,7 @@ const LoginScreen = ({ navigation }: Props) => {
 			<View style={styles.head}>
 				<Text style={GlobalStyles.titleTextStyle}>התחברות</Text>
 			</View>
-			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
+			<View style={GlobalStyles.inputContainerStyle as any}>
 				<TextInput
 					style={GlobalStyles.inputStyle}
 					placeholder="אימייל"
@@ -61,7 +60,7 @@ const LoginScreen = ({ navigation }: Props) => {
 				/>
 			</View>
 
-			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
+			<View style={GlobalStyles.inputContainerStyle as any}>
 				<TextInput
 					style={GlobalStyles.inputStyle}
 					placeholder="סיסמא"

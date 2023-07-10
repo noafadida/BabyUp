@@ -6,9 +6,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { db, doc, setDoc } from '../firebase'
 import { BackendError } from '../consts/AlertMessegesConsts';
 import { aboutUsBottomDefaultValue, aboutUsTopDefaultValue } from '../consts/aboutUsConsts';
-import { setIsBioChanged } from '../store/redux/general';
 import { useDispatch } from 'react-redux';
 import { Collections } from '../consts/firebaseConsts';
+import { setIsBioChanged } from '../store/general';
 
 const EditAboutUsScreen = () => {
 	const [topBio, setTopBio] = useState(EMPTY_STRING); // TODO put the current bio as a default value

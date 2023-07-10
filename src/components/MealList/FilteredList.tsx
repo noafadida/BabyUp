@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, Switch, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
 import { GlobalStyles } from '../../consts/styles';
 import CustomModal from '../CustomModal';
@@ -14,66 +14,64 @@ const Filter = ({ label, value, onValueChange }: any) => {
 };
 
 type Props = {
-	navigation: any;
 	items: any;
+	userAllergies: boolean[]
 }
 
-const FilteredList = ({ navigation, items }: Props) => {
+const FilteredList = ({ items, userAllergies }: Props) => {
 	const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false)
-	const [filterOptions, setFilterOptions] = useState({
-		isGlutenFree: false,
-		isNutsFree: false,
-		isMilkFree: false,
-		isEggsFree: false,
-	});
+	const [filteredData, setFilteredData] = useState<any>(items)
+	const [filterOptions, setFilterOptions] = useState(userAllergies || [false, false, false, false]);
+	const [isGlutenFreeFilter, isNutsFreeFilter, isMilkFreeFilter, isEggsFreeFilter] = filterOptions;
 
-	const filteredData = (items).filter((item: any) => {
-		const { isGlutenFree, isNutsFree, isMilkFree, isEggsFree } = filterOptions;
-		return (!isGlutenFree || item?.allergies?.includes('1')) && (!isNutsFree || item?.allergies?.includes('2')) && (!isMilkFree || item?.allergies?.includes('3')) && (!isEggsFree || item?.allergies?.includes('4'));
-	});
+	useEffect(() => {
+		const updatedFilteredData = (items).filter((item: any) => {
+			if (isGlutenFreeFilter && !item?.allergies?.[0]) {
+				return false
+			}
+			if (isNutsFreeFilter && !item?.allergies?.[1]) {
+				return false
+			}
+			if (isMilkFreeFilter && !item?.allergies?.[2]) {
+				return false
+			}
+			if (isEggsFreeFilter && !item?.allergies?.[3]) {
+				return false
+			}
+			return true;
+		});
+		setFilteredData(updatedFilteredData)
+	}, [filterOptions])
+
+
+	const handleFilterChanges = (id: number, value: boolean) => {
+		const updatedState = [...filterOptions]
+		updatedState[id] = value
+		setFilterOptions(updatedState)
+	}
 
 	const handleFilterBtn = () => {
 		return (
 			<View style={styles.filterContainer}>
 				<Filter
 					label="ללא גלוטן"
-					value={filterOptions.isGlutenFree}
-					onValueChange={(value: any) =>
-						setFilterOptions((prevOptions) => ({
-							...prevOptions,
-							isGlutenFree: value,
-						}))
-					}
+					value={isGlutenFreeFilter}
+					onValueChange={(value: boolean) => handleFilterChanges(0, value)}
 				/>
 				<Filter
 					label="ללא אגוזים"
-					value={filterOptions.isNutsFree}
-					onValueChange={(value: any) =>
-						setFilterOptions((prevOptions) => ({
-							...prevOptions,
-							isNutsFree: value,
-						}))
-					}
+					value={isNutsFreeFilter}
+					onValueChange={(value: boolean) => handleFilterChanges(1, value)}
 				/>
 				<Filter
 					label="ללא חלב"
-					value={filterOptions.isMilkFree}
-					onValueChange={(value: any) =>
-						setFilterOptions((prevOptions) => ({
-							...prevOptions,
-							isMilkFree: value,
-						}))
-					}
+					value={isMilkFreeFilter}
+					onValueChange={(value: boolean) => handleFilterChanges(2, value)}
 				/>
 				<Filter
 					label="ללא ביצים"
-					value={filterOptions.isEggsFree}
-					onValueChange={(value: any) =>
-						setFilterOptions((prevOptions) => ({
-							...prevOptions,
-							isEggsFree: value,
-						}))
-					}
+					value={isEggsFreeFilter}
+					onValueChange={(value: boolean) => handleFilterChanges(3, value)}
 				/>
 				<Pressable onPress={() => setIsFilterModalOpen(false)} style={{ alignItems: "center", marginBottom: 5 }}>
 					<Text style={[GlobalStyles.buttonLightTextStyle,]}>שמור </Text>

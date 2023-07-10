@@ -1,5 +1,5 @@
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Pressable } from 'react-native';
-import { Allergies } from '../consts';
+import { UPDATED_Allergies } from '../consts';
 import { GlobalStyles } from '../consts/styles';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -31,17 +31,17 @@ const Checkbox = ({ label, checked, onChange }: any) => {
 
 type Props = {
 	onClose: () => void;
-	onSave: () => void;
-	toggleAllergy: (allergyId: string) => void;
-	selectedAllergies: string[]
+	toggleAllergy: (allergyId: number) => void;
+	selectedAllergies: boolean[]
+	onSave?: () => void;
 }
 
-export default function AllergyList({ onClose, selectedAllergies, toggleAllergy, onSave }: Props) {
+export default function AllergyList({ onClose, selectedAllergies, toggleAllergy, onSave = () => {} }: Props) {
 
 	const renderItem = ({ item }: any) => (
 		<Checkbox
 			label={item.name}
-			checked={selectedAllergies.includes(item.id)}
+			checked={selectedAllergies[item.id]}
 			onChange={() => toggleAllergy(item.id)}
 		/>
 
@@ -50,7 +50,7 @@ export default function AllergyList({ onClose, selectedAllergies, toggleAllergy,
 	return (
 		<View style={styles.container}>
 			<FlatList
-				data={Allergies}
+				data={UPDATED_Allergies}
 				renderItem={renderItem}
 				keyExtractor={(item) => item.id.toString()}
 			/>

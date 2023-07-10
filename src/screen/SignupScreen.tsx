@@ -6,7 +6,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { GlobalStyles } from '../consts/styles';
 import { validateEmail } from '../utils';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
-import { InputContainerStyle } from '../types';
 import { ROUTES_NAMES } from '../consts/Routes';
 
 type Props = {
@@ -65,7 +64,7 @@ const SignupScreen = ({ navigation }: Props) => {
 				<Text style={GlobalStyles.titleTextStyle}>יצירת משתמש חדש</Text>
 			</View>
 
-			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
+			<View style={GlobalStyles.inputContainerStyle as any}>
 				<TextInput
 					style={GlobalStyles.inputStyle}
 					placeholder="אימייל"
@@ -77,7 +76,7 @@ const SignupScreen = ({ navigation }: Props) => {
 				/>
 			</View>
 
-			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
+			<View style={GlobalStyles.inputContainerStyle as any}>
 				<TextInput
 					style={GlobalStyles.inputStyle}
 					placeholder="שם משתמש"
@@ -86,7 +85,7 @@ const SignupScreen = ({ navigation }: Props) => {
 				/>
 			</View>
 
-			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
+			<View style={GlobalStyles.inputContainerStyle as any}>
 				<TextInput
 					style={GlobalStyles.inputStyle}
 					placeholder="סיסמא"
@@ -99,7 +98,7 @@ const SignupScreen = ({ navigation }: Props) => {
 				</TouchableOpacity>
 			</View>
 
-			<View style={GlobalStyles.inputContainerStyle as InputContainerStyle}>
+			<View style={GlobalStyles.inputContainerStyle as any}>
 				<TextInput
 					style={GlobalStyles.inputStyle}
 					placeholder="יש להקליד שוב את הסיסמא "

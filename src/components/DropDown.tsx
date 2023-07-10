@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { GlobalStyles } from '../consts/styles';
 import { useDispatch } from 'react-redux';
-import { setNewMealLevelDropdown, setNewMealTimeDropdown } from '../store/redux/general';
+import { setNewMealLevelDropdown, setNewMealTimeDropdown } from '../store/general';
 import RNPickerSelect from 'react-native-picker-select';
 
 type Props = {
