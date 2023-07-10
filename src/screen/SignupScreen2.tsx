@@ -28,14 +28,12 @@ const SignupScreen2 = ({ navigation, route }: Props) => {
 
 	const [Gender, setGender] = useState<Gender>('FEMALE');
 
-	const [selectedAllergies, setSelectedAllergies] = useState<string[]>([]);
+	const [selectedAllergies, setSelectedAllergies] = useState<boolean[]>([])
 
-	const toggleAllergy = (allergyId: string) => {
-		if (selectedAllergies.includes(allergyId)) {
-			setSelectedAllergies(selectedAllergies?.filter((id) => id !== allergyId));
-		} else {
-			setSelectedAllergies([...selectedAllergies, allergyId]);
-		}
+	const toggleAllergy = (allergyId: number) => {
+		const updatedState = [...selectedAllergies]
+		updatedState[allergyId] = !updatedState[allergyId]
+		setSelectedAllergies(updatedState)
 	};
 
 	useEffect(() => {
@@ -108,7 +106,6 @@ const SignupScreen2 = ({ navigation, route }: Props) => {
 					placeholder="שם התינוק/ת"
 					value={babyName}
 					onChangeText={handleBabyNameChange}
-
 				/>
 			</View>
 
@@ -135,7 +132,6 @@ const SignupScreen2 = ({ navigation, route }: Props) => {
 						confirmBtnText="Confirm"
 						cancelBtnText="Cancel"
 						onDateChange={setBirthdate}
-
 					/>
 					<Button color={GlobalStyles.colors.btnColor} title="Done" onPress={() => setShowDatePicker(false)} />
 				</View>

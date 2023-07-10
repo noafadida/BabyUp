@@ -19,17 +19,15 @@ const AddMealScreen = () => {
 	const [ingredients, setIngredients] = useState(EMPTY_STRING);
 	const [steps, setSteps] = useState(EMPTY_STRING);
 	const [isAllergyModalOpen, setIsAllergyModalOpen] = useState<boolean>(false)
-	const [selectedAllergies, setSelectedAllergies] = useState<string[]>([])
+	const [selectedAllergies, setSelectedAllergies] = useState<boolean[]>([])
 	const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 
 	const { newMealLevelDropdown, newMealTimeDropdown, imageBlob } = useSelector((state: any) => state.general);
 
-	const toggleAllergy = (allergyId: string) => {
-		if (selectedAllergies.includes(allergyId)) {
-			setSelectedAllergies(selectedAllergies?.filter((id) => id !== allergyId));
-		} else {
-			setSelectedAllergies([...selectedAllergies, allergyId]);
-		}
+	const toggleAllergy = (allergyId: number) => {
+		const updatedState = [...selectedAllergies]
+		updatedState[allergyId] = !updatedState[allergyId]
+		setSelectedAllergies(updatedState)
 	};
 
 	const getAllergyName = (id: string) => {
