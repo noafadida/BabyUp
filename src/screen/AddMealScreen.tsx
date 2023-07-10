@@ -3,9 +3,8 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Pressa
 import { storage, uploadBytes, ref, doc, db, setDoc } from '../firebase';
 import { CATEGORIES, COMPLEXITY, MINUTES } from '../consts/AddMealsPageConsts';
 import { GlobalStyles } from '../consts/styles';
-import { Allergies } from '../consts';
+import { UPDATED_Allergies } from '../consts';
 import { EMPTY_STRING } from '../consts/GeneralConsts';
-import { Allergy } from '../types';
 import { useSelector } from 'react-redux';
 import { Collections } from '../consts/firebaseConsts';
 import { BackendError } from '../consts/AlertMessegesConsts';
@@ -19,7 +18,7 @@ const AddMealScreen = () => {
 	const [ingredients, setIngredients] = useState(EMPTY_STRING);
 	const [steps, setSteps] = useState(EMPTY_STRING);
 	const [isAllergyModalOpen, setIsAllergyModalOpen] = useState<boolean>(false)
-	const [selectedAllergies, setSelectedAllergies] = useState<boolean[]>([])
+	const [selectedAllergies, setSelectedAllergies] = useState<boolean[]>([false, false, false, false])
 	const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 
 	const { newMealLevelDropdown, newMealTimeDropdown, imageBlob } = useSelector((state: any) => state.general);
@@ -29,11 +28,6 @@ const AddMealScreen = () => {
 		updatedState[allergyId] = !updatedState[allergyId]
 		setSelectedAllergies(updatedState)
 	};
-
-	const getAllergyName = (id: string) => {
-		const allergy: any = Allergies?.filter((item: Allergy) => item?.id === id)
-		return allergy?.[0]?.name || EMPTY_STRING;
-	}
 
 	const handleAddMeal = async () => {
 		try {
@@ -65,7 +59,7 @@ const AddMealScreen = () => {
 		const isChecked = selectedCategories.includes(itemId);
 		setSelectedCategories(isChecked ? selectedCategories.filter((id) => id !== itemId) : [...selectedCategories, itemId]);
 	}
-
+	console.log('selectedAllergies', selectedAllergies)
 	return (
 		<ScrollView style={{ backgroundColor: GlobalStyles.colors.appBodyBackColor, }} >
 			<View style={styles.container}>
@@ -114,10 +108,11 @@ const AddMealScreen = () => {
 				<View style={{ backgroundColor: '#FF8DC7', paddingHorizontal: 15, paddingVertical: 2, borderRadius: 10 }}>
 					<View style={styles.innerDetails}>
 						<Text style={[styles.titleDetails, { color: "white", }]}>רגישויות :</Text>
-						{selectedAllergies?.length > 0 && selectedAllergies.map((allergy: string) => {
-							const name: string = getAllergyName(allergy)
+						{selectedAllergies?.length > 0 && selectedAllergies.map((allergy: boolean, index: number) => {
 							return (
-								<Text key={allergy} style={styles.textDetails}>{name} </Text>
+								<>
+									{allergy && <Text key={UPDATED_Allergies[index].id} style={styles.textDetails}>{UPDATED_Allergies[index].name} </Text>}
+								</>
 							)
 						})}
 					</View>
